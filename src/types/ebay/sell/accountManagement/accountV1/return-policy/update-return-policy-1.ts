@@ -1,4 +1,4 @@
-import type { ErrorDetailV3 } from "@/types/ebay/sell/listing-management/inventory-api/inventory-api-global-types";
+import type { ErrorDetailV3 } from "../../../listingManagement/inventoryAPI/inventory-api-global-types.js";
 
 /**
  * Path parameter for update operation.

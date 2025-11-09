@@ -1,4 +1,4 @@
-import type { EbayOfferDetailsWithKeys, ErrorDetailV3 } from "../../inventory-api-global-types";
+import type { EbayOfferDetailsWithKeys, ErrorDetailV3 } from "../inventory-api-global-types.js";
 
 /**
  * Request body for POST /offer (createOffer).

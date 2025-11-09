@@ -1,4 +1,4 @@
-import type { ErrorDetailV3 } from "./update-fulfuillment-policy-ts";
+import type { ErrorDetailV3 } from "./update-fulfuillment-policy-ts.js";
 
 /**
  * Category group selector for the policy.

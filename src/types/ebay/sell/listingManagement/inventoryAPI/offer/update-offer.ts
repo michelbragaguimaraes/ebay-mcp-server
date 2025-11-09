@@ -1,4 +1,4 @@
-import type { ErrorDetailV3, ListingDurationEnum } from "../../inventory-api-global-types";
+import type { ErrorDetailV3, ListingDurationEnum } from "../inventory-api-global-types.js";
 import type {
   Charity,
   ErrorParameterV3,
@@ -6,7 +6,7 @@ import type {
   ListingPolicies,
   PricingSummary,
   Regulatory,
-} from "../post/bulk-create-offer";
+} from "./bulk-create-offer.js";
 
 /**
  * PUT https://api.ebay.com/sell/inventory/v1/offer/{offerId}

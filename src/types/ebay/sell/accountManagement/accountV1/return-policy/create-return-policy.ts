@@ -1,4 +1,4 @@
-import type { ErrorDetailV3 } from "@/types/ebay/global/globalEbayTypes";
+import type { ErrorDetailV3 } from "../../../listingManagement/inventoryAPI/inventory-api-global-types.js";
 
 /**
  * Category group selector for the policy.

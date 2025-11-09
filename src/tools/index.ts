@@ -8,11 +8,11 @@ import {
   marketingTools,
   metadataTools,
   otherApiTools,
-  ToolDefinition,
+  type ToolDefinition,
   taxonomyTools,
 } from "./tool-definitions.js";
 
-export { ToolDefinition };
+export type { ToolDefinition };
 
 /**
  * Get all tool definitions for the MCP server
@@ -61,7 +61,7 @@ export async function executeTool(
     case "ebay_create_inventory_item":
       return api.inventory.createOrReplaceInventoryItem(
         args.sku as string,
-        args.inventoryItem,
+        args.inventoryItem as any,
       );
     case "ebay_get_offers":
       return api.inventory.getOffers(
@@ -70,7 +70,7 @@ export async function executeTool(
         args.limit as number,
       );
     case "ebay_create_offer":
-      return api.inventory.createOffer(args.offer);
+      return api.inventory.createOffer(args.offer as any);
     case "ebay_publish_offer":
       return api.inventory.publishOffer(args.offerId as string);
 
@@ -86,7 +86,7 @@ export async function executeTool(
     case "ebay_create_shipping_fulfillment":
       return api.fulfillment.createShippingFulfillment(
         args.orderId as string,
-        args.fulfillment,
+        args.fulfillment as any,
       );
 
     // Marketing

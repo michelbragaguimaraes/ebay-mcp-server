@@ -1,4 +1,4 @@
-import type { GetOfferResponse } from "./get-offer";
+import type { GetOfferResponse } from "./get-offer.js";
 
 /**
  * GET /sell/inventory/v1/offer

@@ -1,4 +1,4 @@
-import type { Category } from "../get-category-suggestions/types";
+import type { Category } from "../get-category-suggestions/types.js";
 
 export enum AspectApplicableToEnum {
   ITEM = "ITEM",

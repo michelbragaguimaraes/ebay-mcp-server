@@ -1,4 +1,4 @@
-import type { InventoryItem, InventoryItemWithSkuLocaleGroupKeys } from "../inventory-api-global-types";
+import type { InventoryItem, InventoryItemWithSkuLocaleGroupKeys } from "../inventory-api-global-types.js";
 
 /**
  * Query parameters for getInventoryItems.

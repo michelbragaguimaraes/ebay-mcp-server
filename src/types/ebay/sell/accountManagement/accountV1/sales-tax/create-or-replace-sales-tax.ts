@@ -1,4 +1,4 @@
-import type { CountryCodeEnum } from "./get-sales-taxes.js";
+// import type { CountryCodeEnum } from "./get-sales-taxes.js";
 
 /**
  * Base type for sales tax request

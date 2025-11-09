@@ -1,4 +1,4 @@
-import type { ErrorDetailV3 } from "../../inventory-api-global-types";
+import type { ErrorDetailV3 } from "../inventory-api-global-types.js";
 
 /** Path params */
 export type CreateOrReplaceSkuLocationMappingPath = {

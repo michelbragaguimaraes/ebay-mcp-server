@@ -4,7 +4,7 @@ import type {
   ListingPolicies,
   PricingSummary,
   Regulatory,
-} from "../post/bulk-create-offer";
+} from "./bulk-create-offer.js";
 
 /**
  * GET /sell/inventory/v1/offer/{offerId}

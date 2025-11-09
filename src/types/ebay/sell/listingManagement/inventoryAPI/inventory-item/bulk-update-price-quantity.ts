@@ -1,5 +1,5 @@
-import type { Amount, EbayError } from "@/types/ebay/global/globalEbayTypes";
-import type { ShipToLocationAvailability } from "../../inventory-api-global-types";
+import type { Amount, EbayError } from "../../../../global/global-ebay-types.js";
+import type { ShipToLocationAvailability } from "../inventory-api-global-types.js";
 
 /**
  * Request payload: update price/quantity for a single SKU and/or its offers.

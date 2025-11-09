@@ -1,5 +1,5 @@
-import type { CountryCodeEnum } from "../../inventory-api-global-types";
-import type { DayOfWeekEnum, StoreTypeEnum } from "./create-inventory-location";
+import type { CountryCodeEnum } from "../inventory-api-global-types.js";
+import type { DayOfWeekEnum, StoreTypeEnum } from "./create-inventory-location.js";
 
 /**
  * POST https://api.ebay.com/sell/inventory/v1/location/{merchantLocationKey}/update_location_details

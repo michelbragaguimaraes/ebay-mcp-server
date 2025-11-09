@@ -1,5 +1,5 @@
-import type { Amount, EbayMarketplaceIdEnum } from "@/types/ebay/global/globalEbayTypes";
-import type { ErrorDetailV3 } from "../../inventory-api-global-types";
+import type { Amount, EbayMarketplaceIdEnum } from "../../../../global/global-ebay-types.js";
+import type { ErrorDetailV3 } from "../inventory-api-global-types.js";
 
 /**
  * getListingFees

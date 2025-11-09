@@ -1,5 +1,5 @@
-import type { TimeDurationUnitEnum } from "../../../../global/globalEbayTypes";
-import type { CategoryTypeEnum, MarketplaceIdEnum } from "../fulfillmentPolicy/getFulfillmentPolicies";
+import type { TimeDurationUnitEnum } from "../../../../global/global-ebay-types.js";
+import type { CategoryTypeEnum, MarketplaceIdEnum } from "../fulfillment-policy/get-fulfillment-policies.js";
 
 /**
  * POST /sell/account/v1/payment_policy

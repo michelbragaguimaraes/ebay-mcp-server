@@ -4,8 +4,8 @@ import type {
   EbayMarketplaceIdEnum,
   LocaleEnum,
   TimeDurationUnitEnum,
-} from "@/types/ebay/global/global-ebay-types";
-import type { PackageWeightAndSize } from "./inventory-item/bulk-create-or-replace-inventory-item";
+} from "../../../global/global-ebay-types.js";
+import type { PackageWeightAndSize } from "./inventory-item/bulk-create-or-replace-inventory-item.js";
 import type {
   Charity,
   ExtendedProducerResponsibility,
@@ -13,7 +13,7 @@ import type {
   PricingSummary,
   Regulatory,
   Tax,
-} from "./offer/bulk-create-offer";
+} from "./offer/bulk-create-offer.js";
 
 /**
  * Single offer definition used in bulk_create_offer.

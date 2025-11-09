@@ -1,4 +1,4 @@
-import type { MarketplaceIdEnum } from "../../../accountManagement/accountV1/fulfillment-policy/update-fulfuillment-policy-ts";
+import type { MarketplaceIdEnum } from "../../../accountManagement/accountV1/fulfillment-policy/update-fulfuillment-policy-ts.js";
 
 export type GetCategoryTreeRequest = {
   category_tree_id: string;

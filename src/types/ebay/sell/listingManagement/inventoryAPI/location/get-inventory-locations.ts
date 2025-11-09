@@ -1,4 +1,4 @@
-import type { GetInventoryLocationResponse } from "./get-inventory-location";
+import type { GetInventoryLocationResponse } from "./get-inventory-location.js";
 
 /** Query params for getInventoryLocations. */
 export type GetInventoryLocationsQueryParams = {

@@ -1,6 +1,6 @@
 // inventory/withdraw-offer-by-inventory-item-group.d.ts
 
-import type { EbayMarketplace } from "../../inventory-api-global-types";
+import type { EbayMarketplace } from "../inventory-api-global-types.js";
 
 /**
  * POST https://api.ebay.com/sell/inventory/v1/offer/withdraw_by_inventory_item_group

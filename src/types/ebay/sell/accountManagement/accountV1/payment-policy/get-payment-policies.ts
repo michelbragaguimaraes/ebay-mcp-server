@@ -10,7 +10,7 @@
  * Prod base URL:    https://api.ebay.com
  */
 
-import type { Amount, TimeDuration } from "../post/create-payment-policy";
+import type { Amount, TimeDuration } from "./create-payment-policy.js";
 
 /* ===== Query & Headers ===== */
 export type GetPaymentPoliciesQuery = {

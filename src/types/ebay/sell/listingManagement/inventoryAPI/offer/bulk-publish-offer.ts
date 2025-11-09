@@ -1,4 +1,4 @@
-import type { ErrorDetailV3 } from "../../inventory-api-global-types";
+import type { ErrorDetailV3 } from "../inventory-api-global-types.js";
 
 /**
  * Bulk request body for /bulk_publish_offer.

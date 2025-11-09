@@ -1,4 +1,4 @@
-import type { CompatibleProduct, NameValueList } from "../../inventory-api-global-types";
+import type { CompatibleProduct, NameValueList } from "../inventory-api-global-types.js";
 
 /**
  * Path parameters for getProductCompatibility.

@@ -1,4 +1,4 @@
-import type { EbayMarketplaceIdEnum } from "../../global/global-ebay-types";
+import type { EbayMarketplaceIdEnum } from "../../global/global-ebay-types.js";
 
 /** Standard OAuth token response from eBay */
 export type EbayTokenResponse = {

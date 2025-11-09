@@ -1,5 +1,5 @@
-import type { EbayMarketplaceIdEnum } from "@/types/ebay/global/global-ebay-types";
-import type { CountryCodeEnum } from "../../listingManagement/inventoryAPI/inventory-api-global-types";
+import type { EbayMarketplaceIdEnum } from "../../../global/global-ebay-types.js";
+import type { CountryCodeEnum } from "../../listingManagement/inventoryAPI/inventory-api-global-types.js";
 
 /**
  * Indicates the user account type.

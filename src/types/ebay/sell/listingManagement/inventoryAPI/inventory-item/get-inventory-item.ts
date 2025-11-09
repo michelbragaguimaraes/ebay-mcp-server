@@ -1,4 +1,4 @@
-import type { InventoryItem } from "../../inventory-api-global-types";
+import type { InventoryItem } from "../inventory-api-global-types.js";
 
 /**
  * Path parameters for getInventoryItem.

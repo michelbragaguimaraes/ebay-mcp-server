@@ -1,4 +1,4 @@
-import type { CountryCodeEnum } from "../../inventory-api-global-types";
+import type { CountryCodeEnum } from "../inventory-api-global-types.js";
 
 /** Location operating interval (local time, 24h). */
 export type Interval = {

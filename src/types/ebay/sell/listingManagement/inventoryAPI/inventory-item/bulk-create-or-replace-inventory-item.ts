@@ -6,8 +6,8 @@ import type {
   PackageTypeEnum,
   TimeDurationUnitEnum,
   WeightUnitOfMeasureEnum,
-} from "@/types/ebay/global/globalEbayTypes";
-import type { ErrorDetailV3 } from "../../inventory-api-global-types";
+} from "../../../../global/global-ebay-types.js";
+import type { ErrorDetailV3 } from "../inventory-api-global-types.js";
 
 /**
  * Reusable time duration block (unit + value).

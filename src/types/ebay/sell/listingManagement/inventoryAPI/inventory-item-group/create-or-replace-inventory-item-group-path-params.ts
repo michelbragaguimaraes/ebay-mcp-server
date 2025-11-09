@@ -1,5 +1,5 @@
-import type { EbayError } from "../../../../global/globalEbayTypes";
-import type { InventoryItemGroup } from "../inventory-api-global-types";
+import type { EbayError } from "../../../../global/global-ebay-types.js";
+import type { InventoryItemGroup } from "../inventory-api-global-types.js";
 
 /**
  * Path parameters for createOrReplaceInventoryItemGroup.

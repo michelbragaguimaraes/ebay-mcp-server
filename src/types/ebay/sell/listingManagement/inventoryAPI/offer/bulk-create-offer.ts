@@ -1,4 +1,4 @@
-import type { Amount, EbayMarketplaceIdEnum } from "../../../../global/globalEbayTypes";
+import type { Amount, EbayMarketplaceIdEnum } from "../../../../global/global-ebay-types.js";
 import type {
   CountryCodeEnum,
   EbayOfferDetailsWithKeys,
@@ -7,7 +7,7 @@ import type {
   MinimumAdvertisedPriceHandlingEnum,
   ShippingServiceTypeEnum,
   SoldOnEnum,
-} from "../inventory-api-global-types";
+} from "../inventory-api-global-types.js";
 
 /**
  * Bulk request body for /bulk_create_offer.

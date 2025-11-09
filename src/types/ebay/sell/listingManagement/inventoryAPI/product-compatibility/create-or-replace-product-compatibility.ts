@@ -1,11 +1,11 @@
-import type { EbayError } from "@/types/ebay/global/globalEbayTypes";
+import type { EbayError } from "../../../../global/global-ebay-types.js";
 import type {
   Compatibility,
   CompatibleProduct,
   NameValueList,
   ProductFamilyProperties,
   ProductIdentifier,
-} from "../../inventory-api-global-types";
+} from "../inventory-api-global-types.js";
 
 /**
  * Path parameters for createOrReplaceProductCompatibility.

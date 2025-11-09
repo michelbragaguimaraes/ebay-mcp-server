@@ -1,5 +1,5 @@
-import type { EbayMarketplace, ErrorDetailV3 } from "../../inventory-api-global-types";
-import type { ErrorParameterV3 } from "./bulk-create-offer";
+import type { EbayMarketplace, ErrorDetailV3 } from "../inventory-api-global-types.js";
+import type { ErrorParameterV3 } from "./bulk-create-offer.js";
 
 /**
  * POST https://api.ebay.com/sell/inventory/v1/offer/publish_by_inventory_item_group

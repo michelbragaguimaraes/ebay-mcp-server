@@ -4,7 +4,7 @@ import type {
   GeoCoordinates,
   StatusEnum,
   StoreTypeEnum,
-} from "../post/create-inventory-location";
+} from "./create-inventory-location.js";
 
 /** Request shape for retrieving an inventory location. */
 export type GetInventoryLocationRequest = {
