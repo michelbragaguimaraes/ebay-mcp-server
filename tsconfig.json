@@ -1,8 +1,8 @@
 {
 	"compilerOptions": {
 		"target": "ES2022",
-		"module": "Node16",
-		"moduleResolution": "Node16",
+		"module": "ESNext", // or "NodeNext"
+		"moduleResolution": "Bundler", // or "NodeNext"
 		"lib": ["ES2022"],
 		"outDir": "./build",
 		"rootDir": "./src",
@@ -13,6 +13,7 @@
 		"resolveJsonModule": true,
 		"declaration": true,
 		"declarationMap": true,
+		"noUncheckedIndexedAccess": true,
 		"sourceMap": true,
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,
