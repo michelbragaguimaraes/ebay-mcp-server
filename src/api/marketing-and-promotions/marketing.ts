@@ -1,4 +1,10 @@
 import type {
+  BulkCreateAdRequest,
+  BulkCreateAdsByInventoryReferenceRequest,
+  BulkDeleteAdRequest,
+  BulkDeleteAdsByInventoryReferenceRequest,
+  BulkUpdateAdStatusByListingIdRequest,
+  BulkUpdateAdStatusRequest,
   CloneAdRequest,
   CloneCampaignRequest,
   CreateAdRequest,
@@ -13,6 +19,14 @@ import type {
   AdReferences,
   Ads,
   BaseResponse,
+  BulkAdResponse,
+  BulkAdUpdateResponse,
+  BulkAdUpdateStatusByListingIdResponse,
+  BulkAdUpdateStatusResponse,
+  BulkCreateAdsByInventoryReferenceResponse,
+  BulkDeleteAdResponse,
+  BulkDeleteAdsByInventoryReferenceResponse,
+  BulkUpdateAdsByInventoryReferenceResponse,
   Campaign,
   CampaignPagedCollectionResponse,
   ItemPromotionsPagedCollection,
@@ -315,6 +329,65 @@ export class MarketingApi {
     return this.client.post<BulkUpdateAdsByInventoryReferenceResponse>(
       `${this.basePath}/ad_campaign/${campaignId}/bulk_update_ads_bid_by_inventory_reference`,
       body,
+    );
+  }
+
+  /**
+   * Bulk update ads bid by listing id
+   */
+  async bulkUpdateAdsBidByListingId(
+    campaignId: string,
+    body: BulkCreateAdRequest,
+  ): Promise<BulkAdUpdateResponse> {
+    return this.client.post<BulkAdUpdateResponse>(
+      `${this.basePath}/ad_campaign/${campaignId}/bulk_update_ads_bid_by_listing_id`,
+      body,
+    );
+  }
+
+  /**
+   * Bulk update ads status
+   */
+  async bulkUpdateAdsStatus(
+    campaignId: string,
+    body: BulkUpdateAdStatusRequest,
+  ): Promise<BulkAdUpdateStatusResponse> {
+    return this.client.post<BulkAdUpdateStatusResponse>(
+      `${this.basePath}/ad_campaign/${campaignId}/bulk_update_ads_status`,
+      body,
+    );
+  }
+
+  /**
+   * Bulk update ads status by listing id
+   */
+  async bulkUpdateAdsStatusByListingId(
+    campaignId: string,
+    body: BulkUpdateAdStatusByListingIdRequest,
+  ): Promise<BulkAdUpdateStatusByListingIdResponse> {
+    return this.client.post<BulkAdUpdateStatusByListingIdResponse>(
+      `${this.basePath}/ad_campaign/${campaignId}/bulk_update_ads_status_by_listing_id`,
+      body,
+    );
+  }
+
+  /**
+   * Pause a campaign
+   */
+  async pauseCampaign(campaignId: string): Promise<void> {
+    return this.client.post<void>(
+      `${this.basePath}/ad_campaign/${campaignId}/pause`,
+      {},
+    );
+  }
+
+  /**
+   * Resume a campaign
+   */
+  async resumeCampaign(campaignId: string): Promise<void> {
+    return this.client.post<void>(
+      `${this.basePath}/ad_campaign/${campaignId}/resume`,
+      {},
     );
   }
 }

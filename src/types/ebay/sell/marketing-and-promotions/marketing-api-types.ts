@@ -331,3 +331,21 @@ export interface DeleteAdsByInventoryReferenceRequest {
 export interface BulkDeleteAdsByInventoryReferenceRequest {
   requests?: DeleteAdsByInventoryReferenceRequest[];
 }
+
+export interface UpdateAdStatusRequest {
+  adId?: string;
+  adStatus?: string;
+}
+
+export interface BulkUpdateAdStatusRequest {
+  requests?: UpdateAdStatusRequest[];
+}
+
+export interface UpdateAdStatusByListingIdRequest {
+  listingId?: string;
+  adStatus?: string;
+}
+
+export interface BulkUpdateAdStatusByListingIdRequest {
+  requests?: UpdateAdStatusByListingIdRequest[];
+}

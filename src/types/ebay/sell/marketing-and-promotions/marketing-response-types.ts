@@ -1,9 +1,10 @@
+import type { Alert } from "../../global/global-ebay-types.js";
 import type {
   CampaignBudgetRequest,
+  CampaignCriterion,
   FundingStrategy,
   ItemPromotion,
-} from './marketing-api-types.js';
-import type { Alert } from '../../global/global-ebay-types.js';
+} from "./marketing-api-types.js";
 
 /**
  * Error container
@@ -386,4 +387,37 @@ export interface UpdateAdsByInventoryReferenceResponse {
 
 export interface BulkUpdateAdsByInventoryReferenceResponse {
   responses?: UpdateAdsByInventoryReferenceResponse[];
+}
+
+export interface AdUpdateResponse {
+  adId?: string;
+  errors?: Error[];
+  listingId?: string;
+  statusCode?: number;
+}
+
+export interface BulkAdUpdateResponse {
+  responses?: AdUpdateResponse[];
+}
+
+export interface AdStatusUpdateResponse {
+  adId?: string;
+  errors?: Error[];
+  listingId?: string;
+  statusCode?: number;
+}
+
+export interface BulkAdUpdateStatusResponse {
+  responses?: AdStatusUpdateResponse[];
+}
+
+export interface AdStatusUpdateByListingIdResponse {
+  adId?: string;
+  errors?: Error[];
+  listingId?: string;
+  statusCode?: number;
+}
+
+export interface BulkAdUpdateStatusByListingIdResponse {
+  responses?: AdStatusUpdateByListingIdResponse[];
 }
