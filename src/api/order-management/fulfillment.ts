@@ -1,17 +1,13 @@
-import type {
-  IssueRefundRequest,
-  ShippingFulfillmentDetails,
-} from '../../types/ebay/sell/order-management/fulfillment-api-types.js';
-import type {
-  Order,
-  OrderSearchPagedCollection,
-} from '../../types/ebay/sell/order-management/get-orders-response.js';
-import type {
-  Refund,
-  ShippingFulfillment,
-  ShippingFulfillmentPagedCollection,
-} from '../../types/ebay/sell/order-management/shipping-fulfillment-response.js';
+import type { components } from '../../types/openapi-schemas/sell_fulfillment_v1_oas3.js';
 import { EbayApiClient } from '../client.js';
+
+type IssueRefundRequest = components["schemas"]["IssueRefundRequest"];
+type ShippingFulfillmentDetails = components["schemas"]["ShippingFulfillmentDetails"];
+type Order = components["schemas"]["Order"];
+type OrderSearchPagedCollection = components["schemas"]["OrderSearchPagedCollection"];
+type Refund = components["schemas"]["Refund"];
+type ShippingFulfillment = components["schemas"]["ShippingFulfillment"];
+type ShippingFulfillmentPagedCollection = components["schemas"]["ShippingFulfillmentPagedCollection"];
 
 /**
  * Fulfillment API - Order processing and shipping
