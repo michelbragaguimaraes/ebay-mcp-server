@@ -1,5 +1,15 @@
-import type { AcceptPaymentDisputeRequest, ContestPaymentDisputeRequest, DisputeSummaryResponse, PaymentDispute, PaymentDisputeActivityHistory } from "../../types/ebay/sell/order-management/dispute-types.js";
+import type { components } from "../../types/openapi-schemas/sell_fulfillment_v1_oas3.js";
 import type { EbayApiClient } from "../client.js";
+
+type AcceptPaymentDisputeRequest = components["schemas"]["AcceptPaymentDisputeRequest"];
+type ContestPaymentDisputeRequest = components["schemas"]["ContestPaymentDisputeRequest"];
+type DisputeSummaryResponse = components["schemas"]["DisputeSummaryResponse"];
+type PaymentDispute = components["schemas"]["PaymentDispute"];
+type PaymentDisputeActivityHistory = components["schemas"]["PaymentDisputeActivityHistory"];
+type FileEvidence = components["schemas"]["FileEvidence"];
+type AddEvidencePaymentDisputeRequest = components["schemas"]["AddEvidencePaymentDisputeRequest"];
+type AddEvidencePaymentDisputeResponse = components["schemas"]["AddEvidencePaymentDisputeResponse"];
+type UpdateEvidencePaymentDisputeRequest = components["schemas"]["UpdateEvidencePaymentDisputeRequest"];
 
 /**
  * Dispute API - Manage payment disputes
