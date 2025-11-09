@@ -1,13 +1,13 @@
-import type {
-  EbayOfferDetailsWithKeys,
-  InventoryItem,
-} from '../../types/ebay/sell/listingManagement/inventoryAPI/inventory-api-global-types.js';
-import type { GetInventoryItemResponse } from '../../types/ebay/sell/listingManagement/inventoryAPI/inventory-item/get-inventory-item.js';
-import type { GetInventoryItemsResponse } from '../../types/ebay/sell/listingManagement/inventoryAPI/inventory-item/get-inventory-items.js';
-import type { CreateOfferResponse } from '../../types/ebay/sell/listingManagement/inventoryAPI/offer/create-offer.js';
-import type { GetOffersResponse } from '../../types/ebay/sell/listingManagement/inventoryAPI/offer/get-offers.js';
-import type { PublishResponse } from '../../types/ebay/sell/listingManagement/inventoryAPI/offer/publish-offer.js';
+import type { components } from '../../types/openapi-schemas/sell_inventory_v1_oas3.js';
 import { EbayApiClient } from '../client.js';
+
+type EbayOfferDetailsWithKeys = components["schemas"]["EbayOfferDetailsWithKeys"];
+type InventoryItem = components["schemas"]["InventoryItem"];
+type GetInventoryItemResponse = components["schemas"]["InventoryItemWithSkuLocaleGroupid"];
+type GetInventoryItemsResponse = components["schemas"]["InventoryItems"];
+type CreateOfferResponse = components["schemas"]["OfferResponse"];
+type GetOffersResponse = components["schemas"]["Offers"];
+type PublishResponse = components["schemas"]["PublishResponse"];
 
 /**
  * Inventory API - Manage listings and inventory

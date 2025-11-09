@@ -1,37 +1,31 @@
-import type { CustomPolicyCreateRequest } from "../../types/ebay/sell/accountManagement/accountV1/custom-policy/create-custom-policy.js";
-import type { CustomPolicyResponse } from "../../types/ebay/sell/accountManagement/accountV1/custom-policy/get-custom-policies.js";
-import type { CustomPolicy } from "../../types/ebay/sell/accountManagement/accountV1/custom-policy/get-custom-policy.js";
-import type {
-  FulfillmentPolicyRequest,
-  SetFulfillmentPolicyResponse,
-} from "../../types/ebay/sell/accountManagement/accountV1/fulfillment-policy/create-fulfuillment-policy.js";
-import type { FulfillmentPolicyResponse } from "../../types/ebay/sell/accountManagement/accountV1/fulfillment-policy/get-fulfillment-policies.js";
-import type { FulfillmentPolicy } from "../../types/ebay/sell/accountManagement/accountV1/fulfillment-policy/get-fulfuillment-policy.js";
-import type { KycResponse } from "../../types/ebay/sell/accountManagement/accountV1/kyc/get-kyc.js";
-import type {
-  PaymentPolicyRequest,
-  SetPaymentPolicyResponse,
-} from "../../types/ebay/sell/accountManagement/accountV1/payment-policy/create-payment-policy.js";
-import type { GetPaymentPoliciesResponse } from "../../types/ebay/sell/accountManagement/accountV1/payment-policy/get-payment-policies.js";
-import type { PaymentPolicy } from "../../types/ebay/sell/accountManagement/accountV1/payment-policy/get-payment-policy.js";
-import type { PaymentsProgramResponse } from "../../types/ebay/sell/accountManagement/accountV1/payments-program/get-payments-program.js";
-import type { SellingPrivileges } from "../../types/ebay/sell/accountManagement/accountV1/privilege/get-privileges.js";
-import type { Programs } from "../../types/ebay/sell/accountManagement/accountV1/program/get-opted-in-programs.js";
-import type { OptInToProgramRequest } from "../../types/ebay/sell/accountManagement/accountV1/program/opt-in-to-program.js";
-import type { RateTableResponse } from "../../types/ebay/sell/accountManagement/accountV1/rate-table/get-rate-tables.js";
-import type {
-  ReturnPolicyRequest,
-  SetReturnPolicyResponse,
-} from "../../types/ebay/sell/accountManagement/accountV1/return-policy/create-return-policy.js";
-import type { ReturnPolicyResponse } from "../../types/ebay/sell/accountManagement/accountV1/return-policy/get-return-policies.js";
-import type { ReturnPolicy } from "../../types/ebay/sell/accountManagement/accountV1/return-policy/get-return-policy.js";
-import type { SalesTaxBase } from "../../types/ebay/sell/accountManagement/accountV1/sales-tax/create-or-replace-sales-tax.js";
-import type {
-  SalesTax,
-  SalesTaxes,
-} from "../../types/ebay/sell/accountManagement/accountV1/sales-tax/get-sales-taxes.js";
-import type { SubscriptionResponse } from "../../types/ebay/sell/accountManagement/accountV1/subscription/get-subscription.js";
+import type { components } from "../../types/openapi-schemas/sell_account_v1_oas3.js";
 import type { EbayApiClient } from "../client.js";
+
+type CustomPolicyCreateRequest = components["schemas"]["CustomPolicyCreateRequest"];
+type CustomPolicyResponse = components["schemas"]["CustomPolicyResponse"];
+type CustomPolicy = components["schemas"]["CustomPolicy"];
+type FulfillmentPolicyRequest = components["schemas"]["FulfillmentPolicyRequest"];
+type SetFulfillmentPolicyResponse = components["schemas"]["SetFulfillmentPolicyResponse"];
+type FulfillmentPolicyResponse = components["schemas"]["FulfillmentPolicyResponse"];
+type FulfillmentPolicy = components["schemas"]["FulfillmentPolicy"];
+type KycResponse = components["schemas"]["KycResponse"];
+type PaymentPolicyRequest = components["schemas"]["PaymentPolicyRequest"];
+type SetPaymentPolicyResponse = components["schemas"]["SetPaymentPolicyResponse"];
+type GetPaymentPoliciesResponse = components["schemas"]["PaymentPolicyResponse"];
+type PaymentPolicy = components["schemas"]["PaymentPolicy"];
+type PaymentsProgramResponse = components["schemas"]["PaymentsProgramResponse"];
+type SellingPrivileges = components["schemas"]["SellingPrivileges"];
+type Programs = components["schemas"]["Programs"];
+type OptInToProgramRequest = components["schemas"]["Program"];
+type RateTableResponse = components["schemas"]["RateTableResponse"];
+type ReturnPolicyRequest = components["schemas"]["ReturnPolicyRequest"];
+type SetReturnPolicyResponse = components["schemas"]["SetReturnPolicyResponse"];
+type ReturnPolicyResponse = components["schemas"]["ReturnPolicyResponse"];
+type ReturnPolicy = components["schemas"]["ReturnPolicy"];
+type SalesTaxBase = components["schemas"]["SalesTaxBase"];
+type SalesTax = components["schemas"]["SalesTax"];
+type SalesTaxes = components["schemas"]["SalesTaxes"];
+type SubscriptionResponse = components["schemas"]["SubscriptionResponse"];
 
 /**
  * Account API - Seller account configuration, policies, programs
