@@ -1,4 +1,4 @@
-import type { components } from '../../types/openapi-schemas/sell_fulfillment_v1_oas3.js';
+import type { components } from '../../types/sell_fulfillment_v1_oas3.js';
 import { EbayApiClient } from '../client.js';
 
 type IssueRefundRequest = components["schemas"]["IssueRefundRequest"];
@@ -16,7 +16,7 @@ type ShippingFulfillmentPagedCollection = components["schemas"]["ShippingFulfill
 export class FulfillmentApi {
   private readonly basePath = '/sell/fulfillment/v1';
 
-  constructor(private client: EbayApiClient) {}
+  constructor(private client: EbayApiClient) { }
 
   /**
    * Get orders for the seller

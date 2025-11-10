@@ -1,6 +1,6 @@
 import type { EbaySellerApi } from "../api/index.js";
 import { getOAuthAuthorizationUrl } from "../config/environment.js";
-import createTokenTemplateFile from "./token-template.js";
+import { createTokenTemplateFileExecute } from "./token-template.js";
 import {
   accountTools,
   analyticsTools,
@@ -192,7 +192,7 @@ export async function executeTool(
     }
 
     case "create_token_template_file":
-      return createTokenTemplateFile.execute(args);
+      return await createTokenTemplateFile.execute(args);
 
 
     // Account Management

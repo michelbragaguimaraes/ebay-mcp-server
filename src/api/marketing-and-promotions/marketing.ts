@@ -1,20 +1,5 @@
-import type {
-  BulkDeleteKeywordsRequest,
-  CloneAdGroupRequest,
-  CloneAdRequest,
-  ItemPromotionRequest,
-  SuggestKeywordsRequest,
-  TargetingRequest,
-  UpdateAdGroupBidsRequest,
-  UpdateAdGroupKeywordsRequest,
-  UpdateBidRequest,
-} from "../../types/ebay/sell/marketing-and-promotions/marketing-api-types.js";
-import type {
-  BulkDeleteKeywordsResponse,
-  CreateKeywordResponse,
-  TargetingResponse,
-} from "../../types/ebay/sell/marketing-and-promotions/marketing-response-types.js";
-import type { components } from "../../types/openapi-schemas/sell_marketing_v1_oas3.js";
+
+import type { components } from "../../types/sell_marketing_v1_oas3.js";
 import type { EbayApiClient } from "../client.js";
 
 type AdGroupRequest = components["schemas"]["CreateAdGroupRequest"];

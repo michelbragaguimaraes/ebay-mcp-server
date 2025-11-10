@@ -7,7 +7,7 @@ import { EbayApiClient } from '../client.js';
 export class AnalyticsApi {
   private readonly basePath = '/sell/analytics/v1';
 
-  constructor(private client: EbayApiClient) {}
+  constructor(private client: EbayApiClient) { }
 
   /**
    * Get traffic report for listings

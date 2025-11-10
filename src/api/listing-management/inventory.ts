@@ -1,4 +1,4 @@
-import type { components } from '../../types/openapi-schemas/sell_inventory_v1_oas3.js';
+import type { components } from '../../types/sell_inventory_v1_oas3.js';
 import { EbayApiClient } from '../client.js';
 
 type EbayOfferDetailsWithKeys = components["schemas"]["EbayOfferDetailsWithKeys"];
@@ -16,7 +16,7 @@ type PublishResponse = components["schemas"]["PublishResponse"];
 export class InventoryApi {
   private readonly basePath = '/sell/inventory/v1';
 
-  constructor(private client: EbayApiClient) {}
+  constructor(private client: EbayApiClient) { }
 
   /**
    * Get all inventory items

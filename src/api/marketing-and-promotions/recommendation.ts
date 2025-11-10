@@ -1,4 +1,4 @@
-import type { components } from "../../types/openapi-schemas/sell_recommendation_v1_oas3.js";
+import type { components } from "../../types/sell_recommendation_v1_oas3.js";
 import type { EbayApiClient } from "../client.js";
 
 type PagedListingRecommendationCollection =
