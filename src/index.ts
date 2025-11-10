@@ -10,7 +10,7 @@ import { getToolDefinitions, executeTool } from "./tools/index.js";
 
 /**
  * eBay API MCP Server
- * Provides access to eBay Sell APIs through Model Context Protocol
+ * Provides access to eBay APIs through Model Context Protocol
  */
 class EbayMcpServer {
   private server: McpServer;

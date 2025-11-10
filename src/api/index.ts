@@ -20,7 +20,7 @@ import { TranslationApi } from "./other/translation.js";
 import { VeroApi } from "./other/vero.js";
 
 /**
- * Main API facade providing access to all eBay Sell APIs
+ * Main API facade providing access to all eBay APIs
  */
 export class EbaySellerApi {
   private client: EbayApiClient;
