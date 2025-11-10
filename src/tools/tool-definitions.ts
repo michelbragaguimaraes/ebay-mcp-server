@@ -1173,34 +1173,67 @@ export const fulfillmentTools: ToolDefinition[] = [
         },
         refundData: {
           type: 'object',
-          description: 'Refund details including amount, reason, and optional comment. Required fields: reasonForRefund (e.g., "BUYER_CANCEL", "OUT_OF_STOCK", "FOUND_CHEAPER_PRICE"), refundItems (array of line item IDs and refund amounts)',
+          description: 'Refund details including amount, reason, and optional comment. Must include reasonForRefund (required), and either refundItems (for line item refunds) OR orderLevelRefundAmount (for full order refunds).',
           properties: {
             reasonForRefund: {
               type: 'string',
-              description: 'Reason code: BUYER_CANCEL, OUT_OF_STOCK, FOUND_CHEAPER_PRICE, INCORRECT_PRICE, ITEM_DAMAGED, ITEM_DEFECTIVE, LOST_IN_TRANSIT, MUTUALLY_AGREED, SELLER_CANCEL'
+              description: 'REQUIRED. Reason code: BUYER_CANCEL, OUT_OF_STOCK, FOUND_CHEAPER_PRICE, INCORRECT_PRICE, ITEM_DAMAGED, ITEM_DEFECTIVE, LOST_IN_TRANSIT, MUTUALLY_AGREED, SELLER_CANCEL'
             },
             comment: {
               type: 'string',
-              description: 'Optional comment to buyer about the refund'
+              description: 'Optional comment to buyer about the refund (max 100 characters)'
             },
             refundItems: {
               type: 'array',
-              description: 'Array of items to refund with line item IDs and amounts',
+              description: 'Array of individual line items to refund. Use this for partial refunds of specific items. Each item requires lineItemId and refundAmount.',
               items: {
                 type: 'object',
                 properties: {
-                  lineItemId: { type: 'string' },
+                  lineItemId: {
+                    type: 'string',
+                    description: 'The unique identifier of the order line item to refund'
+                  },
                   refundAmount: {
                     type: 'object',
+                    description: 'The amount to refund for this line item',
                     properties: {
-                      value: { type: 'string' },
-                      currency: { type: 'string' }
+                      value: {
+                        type: 'string',
+                        description: 'The monetary amount (e.g., "25.99")'
+                      },
+                      currency: {
+                        type: 'string',
+                        description: 'Three-letter ISO 4217 currency code (e.g., "USD")'
+                      }
+                    }
+                  },
+                  legacyReference: {
+                    type: 'object',
+                    description: 'Optional legacy item ID/transaction ID pair for identifying the line item',
+                    properties: {
+                      legacyItemId: { type: 'string' },
+                      legacyTransactionId: { type: 'string' }
                     }
                   }
                 }
               }
+            },
+            orderLevelRefundAmount: {
+              type: 'object',
+              description: 'Use this to refund the entire order amount. Alternative to refundItems. Include value and currency.',
+              properties: {
+                value: {
+                  type: 'string',
+                  description: 'The monetary amount (e.g., "99.99")'
+                },
+                currency: {
+                  type: 'string',
+                  description: 'Three-letter ISO 4217 currency code (e.g., "USD")'
+                }
+              }
             }
-          }
+          },
+          required: ['reasonForRefund']
         }
       },
       required: ['orderId', 'refundData']
@@ -1330,15 +1363,25 @@ export const marketingTools: ToolDefinition[] = [
             },
             fundingStrategy: {
               type: 'object',
-              description: 'Budget settings for the campaign'
+              description: 'Budget settings for the campaign. Includes fundingModel (COST_PER_SALE or COST_PER_CLICK) and bidPercentage.',
+              properties: {
+                fundingModel: {
+                  type: 'string',
+                  description: 'The funding model for the campaign. Valid values: "COST_PER_SALE" (CPS) or "COST_PER_CLICK" (CPC)'
+                },
+                bidPercentage: {
+                  type: 'string',
+                  description: 'The bid percentage for CPS campaigns (e.g., "10.5" for 10.5%). Required for COST_PER_SALE funding model.'
+                }
+              }
             },
             startDate: {
               type: 'string',
-              description: 'Campaign start date (ISO 8601 format)'
+              description: 'Campaign start date in UTC format (yyyy-MM-ddThh:mm:ssZ, e.g., "2025-01-15T00:00:00Z")'
             },
             endDate: {
               type: 'string',
-              description: 'Campaign end date (ISO 8601 format)'
+              description: 'Campaign end date in UTC format (yyyy-MM-ddThh:mm:ssZ, e.g., "2025-12-31T23:59:59Z")'
             }
           }
         }
@@ -1988,30 +2031,57 @@ export const communicationTools: ToolDefinition[] = [
       properties: {
         messageData: {
           type: 'object',
-          description: 'Message details including recipient, subject, and content',
+          description: 'Message details including recipient and content. Must include messageText (required), and either conversationId (for replies) OR otherPartyUsername (for new messages).',
           properties: {
-            conversation_id: {
+            conversationId: {
               type: 'string',
-              description: 'Optional conversation ID to reply to an existing thread'
+              description: 'Optional conversation ID to reply to an existing thread. Use getConversations to retrieve conversation IDs. Required if replying to existing conversation.'
             },
-            order_id: {
+            messageText: {
               type: 'string',
-              description: 'Optional order ID to associate message with a transaction'
+              description: 'REQUIRED. The text of the message to send (max 2000 characters).'
             },
-            buyer_username: {
+            otherPartyUsername: {
               type: 'string',
-              description: 'eBay username of the buyer'
+              description: 'eBay username of the other party (buyer or seller). Required when starting a new conversation.'
             },
-            subject: {
-              type: 'string',
-              description: 'Message subject line'
+            emailCopyToSender: {
+              type: 'boolean',
+              description: 'If true, a copy of the message will be emailed to the sender.'
             },
-            message_content: {
-              type: 'string',
-              description: 'The message text to send to the buyer'
+            reference: {
+              type: 'object',
+              description: 'Optional reference to associate message with a listing or order.',
+              properties: {
+                referenceId: {
+                  type: 'string',
+                  description: 'The ID of the listing or order to reference (e.g., item ID or order ID)'
+                },
+                referenceType: {
+                  type: 'string',
+                  description: 'Type of reference. Valid values: "LISTING" (for item listings) or "ORDER" (for orders)'
+                }
+              }
+            },
+            messageMedia: {
+              type: 'array',
+              description: 'Optional array of media attachments (max 5 per message)',
+              items: {
+                type: 'object',
+                properties: {
+                  mediaUrl: {
+                    type: 'string',
+                    description: 'URL of the media to attach'
+                  },
+                  mediaType: {
+                    type: 'string',
+                    description: 'MIME type of the media (e.g., "image/jpeg")'
+                  }
+                }
+              }
             }
           },
-          required: ['message_content']
+          required: ['messageText']
         }
       },
       required: ['messageData']
