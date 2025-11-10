@@ -31,13 +31,19 @@ This server supports two operation modes:
 - **eBay Developer account** with API credentials from the [eBay Developer Portal](https://developer.ebay.com/my/keys)
 - **(Optional) OAuth Authorization Server** for HTTP mode with authorization (e.g., Keycloak, Auth0, Okta)
 
-## Quick Start
+## Installation
 
-### 1. Installation
+### Option 1: NPM Package (Recommended)
+
+```bash
+npm install -g ebay-api-mcp-server
+```
+
+### Option 2: From Source
 
 ```bash
 # Clone the repository
-git clone <repository-url>
+git clone https://github.com/yourusername/ebay-api-mcp-server.git
 cd ebay-api-mcp-server
 
 # Install dependencies
@@ -46,6 +52,14 @@ npm install
 # Build the project
 npm run build
 ```
+
+## Quick Start
+
+### 1. Get eBay API Credentials
+
+1. Create an eBay Developer account at [developer.ebay.com](https://developer.ebay.com/)
+2. Create an application to get your Client ID and Client Secret
+3. Choose between Sandbox (testing) or Production environment
 
 ### 2. Configuration
 
@@ -77,6 +91,35 @@ npm run dev
 npm start
 ```
 
+The server will output "eBay API MCP Server running on stdio" to indicate it's ready.
+
+### 4. Quick Start Example
+
+Once the server is running, you can use it through any MCP-compatible AI assistant (like Claude Desktop). Here's a typical workflow:
+
+**Example 1: List Your Inventory**
+```
+AI: Use ebay_get_inventory_items to retrieve all inventory items
+Server Response: Returns array of inventory items with SKU, quantity, pricing
+```
+
+**Example 2: Create a New Listing**
+```
+AI: 1. Use ebay_create_inventory_item with SKU "WIDGET-001" and product details
+    2. Use ebay_create_offer with pricing and policy IDs
+    3. Use ebay_publish_offer to make it live on eBay
+Server Response: Returns offer ID and listing URL
+```
+
+**Example 3: Process an Order**
+```
+AI: 1. Use ebay_get_orders to retrieve pending orders
+    2. Use ebay_create_shipping_fulfillment with tracking number
+Server Response: Returns fulfillment ID and shipping confirmation
+```
+
+For detailed usage of specific tools, see the "Available Tools" section below.
+
 #### HTTP Mode with OAuth (Remote Multi-User)
 
 See [OAUTH-SETUP.md](./OAUTH-SETUP.md) for detailed OAuth configuration instructions.
@@ -104,6 +147,65 @@ cp .env.example .env
 # Edit .env with your eBay and OAuth credentials
 npm run dev:http
 ```
+
+## Core Concepts
+
+### What is MCP (Model Context Protocol)?
+
+MCP is a standardized protocol that allows AI assistants to interact with external tools and services. This server implements MCP to give AI assistants access to eBay's seller APIs.
+
+### Key Components
+
+1. **MCP Server** - This application acts as a bridge between AI assistants and eBay APIs
+2. **Tools** - Individual functions exposed to AI assistants (e.g., `ebay_get_orders`, `ebay_create_offer`)
+3. **OAuth Authentication** - Secure token-based authentication for accessing eBay APIs
+4. **Transport Modes** - Two ways to run the server:
+   - **STDIO** (default): For local desktop use with apps like Claude Desktop
+   - **HTTP with OAuth 2.1**: For remote, multi-user deployments
+
+### How It Works
+
+```
+┌─────────────┐         ┌──────────────┐         ┌─────────────┐
+│ AI Assistant│ ◄──────►│  MCP Server  │ ◄──────►│  eBay API   │
+│  (Claude)   │   MCP   │  (This app)  │  OAuth  │             │
+└─────────────┘         └──────────────┘         └─────────────┘
+```
+
+1. AI assistant sends MCP tool requests (e.g., "get my orders")
+2. MCP server validates and forwards requests to eBay APIs
+3. eBay processes the request and returns data
+4. MCP server formats the response for the AI assistant
+5. AI assistant uses the data to help you
+
+### Authentication Flow
+
+This server supports two authentication modes:
+
+**User Tokens (Recommended):**
+- Higher rate limits (10,000-50,000 requests/day)
+- Full access to all seller operations
+- Requires OAuth user authorization
+- Tokens automatically refresh
+
+**Client Credentials (Fallback):**
+- Lower rate limits (1,000 requests/day)
+- Limited to app-level operations
+- No user authorization needed
+- Used automatically when user tokens unavailable
+
+### API Categories
+
+The server organizes eBay's APIs into logical categories:
+
+- **Account**: Seller policies, payment settings, tax configuration
+- **Inventory**: Manage products, offers, and locations
+- **Fulfillment**: Process orders, create shipments, issue refunds
+- **Marketing**: Campaigns, promotions, and recommendations
+- **Analytics**: Sales reports, traffic data, seller metrics
+- **Metadata**: Category policies, compatibility rules
+- **Taxonomy**: Browse eBay's category tree
+- **Communication**: Messages, negotiations, feedback
 
 ## Available Tools
 

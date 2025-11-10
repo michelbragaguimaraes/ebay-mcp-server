@@ -8,6 +8,7 @@ pnpm-lock.yaml
 build/
 dist/
 *.tsbuildinfo
+*.js
 
 # Environment variables
 .env
@@ -16,6 +17,8 @@ dist/
 
 # OAuth tokens (sensitive)
 .ebay-tokens.json
+.ebay-mcp-tokens.json
+
 
 # Logs
 logs/
@@ -44,6 +47,7 @@ coverage/
 tmp/
 temp/
 
+# General
 CLAUDE.md
 GEMINI.md
 .claude
