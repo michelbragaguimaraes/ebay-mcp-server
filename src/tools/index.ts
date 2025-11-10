@@ -1,4 +1,5 @@
 import type { EbaySellerApi } from "../api/index.js";
+import { getOAuthAuthorizationUrl } from "../config/environment.js";
 import {
   accountTools,
   analyticsTools,
@@ -95,6 +96,41 @@ export async function executeTool(
             text: JSON.stringify(result),
           },
         ],
+      };
+    }
+
+    case "ebay_get_oauth_url": {
+      // Need to get config from the api client to access clientId and environment
+      // Since we don't have direct access, we'll need to get from env
+      const clientId = process.env.EBAY_CLIENT_ID || "";
+      const environment = (process.env.EBAY_ENVIRONMENT || "sandbox") as
+        | "production"
+        | "sandbox";
+
+      const redirectUri = args.redirectUri as string;
+      const scopes = args.scopes as string[] | undefined;
+      const state = args.state as string | undefined;
+
+      if (!clientId) {
+        throw new Error(
+          "EBAY_CLIENT_ID environment variable is required to generate OAuth URL",
+        );
+      }
+
+      const authUrl = getOAuthAuthorizationUrl(
+        clientId,
+        redirectUri,
+        environment,
+        scopes,
+        state,
+      );
+
+      return {
+        authorizationUrl: authUrl,
+        instructions:
+          "Open this URL in a browser to authorize the application. After authorization, you will be redirected to your redirect URI with an authorization code that can be exchanged for an access token.",
+        environment,
+        scopes: scopes || "default (all Sell API scopes)",
       };
     }
 

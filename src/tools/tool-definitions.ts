@@ -39,6 +39,31 @@ export const chatGptTools: ToolDefinition[] = [
       },
       required: ['id']
     }
+  },
+  {
+    name: 'ebay_get_oauth_url',
+    description: 'Generate the eBay OAuth authorization URL for user consent. The user should open this URL in a browser to grant permissions to the application. This supports the OAuth 2.0 Authorization Code grant flow.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        redirectUri: {
+          type: 'string',
+          description: 'The redirect URI registered with your eBay application (RuName)'
+        },
+        scopes: {
+          type: 'array',
+          description: 'Optional array of OAuth scopes. If not provided, uses default scopes for all Sell APIs',
+          items: {
+            type: 'string'
+          }
+        },
+        state: {
+          type: 'string',
+          description: 'Optional state parameter for CSRF protection'
+        }
+      },
+      required: ['redirectUri']
+    }
   }
 ];
 
