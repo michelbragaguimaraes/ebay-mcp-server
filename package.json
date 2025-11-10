@@ -1,6 +1,6 @@
 {
 	"name": "ebay-api-mcp-server",
-	"version": "0.1.0",
+	"version": "1.0.0",
 	"description": "MCP server for eBay APIs - provides access to eBay developer functionality through MCP (Model Context Protocol)",
 	"type": "module",
 	"main": "build/index.js",
@@ -24,9 +24,17 @@
 		"ebay",
 		"ebay-api",
 		"model-context-protocol",
-		"ai-tools"
+		"ai-tools",
+		"ai",
+		"llm",
+		"mcp",
+		"documentation",
+		"api", 
+		"ebay", 
+		"server", 
+		"backend"
 	],
-	"author": "",
+	"author": "Yosef Hayim Sabag",
 	"license": "MIT",
 	"files": [
 		"build",

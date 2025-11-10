@@ -24,10 +24,10 @@ export const chatGptTools: ToolDefinition[] = [
   },
   {
     name: 'ebay_get_oauth_url',
-    description: 'Generate the eBay OAuth authorization URL for user consent. The user should open this URL in a browser to grant permissions to the application. This supports the OAuth 2.0 Authorization Code grant flow. The redirect URI can be provided as a parameter or will be read from EBAY_REDIRECT_URI environment variable.',
+    description: 'Generate the eBay OAuth authorization URL for user consent. The user should open this URL in a browser to grant permissions to the application. This supports the OAuth 2.0 Authorization Code grant flow. The redirect URI can be provided as a parameter or will be read from EBAY_REDIRECT_URI environment variable.\n\nIMPORTANT: eBay has different OAuth scopes available for production vs sandbox environments:\n- Sandbox includes additional Buy API scopes (e.g., buy.order.readonly, buy.guest.order, buy.shopping.cart) and extended Identity scopes\n- Production includes sell.edelivery, commerce.message (explicit), and commerce.shipping scopes not available in sandbox\n- If you provide custom scopes, they will be validated against the current environment (set via EBAY_ENVIRONMENT). Any scopes not valid for the environment will generate warnings.',
     inputSchema: {
       redirectUri: z.string().optional().describe('Optional redirect URI registered with your eBay application (RuName). If not provided, will use EBAY_REDIRECT_URI from .env file.'),
-      scopes: z.array(z.string()).optional().describe('Optional array of OAuth scopes. If not provided, uses default scopes for all Sell APIs'),
+      scopes: z.array(z.string()).optional().describe('Optional array of OAuth scopes. If not provided, uses environment-specific default scopes (production or sandbox based on EBAY_ENVIRONMENT). Custom scopes will be validated against the environment.'),
       state: z.string().optional().describe('Optional state parameter for CSRF protection')
     }
   },

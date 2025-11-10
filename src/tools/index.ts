@@ -1,5 +1,5 @@
 import type { EbaySellerApi } from "../api/index.js";
-import { getOAuthAuthorizationUrl } from "../config/environment.js";
+import { getOAuthAuthorizationUrl, validateScopes } from "../config/environment.js";
 import { createTokenTemplateFileExecute } from "./token-template.js";
 import {
   accountTools,
@@ -168,15 +168,25 @@ export async function executeTool(
         );
       }
 
+      // Validate scopes if custom scopes are provided
+      let scopeWarnings: string[] = [];
+      let validatedScopes = scopes;
+
+      if (scopes && scopes.length > 0) {
+        const validation = validateScopes(scopes, environment);
+        scopeWarnings = validation.warnings;
+        validatedScopes = validation.validScopes;
+      }
+
       const authUrl = getOAuthAuthorizationUrl(
         clientId,
         redirectUri,
         environment,
-        scopes,
+        validatedScopes,
         state,
       );
 
-      return {
+      const result: Record<string, unknown> = {
         authorizationUrl: authUrl,
         redirectUri,
         instructions:
@@ -184,6 +194,13 @@ export async function executeTool(
         environment,
         scopes: scopes || "default (all Sell API scopes)",
       };
+
+      // Include warnings if any scopes are invalid for the environment
+      if (scopeWarnings.length > 0) {
+        result.warnings = scopeWarnings;
+      }
+
+      return result;
     }
 
     case "ebay_set_user_tokens": {

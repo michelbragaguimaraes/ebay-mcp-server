@@ -1,7 +1,115 @@
 import { config } from "dotenv";
+import { readFileSync } from "fs";
+import { fileURLToPath } from "url";
+import { dirname, join } from "path";
 import type { EbayConfig } from "../types/ebay.js";
 
 config();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// Type for scope JSON structure
+interface ScopeDefinition {
+  Scope: string;
+  Description: string;
+}
+
+/**
+ * Load and parse production scopes from JSON file
+ */
+function getProductionScopes(): string[] {
+  try {
+    const scopesPath = join(__dirname, "../../docs/auth/production_scopes.json");
+    const scopesData = readFileSync(scopesPath, "utf-8");
+    const scopes: ScopeDefinition[] = JSON.parse(scopesData);
+
+    // Filter out empty objects and extract unique scope strings
+    const uniqueScopes = new Set<string>();
+    scopes.forEach((item) => {
+      if (item.Scope) {
+        uniqueScopes.add(item.Scope);
+      }
+    });
+
+    return Array.from(uniqueScopes);
+  } catch (error) {
+    console.error("Failed to load production scopes:", error);
+    // Return a minimal set of core scopes as fallback
+    return ["https://api.ebay.com/oauth/api_scope"];
+  }
+}
+
+/**
+ * Load and parse sandbox scopes from JSON file
+ */
+function getSandboxScopes(): string[] {
+  try {
+    const scopesPath = join(__dirname, "../../docs/auth/sandbox_scopes.json");
+    const scopesData = readFileSync(scopesPath, "utf-8");
+    const scopes: ScopeDefinition[] = JSON.parse(scopesData);
+
+    // Filter out empty objects and extract unique scope strings
+    const uniqueScopes = new Set<string>();
+    scopes.forEach((item) => {
+      if (item.Scope) {
+        uniqueScopes.add(item.Scope);
+      }
+    });
+
+    return Array.from(uniqueScopes);
+  } catch (error) {
+    console.error("Failed to load sandbox scopes:", error);
+    // Return a minimal set of core scopes as fallback
+    return ["https://api.ebay.com/oauth/api_scope"];
+  }
+}
+
+/**
+ * Get default scopes for the specified environment
+ */
+export function getDefaultScopes(environment: "production" | "sandbox"): string[] {
+  return environment === "production"
+    ? getProductionScopes()
+    : getSandboxScopes();
+}
+
+/**
+ * Validate scopes against environment and return warnings for invalid scopes
+ */
+export function validateScopes(
+  scopes: string[],
+  environment: "production" | "sandbox"
+): { warnings: string[]; validScopes: string[] } {
+  const validScopes = getDefaultScopes(environment);
+  const validScopeSet = new Set(validScopes);
+  const warnings: string[] = [];
+  const requestedValidScopes: string[] = [];
+
+  scopes.forEach((scope) => {
+    if (validScopeSet.has(scope)) {
+      requestedValidScopes.push(scope);
+    } else {
+      // Check if this is a scope for the other environment
+      const otherEnvironment = environment === "production" ? "sandbox" : "production";
+      const otherScopes = getDefaultScopes(otherEnvironment);
+
+      if (otherScopes.includes(scope)) {
+        warnings.push(
+          `Scope "${scope}" is only available in ${otherEnvironment} environment, not in ${environment}. This scope will be requested but may be rejected by eBay.`
+        );
+      } else {
+        warnings.push(
+          `Scope "${scope}" is not recognized for ${environment} environment. This scope will be requested but may be rejected by eBay.`
+        );
+      }
+      // Still include it in case it's a new scope not in our JSON files
+      requestedValidScopes.push(scope);
+    }
+  });
+
+  return { warnings, validScopes: requestedValidScopes };
+}
 
 export function getEbayConfig(): EbayConfig {
   const clientId = process.env.EBAY_CLIENT_ID;
@@ -53,43 +161,8 @@ export function getOAuthAuthorizationUrl(
   scopes?: string[],
   state?: string,
 ): string {
-  // Default scopes for eBay Sell APIs
-  const defaultScopes = [
-    "https://api.ebay.com/oauth/api_scope",
-    "https://api.ebay.com/oauth/api_scope/buy.order.readonly",
-    "https://api.ebay.com/oauth/api_scope/buy.guest.order",
-    "https://api.ebay.com/oauth/api_scope/sell.marketing.readonly",
-    "https://api.ebay.com/oauth/api_scope/sell.marketing",
-    "https://api.ebay.com/oauth/api_scope/sell.inventory.readonly",
-    "https://api.ebay.com/oauth/api_scope/sell.inventory",
-    "https://api.ebay.com/oauth/api_scope/sell.account.readonly",
-    "https://api.ebay.com/oauth/api_scope/sell.account",
-    "https://api.ebay.com/oauth/api_scope/sell.fulfillment.readonly",
-    "https://api.ebay.com/oauth/api_scope/sell.fulfillment",
-    "https://api.ebay.com/oauth/api_scope/sell.analytics.readonly",
-    "https://api.ebay.com/oauth/api_scope/sell.marketplace.insights.readonly",
-    "https://api.ebay.com/oauth/api_scope/commerce.catalog.readonly",
-    "https://api.ebay.com/oauth/api_scope/buy.shopping.cart",
-    "https://api.ebay.com/oauth/api_scope/buy.offer.auction",
-    "https://api.ebay.com/oauth/api_scope/commerce.identity.readonly",
-    "https://api.ebay.com/oauth/api_scope/commerce.identity.email.readonly",
-    "https://api.ebay.com/oauth/api_scope/commerce.identity.phone.readonly",
-    "https://api.ebay.com/oauth/api_scope/commerce.identity.address.readonly",
-    "https://api.ebay.com/oauth/api_scope/commerce.identity.name.readonly",
-    "https://api.ebay.com/oauth/api_scope/commerce.identity.status.readonly",
-    "https://api.ebay.com/oauth/api_scope/sell.finances",
-    "https://api.ebay.com/oauth/api_scope/sell.payment.dispute",
-    "https://api.ebay.com/oauth/api_scope/sell.item.draft",
-    "https://api.ebay.com/oauth/api_scope/sell.item",
-    "https://api.ebay.com/oauth/api_scope/sell.reputation",
-    "https://api.ebay.com/oauth/api_scope/sell.reputation.readonly",
-    "https://api.ebay.com/oauth/api_scope/commerce.notification.subscription",
-    "https://api.ebay.com/oauth/api_scope/commerce.notification.subscription.readonly",
-    "https://api.ebay.com/oauth/api_scope/sell.stores",
-    "https://api.ebay.com/oauth/api_scope/sell.stores.readonly",
-    "https://api.ebay.com/oauth/api_scope/commerce.vero",
-  ];
-
+  // Use environment-specific scopes if no custom scopes provided
+  const defaultScopes = getDefaultScopes(environment);
   const scopesList = scopes && scopes.length > 0 ? scopes : defaultScopes;
   const scopeParam = scopesList.join(" ");
 
