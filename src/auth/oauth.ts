@@ -1,12 +1,12 @@
 import axios from "axios";
-import { getAuthUrl, getDefaultScopes, validateScopes } from "../config/environment.js";
+import { getAuthUrl, getDefaultScopes, validateScopes } from "@/config/environment.js";
 import type {
   EbayAuthToken,
   EbayConfig,
   EbayUserToken,
   StoredTokenData,
-} from "../types/ebay.js";
-import { TokenStorage } from "./token-storage.js";
+} from "@/types/ebay.js";
+import { TokenStorage } from "@/auth/token-storage.js";
 
 /**
  * Manages eBay OAuth 2.0 authentication

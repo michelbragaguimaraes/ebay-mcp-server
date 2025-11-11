@@ -1,6 +1,6 @@
-import type { EbaySellerApi } from "../api/index.js";
-import { getOAuthAuthorizationUrl, validateScopes } from "../config/environment.js";
-import { createTokenTemplateFileExecute } from "./token-template.js";
+import type { EbaySellerApi } from "@/api/index.js";
+import { getOAuthAuthorizationUrl, validateScopes } from "@/config/environment.js";
+import { createTokenTemplateFileExecute } from "@/tools/token-template.js";
 import {
   accountTools,
   analyticsTools,
@@ -14,7 +14,7 @@ import {
   otherApiTools,
   type ToolDefinition,
   taxonomyTools,
-} from "./tool-definitions.js";
+} from "@/tools/tool-definitions.js";
 
 // Import Zod schemas for input validation
 import {
@@ -23,19 +23,19 @@ import {
   leaveFeedbackForBuyerSchema,
   respondToFeedbackSchema,
   getAwaitingFeedbackSchema,
-} from "../utils/communication/feedback.js";
+} from "@/utils/communication/feedback.js";
 import {
   getConversationsSchema,
   getConversationSchema,
   sendMessageSchema,
   bulkUpdateConversationSchema,
   updateConversationSchema,
-} from "../utils/communication/message.js";
+} from "@/utils/communication/message.js";
 import {
   findEligibleItemsSchema,
   sendOfferToInterestedBuyersSchema,
   getOffersToBuyersSchema,
-} from "../utils/communication/negotiation.js";
+} from "@/utils/communication/negotiation.js";
 import {
   getPublicKeySchema,
   getConfigSchema,
@@ -57,7 +57,7 @@ import {
   createSubscriptionFilterSchema,
   getSubscriptionFilterSchema,
   deleteSubscriptionFilterSchema,
-} from "../utils/communication/notification.js";
+} from "@/utils/communication/notification.js";
 
 export type { ToolDefinition };
 

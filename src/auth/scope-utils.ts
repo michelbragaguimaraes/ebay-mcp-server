@@ -2,7 +2,7 @@
  * Utility functions for working with eBay OAuth scopes
  */
 
-import { getDefaultScopes, validateScopes } from "../config/environment.js";
+import { getDefaultScopes, validateScopes } from "@/config/environment.js";
 
 /**
  * Result of scope validation
