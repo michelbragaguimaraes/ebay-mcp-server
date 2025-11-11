@@ -82,9 +82,9 @@ export class TokenVerifier {
     }
 
     if (this.config.useIntrospection !== false) {
-      return this.verifyViaIntrospection(token);
+      return await this.verifyViaIntrospection(token);
     } else {
-      return this.verifyViaJWT(token);
+      return await this.verifyViaJWT(token);
     }
   }
 

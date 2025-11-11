@@ -47,7 +47,7 @@ export function convertToTimestamp(dateInput: string | Date | number): number {
   // If string, try parsing
   if (typeof dateInput === 'string') {
     // Handle relative time: "in X hours/minutes/seconds"
-    const relativeMatch = dateInput.match(/^in\s+(\d+)\s+(hours?|minutes?|seconds?|days?)$/i);
+    const relativeMatch = /^in\s+(\d+)\s+(hours?|minutes?|seconds?|days?)$/i.exec(dateInput);
     if (relativeMatch) {
       const amount = parseInt(relativeMatch[1], 10);
       const unit = relativeMatch[2].toLowerCase();
@@ -92,7 +92,7 @@ export function calculateExpiry(expiresInSeconds: number, fromTimestamp?: number
  * @param bufferSeconds - Optional buffer time in seconds (default: 60)
  * @returns true if expired (or will expire within buffer time)
  */
-export function isExpired(expiryTimestamp: number, bufferSeconds: number = 60): boolean {
+export function isExpired(expiryTimestamp: number, bufferSeconds = 60): boolean {
   const now = Date.now();
   const buffer = bufferSeconds * 1000;
   return now + buffer >= expiryTimestamp;

@@ -31,11 +31,11 @@ import {
   bulkSalesTaxRequestSchema
 } from './schemas.js';
 
-export type ToolDefinition = {
+export interface ToolDefinition {
   name: string;
   description: string;
   inputSchema: Record<string, z.ZodTypeAny>;
-};
+}
 
 export const chatGptTools: ToolDefinition[] = [
   {

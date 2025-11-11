@@ -368,299 +368,299 @@ export async function executeTool(
 
     // Account Management
     case "ebay_get_custom_policies":
-      return api.account.getCustomPolicies(args.policyTypes as string);
+      return await api.account.getCustomPolicies(args.policyTypes as string);
     case "ebay_get_fulfillment_policies":
-      return api.account.getFulfillmentPolicies(args.marketplaceId as string);
+      return await api.account.getFulfillmentPolicies(args.marketplaceId as string);
     case "ebay_get_payment_policies":
-      return api.account.getPaymentPolicies(args.marketplaceId as string);
+      return await api.account.getPaymentPolicies(args.marketplaceId as string);
     case "ebay_get_return_policies":
-      return api.account.getReturnPolicies(args.marketplaceId as string);
+      return await api.account.getReturnPolicies(args.marketplaceId as string);
 
     // Fulfillment Policy CRUD
     case "ebay_create_fulfillment_policy":
-      return api.account.createFulfillmentPolicy(args.policy as any);
+      return await api.account.createFulfillmentPolicy(args.policy as any);
     case "ebay_get_fulfillment_policy":
-      return api.account.getFulfillmentPolicy(
+      return await api.account.getFulfillmentPolicy(
         args.fulfillmentPolicyId as string,
       );
     case "ebay_get_fulfillment_policy_by_name":
-      return api.account.getFulfillmentPolicyByName(
+      return await api.account.getFulfillmentPolicyByName(
         args.marketplaceId as string,
         args.name as string,
       );
     case "ebay_update_fulfillment_policy":
-      return api.account.updateFulfillmentPolicy(
+      return await api.account.updateFulfillmentPolicy(
         args.fulfillmentPolicyId as string,
         args.policy as any,
       );
     case "ebay_delete_fulfillment_policy":
-      return api.account.deleteFulfillmentPolicy(
+      return await api.account.deleteFulfillmentPolicy(
         args.fulfillmentPolicyId as string,
       );
 
     // Payment Policy CRUD
     case "ebay_create_payment_policy":
-      return api.account.createPaymentPolicy(args.policy as any);
+      return await api.account.createPaymentPolicy(args.policy as any);
     case "ebay_get_payment_policy":
-      return api.account.getPaymentPolicy(args.paymentPolicyId as string);
+      return await api.account.getPaymentPolicy(args.paymentPolicyId as string);
     case "ebay_get_payment_policy_by_name":
-      return api.account.getPaymentPolicyByName(
+      return await api.account.getPaymentPolicyByName(
         args.marketplaceId as string,
         args.name as string,
       );
     case "ebay_update_payment_policy":
-      return api.account.updatePaymentPolicy(
+      return await api.account.updatePaymentPolicy(
         args.paymentPolicyId as string,
         args.policy as any,
       );
     case "ebay_delete_payment_policy":
-      return api.account.deletePaymentPolicy(args.paymentPolicyId as string);
+      return await api.account.deletePaymentPolicy(args.paymentPolicyId as string);
 
     // Return Policy CRUD
     case "ebay_create_return_policy":
-      return api.account.createReturnPolicy(args.policy as any);
+      return await api.account.createReturnPolicy(args.policy as any);
     case "ebay_get_return_policy":
-      return api.account.getReturnPolicy(args.returnPolicyId as string);
+      return await api.account.getReturnPolicy(args.returnPolicyId as string);
     case "ebay_get_return_policy_by_name":
-      return api.account.getReturnPolicyByName(
+      return await api.account.getReturnPolicyByName(
         args.marketplaceId as string,
         args.name as string,
       );
     case "ebay_update_return_policy":
-      return api.account.updateReturnPolicy(
+      return await api.account.updateReturnPolicy(
         args.returnPolicyId as string,
         args.policy as any,
       );
     case "ebay_delete_return_policy":
-      return api.account.deleteReturnPolicy(args.returnPolicyId as string);
+      return await api.account.deleteReturnPolicy(args.returnPolicyId as string);
 
     // Custom Policy CRUD
     case "ebay_create_custom_policy":
-      return api.account.createCustomPolicy(args.policy as any);
+      return await api.account.createCustomPolicy(args.policy as any);
     case "ebay_get_custom_policy":
-      return api.account.getCustomPolicy(args.customPolicyId as string);
+      return await api.account.getCustomPolicy(args.customPolicyId as string);
     case "ebay_update_custom_policy":
-      return api.account.updateCustomPolicy(
+      return await api.account.updateCustomPolicy(
         args.customPolicyId as string,
         args.policy as any,
       );
     case "ebay_delete_custom_policy":
-      return api.account.deleteCustomPolicy(args.customPolicyId as string);
+      return await api.account.deleteCustomPolicy(args.customPolicyId as string);
 
     // KYC, Payments, Programs, Sales Tax, Subscription
     case "ebay_get_kyc":
-      return api.account.getKyc();
+      return await api.account.getKyc();
     case "ebay_opt_in_to_payments_program":
-      return api.account.optInToPaymentsProgram(
+      return await api.account.optInToPaymentsProgram(
         args.marketplaceId as string,
         args.paymentsProgramType as string,
       );
     case "ebay_get_payments_program_status":
-      return api.account.getPaymentsProgramStatus(
+      return await api.account.getPaymentsProgramStatus(
         args.marketplaceId as string,
         args.paymentsProgramType as string,
       );
     case "ebay_get_rate_tables":
-      return api.account.getRateTables();
+      return await api.account.getRateTables();
     case "ebay_create_or_replace_sales_tax":
-      return api.account.createOrReplaceSalesTax(
+      return await api.account.createOrReplaceSalesTax(
         args.countryCode as string,
         args.jurisdictionId as string,
         args.salesTaxBase as any,
       );
     case "ebay_bulk_create_or_replace_sales_tax":
-      return api.account.bulkCreateOrReplaceSalesTax(args.requests as any);
+      return await api.account.bulkCreateOrReplaceSalesTax(args.requests as any);
     case "ebay_delete_sales_tax":
-      return api.account.deleteSalesTax(
+      return await api.account.deleteSalesTax(
         args.countryCode as string,
         args.jurisdictionId as string,
       );
     case "ebay_get_sales_tax":
-      return api.account.getSalesTax(
+      return await api.account.getSalesTax(
         args.countryCode as string,
         args.jurisdictionId as string,
       );
     case "ebay_get_sales_taxes":
-      return api.account.getSalesTaxes(args.countryCode as string);
+      return await api.account.getSalesTaxes(args.countryCode as string);
     case "ebay_get_subscription":
-      return api.account.getSubscription(args.limitType as string);
+      return await api.account.getSubscription(args.limitType as string);
     case "ebay_opt_in_to_program":
-      return api.account.optInToProgram(args.request as any);
+      return await api.account.optInToProgram(args.request as any);
     case "ebay_opt_out_of_program":
-      return api.account.optOutOfProgram(args.request as any);
+      return await api.account.optOutOfProgram(args.request as any);
     case "ebay_get_opted_in_programs":
-      return api.account.getOptedInPrograms();
+      return await api.account.getOptedInPrograms();
 
     // Inventory Management
     case "ebay_get_inventory_items":
-      return api.inventory.getInventoryItems(
+      return await api.inventory.getInventoryItems(
         args.limit as number,
         args.offset as number,
       );
     case "ebay_get_inventory_item":
-      return api.inventory.getInventoryItem(args.sku as string);
+      return await api.inventory.getInventoryItem(args.sku as string);
     case "ebay_create_inventory_item":
-      return api.inventory.createOrReplaceInventoryItem(
+      return await api.inventory.createOrReplaceInventoryItem(
         args.sku as string,
         args.inventoryItem as any,
       );
 
     // Bulk Operations
     case "ebay_bulk_create_or_replace_inventory_item":
-      return api.inventory.bulkCreateOrReplaceInventoryItem(
+      return await api.inventory.bulkCreateOrReplaceInventoryItem(
         args.requests as any,
       );
     case "ebay_bulk_get_inventory_item":
-      return api.inventory.bulkGetInventoryItem(args.requests as any);
+      return await api.inventory.bulkGetInventoryItem(args.requests as any);
     case "ebay_bulk_update_price_quantity":
-      return api.inventory.bulkUpdatePriceQuantity(args.requests as any);
+      return await api.inventory.bulkUpdatePriceQuantity(args.requests as any);
 
     // Product Compatibility
     case "ebay_get_product_compatibility":
-      return api.inventory.getProductCompatibility(args.sku as string);
+      return await api.inventory.getProductCompatibility(args.sku as string);
     case "ebay_create_or_replace_product_compatibility":
-      return api.inventory.createOrReplaceProductCompatibility(
+      return await api.inventory.createOrReplaceProductCompatibility(
         args.sku as string,
         args.compatibility as any,
       );
     case "ebay_delete_product_compatibility":
-      return api.inventory.deleteProductCompatibility(args.sku as string);
+      return await api.inventory.deleteProductCompatibility(args.sku as string);
 
     // Inventory Item Groups
     case "ebay_get_inventory_item_group":
-      return api.inventory.getInventoryItemGroup(
+      return await api.inventory.getInventoryItemGroup(
         args.inventoryItemGroupKey as string,
       );
     case "ebay_create_or_replace_inventory_item_group":
-      return api.inventory.createOrReplaceInventoryItemGroup(
+      return await api.inventory.createOrReplaceInventoryItemGroup(
         args.inventoryItemGroupKey as string,
         args.inventoryItemGroup as any,
       );
     case "ebay_delete_inventory_item_group":
-      return api.inventory.deleteInventoryItemGroup(
+      return await api.inventory.deleteInventoryItemGroup(
         args.inventoryItemGroupKey as string,
       );
 
     // Location Management
     case "ebay_get_inventory_locations":
-      return api.inventory.getInventoryLocations(
+      return await api.inventory.getInventoryLocations(
         args.limit as number,
         args.offset as number,
       );
     case "ebay_get_inventory_location":
-      return api.inventory.getInventoryLocation(
+      return await api.inventory.getInventoryLocation(
         args.merchantLocationKey as string,
       );
     case "ebay_create_or_replace_inventory_location":
-      return api.inventory.createOrReplaceInventoryLocation(
+      return await api.inventory.createOrReplaceInventoryLocation(
         args.merchantLocationKey as string,
         args.location as any,
       );
     case "ebay_delete_inventory_location":
-      return api.inventory.deleteInventoryLocation(
+      return await api.inventory.deleteInventoryLocation(
         args.merchantLocationKey as string,
       );
     case "ebay_disable_inventory_location":
-      return api.inventory.disableInventoryLocation(
+      return await api.inventory.disableInventoryLocation(
         args.merchantLocationKey as string,
       );
     case "ebay_enable_inventory_location":
-      return api.inventory.enableInventoryLocation(
+      return await api.inventory.enableInventoryLocation(
         args.merchantLocationKey as string,
       );
     case "ebay_update_location_details":
-      return api.inventory.updateLocationDetails(
+      return await api.inventory.updateLocationDetails(
         args.merchantLocationKey as string,
         args.locationDetails as any,
       );
 
     // Offer Management
     case "ebay_get_offers":
-      return api.inventory.getOffers(
+      return await api.inventory.getOffers(
         args.sku as string,
         args.marketplaceId as string,
         args.limit as number,
       );
     case "ebay_get_offer":
-      return api.inventory.getOffer(args.offerId as string);
+      return await api.inventory.getOffer(args.offerId as string);
     case "ebay_create_offer":
-      return api.inventory.createOffer(args.offer as any);
+      return await api.inventory.createOffer(args.offer as any);
     case "ebay_update_offer":
-      return api.inventory.updateOffer(
+      return await api.inventory.updateOffer(
         args.offerId as string,
         args.offer as any,
       );
     case "ebay_delete_offer":
-      return api.inventory.deleteOffer(args.offerId as string);
+      return await api.inventory.deleteOffer(args.offerId as string);
     case "ebay_publish_offer":
-      return api.inventory.publishOffer(args.offerId as string);
+      return await api.inventory.publishOffer(args.offerId as string);
     case "ebay_withdraw_offer":
-      return api.inventory.withdrawOffer(args.offerId as string);
+      return await api.inventory.withdrawOffer(args.offerId as string);
     case "ebay_bulk_create_offer":
-      return api.inventory.bulkCreateOffer(args.requests as any);
+      return await api.inventory.bulkCreateOffer(args.requests as any);
     case "ebay_bulk_publish_offer":
-      return api.inventory.bulkPublishOffer(args.requests as any);
+      return await api.inventory.bulkPublishOffer(args.requests as any);
     case "ebay_get_listing_fees":
-      return api.inventory.getListingFees(args.offers as any);
+      return await api.inventory.getListingFees(args.offers as any);
 
     // Listing Migration
     case "ebay_bulk_migrate_listing":
-      return api.inventory.bulkMigrateListing(args.requests as any);
+      return await api.inventory.bulkMigrateListing(args.requests as any);
 
     // Order Management
     case "ebay_get_orders":
-      return api.fulfillment.getOrders(
+      return await api.fulfillment.getOrders(
         args.filter as string,
         args.limit as number,
         args.offset as number,
       );
     case "ebay_get_order":
-      return api.fulfillment.getOrder(args.orderId as string);
+      return await api.fulfillment.getOrder(args.orderId as string);
     case "ebay_create_shipping_fulfillment":
-      return api.fulfillment.createShippingFulfillment(
+      return await api.fulfillment.createShippingFulfillment(
         args.orderId as string,
         args.fulfillment as any,
       );
     case "ebay_issue_refund":
-      return api.fulfillment.issueRefund(
+      return await api.fulfillment.issueRefund(
         args.orderId as string,
         args.refundData as any,
       );
 
     // Marketing
     case "ebay_get_campaigns":
-      return api.marketing.getCampaigns(
+      return await api.marketing.getCampaigns(
         args.campaignStatus as string,
         args.marketplaceId as string,
         args.limit as number,
       );
     case "ebay_get_campaign":
-      return api.marketing.getCampaign(args.campaignId as string);
+      return await api.marketing.getCampaign(args.campaignId as string);
     case "ebay_pause_campaign":
-      return api.marketing.pauseCampaign(args.campaignId as string);
+      return await api.marketing.pauseCampaign(args.campaignId as string);
     case "ebay_resume_campaign":
-      return api.marketing.resumeCampaign(args.campaignId as string);
+      return await api.marketing.resumeCampaign(args.campaignId as string);
     case "ebay_end_campaign":
-      return api.marketing.endCampaign(args.campaignId as string);
+      return await api.marketing.endCampaign(args.campaignId as string);
     case "ebay_update_campaign_identification":
-      return api.marketing.updateCampaignIdentification(
+      return await api.marketing.updateCampaignIdentification(
         args.campaignId as string,
         args.updateData as any,
       );
     case "ebay_clone_campaign":
-      return api.marketing.cloneCampaign(
+      return await api.marketing.cloneCampaign(
         args.campaignId as string,
         args.cloneData as any,
       );
     case "ebay_get_promotions":
-      return api.marketing.getPromotions(
+      return await api.marketing.getPromotions(
         args.marketplaceId as string,
         args.limit as number,
       );
 
     // Recommendation
     case "ebay_find_listing_recommendations":
-      return api.recommendation.findListingRecommendations(
+      return await api.recommendation.findListingRecommendations(
         args.listingIds
           ? { listingIds: args.listingIds as string[] }
           : undefined,
@@ -672,21 +672,21 @@ export async function executeTool(
 
     // Analytics
     case "ebay_get_traffic_report":
-      return api.analytics.getTrafficReport(
+      return await api.analytics.getTrafficReport(
         args.dimension as string,
         args.filter as string,
         args.metric as string,
         args.sort as string,
       );
     case "ebay_find_seller_standards_profiles":
-      return api.analytics.findSellerStandardsProfiles();
+      return await api.analytics.findSellerStandardsProfiles();
     case "ebay_get_seller_standards_profile":
-      return api.analytics.getSellerStandardsProfile(
+      return await api.analytics.getSellerStandardsProfile(
         args.program as string,
         args.cycle as string,
       );
     case "ebay_get_customer_service_metric":
-      return api.analytics.getCustomerServiceMetric(
+      return await api.analytics.getCustomerServiceMetric(
         args.customerServiceMetricType as string,
         args.evaluationType as string,
         args.evaluationMarketplaceId as string,
@@ -694,107 +694,107 @@ export async function executeTool(
 
     // Metadata
     case "ebay_get_automotive_parts_compatibility_policies":
-      return api.metadata.getAutomotivePartsCompatibilityPolicies(
+      return await api.metadata.getAutomotivePartsCompatibilityPolicies(
         args.marketplaceId as string,
         args.filter as string,
       );
     case "ebay_get_category_policies":
-      return api.metadata.getCategoryPolicies(
+      return await api.metadata.getCategoryPolicies(
         args.marketplaceId as string,
         args.filter as string,
       );
     case "ebay_get_extended_producer_responsibility_policies":
-      return api.metadata.getExtendedProducerResponsibilityPolicies(
+      return await api.metadata.getExtendedProducerResponsibilityPolicies(
         args.marketplaceId as string,
         args.filter as string,
       );
     case "ebay_get_hazardous_materials_labels":
-      return api.metadata.getHazardousMaterialsLabels(
+      return await api.metadata.getHazardousMaterialsLabels(
         args.marketplaceId as string,
       );
     case "ebay_get_item_condition_policies":
-      return api.metadata.getItemConditionPolicies(
+      return await api.metadata.getItemConditionPolicies(
         args.marketplaceId as string,
         args.filter as string,
       );
     case "ebay_get_listing_structure_policies":
-      return api.metadata.getListingStructurePolicies(
+      return await api.metadata.getListingStructurePolicies(
         args.marketplaceId as string,
         args.filter as string,
       );
     case "ebay_get_negotiated_price_policies":
-      return api.metadata.getNegotiatedPricePolicies(
+      return await api.metadata.getNegotiatedPricePolicies(
         args.marketplaceId as string,
         args.filter as string,
       );
     case "ebay_get_product_safety_labels":
-      return api.metadata.getProductSafetyLabels(args.marketplaceId as string);
+      return await api.metadata.getProductSafetyLabels(args.marketplaceId as string);
     case "ebay_get_regulatory_policies":
-      return api.metadata.getRegulatoryPolicies(
+      return await api.metadata.getRegulatoryPolicies(
         args.marketplaceId as string,
         args.filter as string,
       );
     case "ebay_get_shipping_cost_type_policies":
-      return api.metadata.getShippingCostTypePolicies(
+      return await api.metadata.getShippingCostTypePolicies(
         args.marketplaceId as string,
         args.filter as string,
       );
     case "ebay_get_classified_ad_policies":
-      return api.metadata.getClassifiedAdPolicies(
+      return await api.metadata.getClassifiedAdPolicies(
         args.marketplaceId as string,
         args.filter as string,
       );
     case "ebay_get_currencies":
-      return api.metadata.getCurrencies(args.marketplaceId as string);
+      return await api.metadata.getCurrencies(args.marketplaceId as string);
     case "ebay_get_listing_type_policies":
-      return api.metadata.getListingTypePolicies(
+      return await api.metadata.getListingTypePolicies(
         args.marketplaceId as string,
         args.filter as string,
       );
     case "ebay_get_motors_listing_policies":
-      return api.metadata.getMotorsListingPolicies(
+      return await api.metadata.getMotorsListingPolicies(
         args.marketplaceId as string,
         args.filter as string,
       );
     case "ebay_get_shipping_policies":
-      return api.metadata.getShippingPolicies(
+      return await api.metadata.getShippingPolicies(
         args.marketplaceId as string,
         args.filter as string,
       );
     case "ebay_get_site_visibility_policies":
-      return api.metadata.getSiteVisibilityPolicies(
+      return await api.metadata.getSiteVisibilityPolicies(
         args.marketplaceId as string,
         args.filter as string,
       );
     case "ebay_get_compatibilities_by_specification":
-      return api.metadata.getCompatibilitiesBySpecification(
+      return await api.metadata.getCompatibilitiesBySpecification(
         args.specification as any,
       );
     case "ebay_get_compatibility_property_names":
-      return api.metadata.getCompatibilityPropertyNames(args.data as any);
+      return await api.metadata.getCompatibilityPropertyNames(args.data as any);
     case "ebay_get_compatibility_property_values":
-      return api.metadata.getCompatibilityPropertyValues(args.data as any);
+      return await api.metadata.getCompatibilityPropertyValues(args.data as any);
     case "ebay_get_multi_compatibility_property_values":
-      return api.metadata.getMultiCompatibilityPropertyValues(args.data as any);
+      return await api.metadata.getMultiCompatibilityPropertyValues(args.data as any);
     case "ebay_get_product_compatibilities":
-      return api.metadata.getProductCompatibilities(args.data as any);
+      return await api.metadata.getProductCompatibilities(args.data as any);
     case "ebay_get_sales_tax_jurisdictions":
-      return api.metadata.getSalesTaxJurisdictions(args.countryCode as string);
+      return await api.metadata.getSalesTaxJurisdictions(args.countryCode as string);
 
     // Taxonomy
     case "ebay_get_default_category_tree_id":
-      return api.taxonomy.getDefaultCategoryTreeId(
+      return await api.taxonomy.getDefaultCategoryTreeId(
         args.marketplaceId as string,
       );
     case "ebay_get_category_tree":
-      return api.taxonomy.getCategoryTree(args.categoryTreeId as string);
+      return await api.taxonomy.getCategoryTree(args.categoryTreeId as string);
     case "ebay_get_category_suggestions":
-      return api.taxonomy.getCategorySuggestions(
+      return await api.taxonomy.getCategorySuggestions(
         args.categoryTreeId as string,
         args.query as string,
       );
     case "ebay_get_item_aspects_for_category":
-      return api.taxonomy.getItemAspectsForCategory(
+      return await api.taxonomy.getItemAspectsForCategory(
         args.categoryTreeId as string,
         args.categoryId as string,
       );
@@ -802,7 +802,7 @@ export async function executeTool(
     // Communication - Negotiation
     case "ebay_get_offers_to_buyers": {
       const validated = getOffersToBuyersSchema.parse(args);
-      return api.negotiation.getOffersToBuyers(
+      return await api.negotiation.getOffersToBuyers(
         validated.filter,
         validated.limit ? Number(validated.limit) : undefined,
         validated.offset ? Number(validated.offset) : undefined,
@@ -810,13 +810,13 @@ export async function executeTool(
     }
     case "ebay_send_offer_to_interested_buyers": {
       const validated = sendOfferToInterestedBuyersSchema.parse(args);
-      return api.negotiation.sendOfferToInterestedBuyers(
+      return await api.negotiation.sendOfferToInterestedBuyers(
         validated as any,
       );
     }
     case "ebay_find_eligible_items": {
       const validated = findEligibleItemsSchema.parse(args);
-      return api.negotiation.findEligibleItems(
+      return await api.negotiation.findEligibleItems(
         validated.marketplace_id,
         validated.limit ? Number(validated.limit) : undefined,
         validated.offset ? Number(validated.offset) : undefined,
@@ -826,7 +826,7 @@ export async function executeTool(
     // Communication - Message
     case "ebay_search_messages": {
       const validated = getConversationsSchema.parse(args);
-      return api.message.searchMessages(
+      return await api.message.searchMessages(
         validated as any,
         validated.limit ? Number(validated.limit) : undefined,
         validated.offset ? Number(validated.offset) : undefined,
@@ -834,11 +834,11 @@ export async function executeTool(
     }
     case "ebay_get_message": {
       const validated = getConversationSchema.parse(args);
-      return api.message.getMessage(validated.conversation_id);
+      return await api.message.getMessage(validated.conversation_id);
     }
     case "ebay_send_message": {
       const validated = sendMessageSchema.parse(args);
-      return api.message.sendMessage(validated as any);
+      return await api.message.sendMessage(validated as any);
     }
     case "ebay_reply_to_message": {
       // This is a deprecated method that maps to sendMessage
@@ -846,14 +846,14 @@ export async function executeTool(
       if (!args.messageId || !args.messageContent) {
         throw new Error("messageId and messageContent are required");
       }
-      return api.message.replyToMessage(
+      return await api.message.replyToMessage(
         args.messageId as string,
         args.messageContent as string,
       );
     }
     case "ebay_get_conversations": {
       const validated = getConversationsSchema.parse(args);
-      return api.message.getConversations(
+      return await api.message.getConversations(
         validated as any,
         validated.limit ? Number(validated.limit) : undefined,
         validated.offset ? Number(validated.offset) : undefined,
@@ -861,136 +861,136 @@ export async function executeTool(
     }
     case "ebay_get_conversation": {
       const validated = getConversationSchema.parse(args);
-      return api.message.getConversation(validated.conversation_id);
+      return await api.message.getConversation(validated.conversation_id);
     }
     case "ebay_bulk_update_conversation": {
       const validated = bulkUpdateConversationSchema.parse(args);
-      return api.message.bulkUpdateConversation(validated as any);
+      return await api.message.bulkUpdateConversation(validated as any);
     }
     case "ebay_update_conversation": {
       const validated = updateConversationSchema.parse(args);
-      return api.message.updateConversation(validated as any);
+      return await api.message.updateConversation(validated as any);
     }
 
     // Communication - Notification
     case "ebay_get_notification_config": {
       getConfigSchema.parse(args); // Validate empty args
-      return api.notification.getConfig();
+      return await api.notification.getConfig();
     }
     case "ebay_update_notification_config": {
       const validated = updateConfigSchema.parse(args);
-      return api.notification.updateConfig(validated as any);
+      return await api.notification.updateConfig(validated as any);
     }
     case "ebay_create_notification_destination": {
       const validated = createDestinationSchema.parse(args);
-      return api.notification.createDestination(validated as any);
+      return await api.notification.createDestination(validated as any);
     }
     case "ebay_get_notification_destination": {
       const validated = getDestinationSchema.parse(args);
-      return api.notification.getDestination(validated.destination_id);
+      return await api.notification.getDestination(validated.destination_id);
     }
     case "ebay_update_notification_destination": {
       const validated = updateDestinationSchema.parse(args);
-      return api.notification.updateDestination(
+      return await api.notification.updateDestination(
         validated.destination_id,
         validated as any,
       );
     }
     case "ebay_delete_notification_destination": {
       const validated = deleteDestinationSchema.parse(args);
-      return api.notification.deleteDestination(validated.destination_id);
+      return await api.notification.deleteDestination(validated.destination_id);
     }
     case "ebay_get_notification_subscriptions": {
       const validated = getSubscriptionsSchema.parse(args);
-      return api.notification.getSubscriptions(
+      return await api.notification.getSubscriptions(
         validated.limit ? Number(validated.limit) : undefined,
         validated.continuation_token,
       );
     }
     case "ebay_create_notification_subscription": {
       const validated = createSubscriptionSchema.parse(args);
-      return api.notification.createSubscription(validated as any);
+      return await api.notification.createSubscription(validated as any);
     }
     case "ebay_get_notification_subscription": {
       const validated = getSubscriptionSchema.parse(args);
-      return api.notification.getSubscription(validated.subscription_id);
+      return await api.notification.getSubscription(validated.subscription_id);
     }
     case "ebay_update_notification_subscription": {
       const validated = updateSubscriptionSchema.parse(args);
-      return api.notification.updateSubscription(
+      return await api.notification.updateSubscription(
         validated.subscription_id,
         validated as any,
       );
     }
     case "ebay_delete_notification_subscription": {
       const validated = deleteSubscriptionSchema.parse(args);
-      return api.notification.deleteSubscription(validated.subscription_id);
+      return await api.notification.deleteSubscription(validated.subscription_id);
     }
     case "ebay_disable_notification_subscription": {
       const validated = disableSubscriptionSchema.parse(args);
-      return api.notification.disableSubscription(validated.subscription_id);
+      return await api.notification.disableSubscription(validated.subscription_id);
     }
     case "ebay_enable_notification_subscription": {
       const validated = enableSubscriptionSchema.parse(args);
-      return api.notification.enableSubscription(validated.subscription_id);
+      return await api.notification.enableSubscription(validated.subscription_id);
     }
     case "ebay_test_notification_subscription": {
       const validated = testSubscriptionSchema.parse(args);
-      return api.notification.testSubscription(validated.subscription_id);
+      return await api.notification.testSubscription(validated.subscription_id);
     }
     case "ebay_get_notification_topic": {
       const validated = getTopicSchema.parse(args);
-      return api.notification.getTopic(validated.topic_id);
+      return await api.notification.getTopic(validated.topic_id);
     }
     case "ebay_get_notification_topics": {
       const validated = getTopicsSchema.parse(args);
-      return api.notification.getTopics(
+      return await api.notification.getTopics(
         validated.limit ? Number(validated.limit) : undefined,
         validated.continuation_token,
       );
     }
     case "ebay_create_notification_subscription_filter": {
       const validated = createSubscriptionFilterSchema.parse(args);
-      return api.notification.createSubscriptionFilter(
+      return await api.notification.createSubscriptionFilter(
         validated.subscription_id,
         validated as any,
       );
     }
     case "ebay_get_notification_subscription_filter": {
       const validated = getSubscriptionFilterSchema.parse(args);
-      return api.notification.getSubscriptionFilter(
+      return await api.notification.getSubscriptionFilter(
         validated.subscription_id,
         validated.filter_id,
       );
     }
     case "ebay_delete_notification_subscription_filter": {
       const validated = deleteSubscriptionFilterSchema.parse(args);
-      return api.notification.deleteSubscriptionFilter(
+      return await api.notification.deleteSubscriptionFilter(
         validated.subscription_id,
         validated.filter_id,
       );
     }
     case "ebay_get_notification_public_key": {
       const validated = getPublicKeySchema.parse(args);
-      return api.notification.getPublicKey(validated.public_key_id);
+      return await api.notification.getPublicKey(validated.public_key_id);
     }
 
     // Communication - Feedback
     case "ebay_get_feedback": {
       const validated = getFeedbackSchema.parse(args);
-      return api.feedback.getFeedback(validated.transaction_id || "");
+      return await api.feedback.getFeedback(validated.transaction_id || "");
     }
     case "ebay_leave_feedback_for_buyer": {
       const validated = leaveFeedbackForBuyerSchema.parse(args);
-      return api.feedback.leaveFeedbackForBuyer(validated as any);
+      return await api.feedback.leaveFeedbackForBuyer(validated as any);
     }
     case "ebay_get_feedback_summary": {
       getFeedbackRatingSummarySchema.parse(args); // Validate empty args
-      return api.feedback.getFeedbackSummary();
+      return await api.feedback.getFeedbackSummary();
     }
     case "ebay_get_awaiting_feedback": {
       const validated = getAwaitingFeedbackSchema.parse(args);
-      return api.feedback.getAwaitingFeedback(
+      return await api.feedback.getAwaitingFeedback(
         validated.filter,
         validated.limit ? Number(validated.limit) : undefined,
         validated.offset ? Number(validated.offset) : undefined,
@@ -998,7 +998,7 @@ export async function executeTool(
     }
     case "ebay_respond_to_feedback": {
       const validated = respondToFeedbackSchema.parse(args);
-      return api.feedback.respondToFeedback(
+      return await api.feedback.respondToFeedback(
         validated.feedback_id || "",
         validated.response_text || "",
       );
@@ -1006,31 +1006,31 @@ export async function executeTool(
 
     // Other APIs - Identity
     case "ebay_get_user":
-      return api.identity.getUser();
+      return await api.identity.getUser();
 
     // Other APIs - Compliance
     case "ebay_get_listing_violations":
-      return api.compliance.getListingViolations(
+      return await api.compliance.getListingViolations(
         args.complianceType as string,
         args.offset as number,
         args.limit as number,
       );
     case "ebay_get_listing_violations_summary":
-      return api.compliance.getListingViolationsSummary(
+      return await api.compliance.getListingViolationsSummary(
         args.complianceType as string,
       );
     case "ebay_suppress_violation":
-      return api.compliance.suppressViolation(
+      return await api.compliance.suppressViolation(
         args.listingViolationId as string,
       );
 
     // Other APIs - VERO
     case "ebay_report_infringement":
-      return api.vero.reportInfringement(
+      return await api.vero.reportInfringement(
         args.infringementData as Record<string, unknown>,
       );
     case "ebay_get_reported_items":
-      return api.vero.getReportedItems(
+      return await api.vero.getReportedItems(
         args.filter as string,
         args.limit as number,
         args.offset as number,
@@ -1038,7 +1038,7 @@ export async function executeTool(
 
     // Other APIs - Translation
     case "ebay_translate":
-      return api.translation.translate(
+      return await api.translation.translate(
         args.from as string,
         args.to as string,
         args.translationContext as string,
@@ -1047,11 +1047,11 @@ export async function executeTool(
 
     // Other APIs - eDelivery
     case "ebay_create_shipping_quote":
-      return api.edelivery.createShippingQuote(
+      return await api.edelivery.createShippingQuote(
         args.shippingQuoteRequest as Record<string, unknown>,
       );
     case "ebay_get_shipping_quote":
-      return api.edelivery.getShippingQuote(args.shippingQuoteId as string);
+      return await api.edelivery.getShippingQuote(args.shippingQuoteId as string);
 
     case "SearchClaudeCodeDocs":
       // Placeholder implementation for SearchClaudeCodeDocs

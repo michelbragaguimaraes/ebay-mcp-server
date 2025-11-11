@@ -14,7 +14,7 @@ import { TokenStorage } from "@/auth/token-storage.js";
  */
 export class EbayOAuthClient {
   private token: EbayAuthToken | null = null;
-  private tokenExpiry: number = 0;
+  private tokenExpiry = 0;
   private userTokens: StoredTokenData | null = null;
 
   constructor(private config: EbayConfig) { }
@@ -64,7 +64,7 @@ export class EbayOAuthClient {
       if (!TokenStorage.isRefreshTokenExpired(this.userTokens)) {
         try {
           await this.refreshUserToken();
-          return this.userTokens!.accessToken;
+          return this.userTokens.accessToken;
         } catch (error) {
           console.error(
             "Failed to refresh user token, falling back to client credentials:",

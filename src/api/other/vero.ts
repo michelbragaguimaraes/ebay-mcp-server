@@ -1,4 +1,4 @@
-import { EbayApiClient } from '../client.js';
+import type { EbayApiClient } from '../client.js';
 
 /**
  * VERO API - Verified Rights Owner program
@@ -13,7 +13,7 @@ export class VeroApi {
    * Report infringement
    */
   async reportInfringement(infringementData: Record<string, unknown>) {
-    return this.client.post(`${this.basePath}/report_infringement`, infringementData);
+    return await this.client.post(`${this.basePath}/report_infringement`, infringementData);
   }
 
   /**
@@ -24,6 +24,6 @@ export class VeroApi {
     if (filter) params.filter = filter;
     if (limit) params.limit = limit;
     if (offset) params.offset = offset;
-    return this.client.get(`${this.basePath}/reported_item`, params);
+    return await this.client.get(`${this.basePath}/reported_item`, params);
   }
 }

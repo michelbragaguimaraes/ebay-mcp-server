@@ -48,26 +48,26 @@ export interface StoredTokenData {
 
 export interface EbayApiResponse<T = any> {
   data: T;
-  warnings?: Array<{
+  warnings?: {
     category: string;
     domain: string;
     errorId: number;
     message: string;
-  }>;
+  }[];
 }
 
 export interface EbayApiError {
-  errors: Array<{
+  errors: {
     errorId: number;
     domain: string;
     category: string;
     message: string;
     longMessage?: string;
-    parameters?: Array<{
+    parameters?: {
       name: string;
       value: string;
-    }>;
-  }>;
+    }[];
+  }[];
 }
 
 /**

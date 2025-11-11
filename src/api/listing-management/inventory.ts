@@ -1,5 +1,5 @@
 import type { components } from '../../types/sell_inventory_v1_oas3.js';
-import { EbayApiClient } from '../client.js';
+import type { EbayApiClient } from '../client.js';
 
 type EbayOfferDetailsWithKeys = components["schemas"]["EbayOfferDetailsWithKeys"];
 type InventoryItem = components["schemas"]["InventoryItem"];

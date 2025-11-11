@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 
 /**
  * eBay API MCP Server with HTTP Transport and OAuth 2.1 Authorization
@@ -162,7 +161,7 @@ async function createApp(): Promise<express.Application> {
   }
 
   // MCP session storage
-  const transports: Map<string, StreamableHTTPServerTransport> = new Map();
+  const transports = new Map<string, StreamableHTTPServerTransport>();
 
   /**
    * Create a new MCP server instance
