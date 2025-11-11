@@ -16,7 +16,7 @@ NC='\033[0m' # No Color
 # Base directories
 DOCS_DIR="docs"
 TYPES_DIR="src/types"
-OPENAPI_SCHEMAS_DIR="${TYPES_DIR}/openapi-schemas"
+OPENAPI_SCHEMAS_DIR="${TYPES_DIR}"
 
 # Ensure we're in the project root
 if [ ! -f "package.json" ]; then
@@ -100,6 +100,7 @@ declare -a SPEC_MAPPINGS=(
     "sell-apps/other-apis:commerce_vero_v1_oas3.json:commerce_vero_v1_oas3.ts"
     "sell-apps/other-apis:sell_compliance_v1_oas3.json:sell_compliance_v1_oas3.ts"
     "sell-apps/other-apis:commerce_translation_v1_beta_oas3.json:commerce_translation_v1_beta_oas3.ts"
+    "sell-apps/other-apis:sell_edelivery_international_shipping_oas3.json:sell_edelivery_international_shipping_oas3.ts"
 )
 
 echo -e "${GREEN}Processing OpenAPI Specifications...${NC}"

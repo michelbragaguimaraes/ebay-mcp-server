@@ -1,0 +1,75 @@
+# Source files
+src/
+tests/
+scripts/
+docs/
+
+# Configuration files
+tsconfig.json
+vitest.config.ts
+.eslintrc.json
+eslint.config.js
+.prettierrc
+.prettierignore
+
+# Documentation (already in package.json files array)
+# CLAUDE.md, GEMINI.md, README.md are explicitly included
+
+# Environment files
+.env
+.env.*
+.env.example
+
+# OAuth tokens (sensitive)
+.ebay-tokens.json
+.ebay-mcp-tokens.json
+
+# Build artifacts to exclude
+build/**/*.map
+build/**/*.d.ts.map
+build/types/ebay/
+build/types/openapi-schemas/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Testing
+coverage/
+.nyc_output/
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+.travis.yml
+
+# Package managers
+.npmrc
+pnpm-lock.yaml
+yarn.lock
+package-lock.json
+
+# Temporary files
+*.tmp
+tmp/
+temp/
+*.log
+
+# MCP config (not needed in published package)
+.mcp.json
+
+# Other
+CHANGELOG.md
+LICENSE
+*.md.backup

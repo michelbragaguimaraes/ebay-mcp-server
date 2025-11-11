@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.2] - 2025-11-11
+
+### Changed
+- **Package size optimization**: Reduced unpacked size from 6.68 MB to 3.6 MB (-46%)
+- **Package file optimization**: Reduced total files from 666 to 135 (-80%)
+- Created `.npmignore` to exclude development files, source maps, and duplicate type directories
+- Disabled source maps and declaration maps in production builds
+- Fixed type generation script to output flat structure (no duplicate `openapi-schemas/` directory)
+
+### Technical Improvements
+- Added `sourceMap: false` and `declarationMap: false` to `tsconfig.json`
+- Updated `scripts/generate-types.sh` to prevent duplicate type file generation
+- Added missing eDelivery schema to type generation script
+
+### Performance Impact
+- Faster npm install times due to 46% smaller package
+- Reduced disk space usage for consumers
+- Maintained all functionality and IDE support (`.d.ts` files still included)
+
 ## [1.1.1] - 2025-11-11
 
 ### Fixed
