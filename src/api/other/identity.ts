@@ -1,4 +1,4 @@
-import { EbayApiClient } from '../client.js';
+import type { EbayApiClient } from '../client.js';
 
 /**
  * Identity API - User identity verification
@@ -7,12 +7,12 @@ import { EbayApiClient } from '../client.js';
 export class IdentityApi {
   private readonly basePath = '/commerce/identity/v1';
 
-  constructor(private client: EbayApiClient) {}
+  constructor(private client: EbayApiClient) { }
 
   /**
    * Get user information
    */
   async getUser() {
-    return this.client.get(`${this.basePath}/user`);
+    return await this.client.get(`${this.basePath}/user`);
   }
 }

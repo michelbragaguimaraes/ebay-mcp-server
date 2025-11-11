@@ -1,5 +1,5 @@
-import type { components } from "@/types/sell_recommendation_v1_oas3.js";
 import type { EbayApiClient } from "@/api/client.js";
+import type { components } from "@/types/sell_recommendation_v1_oas3.js";
 
 type PagedListingRecommendationCollection =
   components["schemas"]["PagedListingRecommendationCollection"];
@@ -34,7 +34,7 @@ export class RecommendationApi {
       headers["X-EBAY-C-MARKETPLACE-ID"] = marketplaceId;
     }
 
-    return this.client.post<PagedListingRecommendationCollection>(
+    return await this.client.post<PagedListingRecommendationCollection>(
       `${this.basePath}/find`,
       requestBody || {},
       {

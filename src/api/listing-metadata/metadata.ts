@@ -1,4 +1,4 @@
-import { EbayApiClient } from '../client.js';
+import type { EbayApiClient } from '../client.js';
 
 /**
  * Metadata API - Marketplace policies and configurations
@@ -7,7 +7,7 @@ import { EbayApiClient } from '../client.js';
 export class MetadataApi {
   private readonly basePath = '/sell/metadata/v1';
 
-  constructor(private client: EbayApiClient) {}
+  constructor(private client: EbayApiClient) { }
 
   /**
    * Get automotive parts compatibility policies for a marketplace

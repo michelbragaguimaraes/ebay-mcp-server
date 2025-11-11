@@ -1,6 +1,6 @@
 
-import type { components } from "@/types/sell_marketing_v1_oas3.js";
 import type { EbayApiClient } from "@/api/client.js";
+import type { components } from "@/types/sell_marketing_v1_oas3.js";
 
 type AdGroupRequest = components["schemas"]["CreateAdGroupRequest"];
 type BulkCreateAdRequest = components["schemas"]["BulkCreateAdRequest"];
@@ -125,7 +125,7 @@ export class MarketingApi {
     if (campaignStatus) params.campaign_status = campaignStatus;
     if (marketplaceId) params.marketplace_id = marketplaceId;
     if (limit) params.limit = limit;
-    return this.client.get<CampaignPagedCollectionResponse>(
+    return await this.client.get<CampaignPagedCollectionResponse>(
       `${this.basePath}/ad_campaign`,
       params,
     );
@@ -135,7 +135,7 @@ export class MarketingApi {
    * Get a specific campaign
    */
   async getCampaign(campaignId: string): Promise<Campaign> {
-    return this.client.get<Campaign>(
+    return await this.client.get<Campaign>(
       `${this.basePath}/ad_campaign/${campaignId}`,
     );
   }
@@ -144,7 +144,7 @@ export class MarketingApi {
    * Create a campaign
    */
   async createCampaign(campaign: CreateCampaignRequest): Promise<BaseResponse> {
-    return this.client.post<BaseResponse>(
+    return await this.client.post<BaseResponse>(
       `${this.basePath}/ad_campaign`,
       campaign,
     );
@@ -160,7 +160,7 @@ export class MarketingApi {
     const params: Record<string, string | number> = {};
     if (marketplaceId) params.marketplace_id = marketplaceId;
     if (limit) params.limit = limit;
-    return this.client.get<ItemPromotionsPagedCollection>(
+    return await this.client.get<ItemPromotionsPagedCollection>(
       `${this.basePath}/promotion`,
       params,
     );
@@ -170,7 +170,7 @@ export class MarketingApi {
    * Create a promotion (item promotion)
    */
   async createPromotion(promotion: ItemPromotion): Promise<BaseResponse> {
-    return this.client.post<BaseResponse>(
+    return await this.client.post<BaseResponse>(
       `${this.basePath}/item_promotion`,
       promotion,
     );
@@ -193,7 +193,7 @@ export class MarketingApi {
     if (limit) params.limit = limit;
     if (listingIds) params.listing_ids = listingIds;
     if (offset) params.offset = offset;
-    return this.client.get<AdPagedCollectionResponse>(
+    return await this.client.get<AdPagedCollectionResponse>(
       `${this.basePath}/ad_campaign/${campaignId}/ad`,
       params,
     );
@@ -206,7 +206,7 @@ export class MarketingApi {
     campaignId: string,
     ad: CreateAdRequest,
   ): Promise<BaseResponse> {
-    return this.client.post<BaseResponse>(
+    return await this.client.post<BaseResponse>(
       `${this.basePath}/ad_campaign/${campaignId}/ad`,
       ad,
     );
@@ -219,7 +219,7 @@ export class MarketingApi {
     campaignId: string,
     ads: CreateAdsByInventoryReferenceRequest,
   ): Promise<AdReferences> {
-    return this.client.post<AdReferences>(
+    return await this.client.post<AdReferences>(
       `${this.basePath}/ad_campaign/${campaignId}/create_ads_by_inventory_reference`,
       ads,
     );
@@ -229,7 +229,7 @@ export class MarketingApi {
    * Get a specific ad for a campaign
    */
   async getAd(campaignId: string, adId: string): Promise<Ad> {
-    return this.client.get<Ad>(
+    return await this.client.get<Ad>(
       `${this.basePath}/ad_campaign/${campaignId}/ad/${adId}`,
     );
   }
@@ -238,7 +238,7 @@ export class MarketingApi {
    * Delete a specific ad from a campaign
    */
   async deleteAd(campaignId: string, adId: string): Promise<void> {
-    return this.client.delete<void>(
+    return await this.client.delete<void>(
       `${this.basePath}/ad_campaign/${campaignId}/ad/${adId}`,
     );
   }
@@ -251,7 +251,7 @@ export class MarketingApi {
     adId: string,
     ad: CreateAdRequest,
   ): Promise<BaseResponse> {
-    return this.client.post<BaseResponse>(
+    return await this.client.post<BaseResponse>(
       `${this.basePath}/ad_campaign/${campaignId}/ad/${adId}/clone`,
       ad,
     );
@@ -269,7 +269,7 @@ export class MarketingApi {
       inventory_reference_id: inventoryReferenceId,
       inventory_reference_type: inventoryReferenceType,
     };
-    return this.client.get<Ads>(
+    return await this.client.get<Ads>(
       `${this.basePath}/ad_campaign/${campaignId}/get_ads_by_inventory_reference`,
       params,
     );
@@ -282,7 +282,7 @@ export class MarketingApi {
     const params: Record<string, string> = {
       listing_id: listingId,
     };
-    return this.client.get<Ads>(
+    return await this.client.get<Ads>(
       `${this.basePath}/ad_campaign/${campaignId}/get_ads_by_listing_id`,
       params,
     );
@@ -296,7 +296,7 @@ export class MarketingApi {
     adId: string,
     bid: UpdateBidPercentageRequest,
   ): Promise<void> {
-    return this.client.post<void>(
+    return await this.client.post<void>(
       `${this.basePath}/ad_campaign/${campaignId}/ad/${adId}/update_bid`,
       bid,
     );
@@ -309,7 +309,7 @@ export class MarketingApi {
     campaignId: string,
     campaign: CloneCampaignRequest,
   ): Promise<BaseResponse> {
-    return this.client.post<BaseResponse>(
+    return await this.client.post<BaseResponse>(
       `${this.basePath}/ad_campaign/${campaignId}/clone`,
       campaign,
     );
@@ -319,7 +319,7 @@ export class MarketingApi {
    * End a campaign
    */
   async endCampaign(campaignId: string): Promise<void> {
-    return this.client.post<void>(
+    return await this.client.post<void>(
       `${this.basePath}/ad_campaign/${campaignId}/end`,
       {},
     );
@@ -332,7 +332,7 @@ export class MarketingApi {
     const params: Record<string, string> = {
       campaign_name: campaignName,
     };
-    return this.client.get<Campaign>(
+    return await this.client.get<Campaign>(
       `${this.basePath}/ad_campaign/get_campaign_by_name`,
       params,
     );
@@ -345,7 +345,7 @@ export class MarketingApi {
     campaignId: string,
     body: BulkCreateAdsByInventoryReferenceRequest,
   ): Promise<BulkCreateAdsByInventoryReferenceResponse> {
-    return this.client.post<BulkCreateAdsByInventoryReferenceResponse>(
+    return await this.client.post<BulkCreateAdsByInventoryReferenceResponse>(
       `${this.basePath}/ad_campaign/${campaignId}/bulk_create_ads_by_inventory_reference`,
       body,
     );
@@ -358,7 +358,7 @@ export class MarketingApi {
     campaignId: string,
     body: BulkCreateAdRequest,
   ): Promise<BulkAdResponse> {
-    return this.client.post<BulkAdResponse>(
+    return await this.client.post<BulkAdResponse>(
       `${this.basePath}/ad_campaign/${campaignId}/bulk_create_ads_by_listing_id`,
       body,
     );
@@ -371,7 +371,7 @@ export class MarketingApi {
     campaignId: string,
     body: BulkDeleteAdsByInventoryReferenceRequest,
   ): Promise<BulkDeleteAdsByInventoryReferenceResponse> {
-    return this.client.post<BulkDeleteAdsByInventoryReferenceResponse>(
+    return await this.client.post<BulkDeleteAdsByInventoryReferenceResponse>(
       `${this.basePath}/ad_campaign/${campaignId}/bulk_delete_ads_by_inventory_reference`,
       body,
     );
@@ -384,7 +384,7 @@ export class MarketingApi {
     campaignId: string,
     body: BulkDeleteAdRequest,
   ): Promise<BulkDeleteAdResponse> {
-    return this.client.post<BulkDeleteAdResponse>(
+    return await this.client.post<BulkDeleteAdResponse>(
       `${this.basePath}/ad_campaign/${campaignId}/bulk_delete_ads_by_listing_id`,
       body,
     );
@@ -397,7 +397,7 @@ export class MarketingApi {
     campaignId: string,
     body: BulkCreateAdsByInventoryReferenceRequest,
   ): Promise<BulkUpdateAdsByInventoryReferenceResponse> {
-    return this.client.post<BulkUpdateAdsByInventoryReferenceResponse>(
+    return await this.client.post<BulkUpdateAdsByInventoryReferenceResponse>(
       `${this.basePath}/ad_campaign/${campaignId}/bulk_update_ads_bid_by_inventory_reference`,
       body,
     );
@@ -410,7 +410,7 @@ export class MarketingApi {
     campaignId: string,
     body: BulkCreateAdRequest,
   ): Promise<BulkAdUpdateResponse> {
-    return this.client.post<BulkAdUpdateResponse>(
+    return await this.client.post<BulkAdUpdateResponse>(
       `${this.basePath}/ad_campaign/${campaignId}/bulk_update_ads_bid_by_listing_id`,
       body,
     );
@@ -423,7 +423,7 @@ export class MarketingApi {
     campaignId: string,
     body: BulkUpdateAdStatusRequest,
   ): Promise<BulkAdUpdateStatusResponse> {
-    return this.client.post<BulkAdUpdateStatusResponse>(
+    return await this.client.post<BulkAdUpdateStatusResponse>(
       `${this.basePath}/ad_campaign/${campaignId}/bulk_update_ads_status`,
       body,
     );
@@ -436,7 +436,7 @@ export class MarketingApi {
     campaignId: string,
     body: BulkUpdateAdStatusByListingIdRequest,
   ): Promise<BulkAdUpdateStatusByListingIdResponse> {
-    return this.client.post<BulkAdUpdateStatusByListingIdResponse>(
+    return await this.client.post<BulkAdUpdateStatusByListingIdResponse>(
       `${this.basePath}/ad_campaign/${campaignId}/bulk_update_ads_status_by_listing_id`,
       body,
     );
@@ -446,7 +446,7 @@ export class MarketingApi {
    * Pause a campaign
    */
   async pauseCampaign(campaignId: string): Promise<void> {
-    return this.client.post<void>(
+    return await this.client.post<void>(
       `${this.basePath}/ad_campaign/${campaignId}/pause`,
       {},
     );
@@ -456,7 +456,7 @@ export class MarketingApi {
    * Resume a campaign
    */
   async resumeCampaign(campaignId: string): Promise<void> {
-    return this.client.post<void>(
+    return await this.client.post<void>(
       `${this.basePath}/ad_campaign/${campaignId}/resume`,
       {},
     );
@@ -469,7 +469,7 @@ export class MarketingApi {
     campaignId: string,
     body: UpdateCampaignIdentificationRequest,
   ): Promise<void> {
-    return this.client.put<void>(
+    return await this.client.put<void>(
       `${this.basePath}/ad_campaign/${campaignId}/update_campaign_identification`,
       body,
     );
@@ -482,7 +482,7 @@ export class MarketingApi {
     campaignId: string,
     body: AdGroupRequest,
   ): Promise<BaseResponse> {
-    return this.client.post<BaseResponse>(
+    return await this.client.post<BaseResponse>(
       `${this.basePath}/ad_campaign/${campaignId}/ad_group`,
       body,
     );
@@ -496,7 +496,7 @@ export class MarketingApi {
     adGroupId: string,
     body: CreateAdGroupRequest,
   ): Promise<BaseResponse> {
-    return this.client.post<BaseResponse>(
+    return await this.client.post<BaseResponse>(
       `${this.basePath}/ad_campaign/${campaignId}/ad_group/${adGroupId}/clone`,
       body,
     );
@@ -515,7 +515,7 @@ export class MarketingApi {
     if (adGroupStatus) params.ad_group_status = adGroupStatus;
     if (limit) params.limit = limit;
     if (offset) params.offset = offset;
-    return this.client.get<AdGroupPagedCollection>(
+    return await this.client.get<AdGroupPagedCollection>(
       `${this.basePath}/ad_campaign/${campaignId}/ad_group`,
       params,
     );
@@ -525,7 +525,7 @@ export class MarketingApi {
    * Get an ad group
    */
   async getAdGroup(campaignId: string, adGroupId: string): Promise<AdGroup> {
-    return this.client.get<AdGroup>(
+    return await this.client.get<AdGroup>(
       `${this.basePath}/ad_campaign/${campaignId}/ad_group/${adGroupId}`,
     );
   }
@@ -537,7 +537,7 @@ export class MarketingApi {
     campaignId: string,
     adGroupId: string,
   ): Promise<SuggestedBids> {
-    return this.client.post<SuggestedBids>(
+    return await this.client.post<SuggestedBids>(
       `${this.basePath}/ad_campaign/${campaignId}/ad_group/${adGroupId}/suggest_bids`,
       {},
     );
@@ -551,7 +551,7 @@ export class MarketingApi {
     adGroupId: string,
     body: UpdateKeywordByKeywordIdRequest,
   ): Promise<void> {
-    return this.client.post<void>(
+    return await this.client.post<void>(
       `${this.basePath}/ad_campaign/${campaignId}/ad_group/${adGroupId}/update_ad_group_bids`,
       body,
     );
@@ -565,7 +565,7 @@ export class MarketingApi {
     adGroupId: string,
     body: BulkUpdateKeywordRequest,
   ): Promise<void> {
-    return this.client.post<void>(
+    return await this.client.post<void>(
       `${this.basePath}/ad_campaign/${campaignId}/ad_group/${adGroupId}/update_ad_group_keywords`,
       body,
     );
@@ -579,7 +579,7 @@ export class MarketingApi {
     adGroupId: string,
     body: SuggestKeywordsRequest,
   ): Promise<SuggestedKeywords> {
-    return this.client.post<SuggestedKeywords>(
+    return await this.client.post<SuggestedKeywords>(
       `${this.basePath}/ad_campaign/${campaignId}/ad_group/${adGroupId}/suggest_keywords`,
       body,
     );
@@ -599,7 +599,7 @@ export class MarketingApi {
     if (keywordStatus) params.keyword_status = keywordStatus;
     if (limit) params.limit = limit;
     if (offset) params.offset = offset;
-    return this.client.get<KeywordPagedCollection>(
+    return await this.client.get<KeywordPagedCollection>(
       `${this.basePath}/ad_campaign/${campaignId}/ad_group/${adGroupId}/keyword`,
       params,
     );
@@ -613,7 +613,7 @@ export class MarketingApi {
     adGroupId: string,
     body: BulkCreateKeywordsRequest,
   ): Promise<BulkCreateKeywordsResponse> {
-    return this.client.post<BulkCreateKeywordsResponse>(
+    return await this.client.post<BulkCreateKeywordsResponse>(
       `${this.basePath}/ad_campaign/${campaignId}/ad_group/${adGroupId}/bulk_create_keywords`,
       body,
     );
@@ -627,7 +627,7 @@ export class MarketingApi {
     adGroupId: string,
     body: BulkDeleteKeywordsRequest,
   ): Promise<BulkDeleteKeywordsResponse> {
-    return this.client.post<BulkDeleteKeywordsResponse>(
+    return await this.client.post<BulkDeleteKeywordsResponse>(
       `${this.basePath}/ad_campaign/${campaignId}/ad_group/${adGroupId}/bulk_delete_keywords`,
       body,
     );
@@ -641,7 +641,7 @@ export class MarketingApi {
     adGroupId: string,
     body: BulkUpdateKeywordBidsRequest,
   ): Promise<BulkUpdateKeywordBidsResponse> {
-    return this.client.post<BulkUpdateKeywordBidsResponse>(
+    return await this.client.post<BulkUpdateKeywordBidsResponse>(
       `${this.basePath}/ad_campaign/${campaignId}/ad_group/${adGroupId}/bulk_update_keyword_bids`,
       body,
     );
@@ -655,7 +655,7 @@ export class MarketingApi {
     adGroupId: string,
     body: CreateKeywordRequest,
   ): Promise<CreateKeywordResponse> {
-    return this.client.post<CreateKeywordResponse>(
+    return await this.client.post<CreateKeywordResponse>(
       `${this.basePath}/ad_campaign/${campaignId}/ad_group/${adGroupId}/create_keyword`,
       body,
     );
@@ -669,7 +669,7 @@ export class MarketingApi {
     adGroupId: string,
     keywordId: string,
   ): Promise<Keyword> {
-    return this.client.get<Keyword>(
+    return await this.client.get<Keyword>(
       `${this.basePath}/ad_campaign/${campaignId}/ad_group/${adGroupId}/keyword/${keywordId}`,
     );
   }
@@ -682,7 +682,7 @@ export class MarketingApi {
     adGroupId: string,
     keywordId: string,
   ): Promise<void> {
-    return this.client.delete<void>(
+    return await this.client.delete<void>(
       `${this.basePath}/ad_campaign/${campaignId}/ad_group/${adGroupId}/keyword/${keywordId}`,
     );
   }
@@ -696,7 +696,7 @@ export class MarketingApi {
     keywordId: string,
     body: UpdateBidRequest,
   ): Promise<void> {
-    return this.client.post<void>(
+    return await this.client.post<void>(
       `${this.basePath}/ad_campaign/${campaignId}/ad_group/${adGroupId}/keyword/${keywordId}/update_bid`,
       body,
     );
@@ -723,14 +723,14 @@ export class MarketingApi {
     if (sort) params.sort = sort;
     if (listingIds) params.listing_ids = listingIds;
     if (marketplaceId) params.marketplace_id = marketplaceId;
-    return this.client.get<Report>(`${this.basePath}/ad_report`, params);
+    return await this.client.get<Report>(`${this.basePath}/ad_report`, params);
   }
 
   /**
    * Get ad report metadata
    */
   async getAdReportMetadata(): Promise<ReportMetadatas> {
-    return this.client.get<ReportMetadatas>(
+    return await this.client.get<ReportMetadatas>(
       `${this.basePath}/ad_report_metadata`,
     );
   }
@@ -741,7 +741,7 @@ export class MarketingApi {
   async getAdReportMetadataForReportType(
     reportType: string,
   ): Promise<ReportMetadata> {
-    return this.client.get<ReportMetadata>(
+    return await this.client.get<ReportMetadata>(
       `${this.basePath}/ad_report_metadata/${reportType}`,
     );
   }
@@ -750,7 +750,7 @@ export class MarketingApi {
    * Create a report task
    */
   async createReportTask(body: CreateReportTask): Promise<void> {
-    return this.client.post<void>(`${this.basePath}/ad_report_task`, body);
+    return await this.client.post<void>(`${this.basePath}/ad_report_task`, body);
   }
 
   /**
@@ -765,7 +765,7 @@ export class MarketingApi {
     if (reportTaskStatuses) params.report_task_statuses = reportTaskStatuses;
     if (limit) params.limit = limit;
     if (offset) params.offset = offset;
-    return this.client.get<ReportTaskPagedCollection>(
+    return await this.client.get<ReportTaskPagedCollection>(
       `${this.basePath}/ad_report_task`,
       params,
     );
@@ -775,7 +775,7 @@ export class MarketingApi {
    * Get a report task
    */
   async getReportTask(reportTaskId: string): Promise<ReportTask> {
-    return this.client.get<ReportTask>(
+    return await this.client.get<ReportTask>(
       `${this.basePath}/ad_report_task/${reportTaskId}`,
     );
   }
@@ -784,7 +784,7 @@ export class MarketingApi {
    * Get an item promotion
    */
   async getItemPromotion(promotionId: string): Promise<ItemPromotionResponse> {
-    return this.client.get<ItemPromotionResponse>(
+    return await this.client.get<ItemPromotionResponse>(
       `${this.basePath}/item_promotion/${promotionId}`,
     );
   }
@@ -793,7 +793,7 @@ export class MarketingApi {
    * Delete an item promotion
    */
   async deleteItemPromotion(promotionId: string): Promise<void> {
-    return this.client.delete<void>(
+    return await this.client.delete<void>(
       `${this.basePath}/item_promotion/${promotionId}`,
     );
   }
@@ -802,7 +802,7 @@ export class MarketingApi {
    * Pause an item promotion
    */
   async pauseItemPromotion(promotionId: string): Promise<void> {
-    return this.client.post<void>(
+    return await this.client.post<void>(
       `${this.basePath}/item_promotion/${promotionId}/pause`,
       {},
     );
@@ -812,7 +812,7 @@ export class MarketingApi {
    * Resume an item promotion
    */
   async resumeItemPromotion(promotionId: string): Promise<void> {
-    return this.client.post<void>(
+    return await this.client.post<void>(
       `${this.basePath}/item_promotion/${promotionId}/resume`,
       {},
     );
@@ -825,7 +825,7 @@ export class MarketingApi {
     promotionId: string,
     body: ItemPromotionRequest,
   ): Promise<BaseResponse> {
-    return this.client.put<BaseResponse>(
+    return await this.client.put<BaseResponse>(
       `${this.basePath}/item_promotion/${promotionId}`,
       body,
     );
@@ -846,7 +846,7 @@ export class MarketingApi {
     if (promotionStatus) params.promotion_status = promotionStatus;
     if (limit) params.limit = limit;
     if (offset) params.offset = offset;
-    return this.client.get<PromotionsReportPagedCollection>(
+    return await this.client.get<PromotionsReportPagedCollection>(
       `${this.basePath}/promotion_report`,
       params,
     );
@@ -859,7 +859,7 @@ export class MarketingApi {
     marketplaceId: string,
   ): Promise<SummaryReportResponse> {
     const params = { marketplace_id: marketplaceId };
-    return this.client.get<SummaryReportResponse>(
+    return await this.client.get<SummaryReportResponse>(
       `${this.basePath}/promotion_summary_report`,
       params,
     );
@@ -869,7 +869,7 @@ export class MarketingApi {
    * Get targeting for a campaign
    */
   async getTargeting(campaignId: string): Promise<TargetingResponse> {
-    return this.client.get<TargetingResponse>(
+    return await this.client.get<TargetingResponse>(
       `${this.basePath}/ad_campaign/${campaignId}/targeting`,
     );
   }
@@ -881,7 +881,7 @@ export class MarketingApi {
     campaignId: string,
     body: TargetingRequest,
   ): Promise<void> {
-    return this.client.post<void>(
+    return await this.client.post<void>(
       `${this.basePath}/ad_campaign/${campaignId}/targeting`,
       body,
     );
@@ -894,7 +894,7 @@ export class MarketingApi {
     campaignId: string,
     body: TargetingRequest,
   ): Promise<void> {
-    return this.client.put<void>(
+    return await this.client.put<void>(
       `${this.basePath}/ad_campaign/${campaignId}/targeting`,
       body,
     );
@@ -911,7 +911,7 @@ export class MarketingApi {
     const params: Record<string, string | number> = {};
     if (limit) params.limit = limit;
     if (offset) params.offset = offset;
-    return this.client.get<NegativeKeywordPagedCollection>(
+    return await this.client.get<NegativeKeywordPagedCollection>(
       `${this.basePath}/ad_campaign/${campaignId}/negative_keyword`,
       params,
     );
@@ -924,7 +924,7 @@ export class MarketingApi {
     campaignId: string,
     body: CreateNegativeKeywordRequest,
   ): Promise<BaseResponse> {
-    return this.client.post<BaseResponse>(
+    return await this.client.post<BaseResponse>(
       `${this.basePath}/ad_campaign/${campaignId}/negative_keyword`,
       body,
     );
@@ -937,7 +937,7 @@ export class MarketingApi {
     campaignId: string,
     body: BulkCreateNegativeKeywordRequest,
   ): Promise<BulkCreateNegativeKeywordResponse> {
-    return this.client.post<BulkCreateNegativeKeywordResponse>(
+    return await this.client.post<BulkCreateNegativeKeywordResponse>(
       `${this.basePath}/ad_campaign/${campaignId}/bulk_create_negative_keywords`,
       body,
     );
@@ -950,7 +950,7 @@ export class MarketingApi {
     campaignId: string,
     body: BulkDeleteNegativeKeywordRequest,
   ): Promise<BulkDeleteNegativeKeywordResponse> {
-    return this.client.post<BulkDeleteNegativeKeywordResponse>(
+    return await this.client.post<BulkDeleteNegativeKeywordResponse>(
       `${this.basePath}/ad_campaign/${campaignId}/bulk_delete_negative_keywords`,
       body,
     );
@@ -963,7 +963,7 @@ export class MarketingApi {
     campaignId: string,
     body: BulkUpdateNegativeKeywordRequest,
   ): Promise<BulkUpdateNegativeKeywordResponse> {
-    return this.client.post<BulkUpdateNegativeKeywordResponse>(
+    return await this.client.post<BulkUpdateNegativeKeywordResponse>(
       `${this.basePath}/ad_campaign/${campaignId}/bulk_update_negative_keywords`,
       body,
     );
@@ -976,7 +976,7 @@ export class MarketingApi {
     campaignId: string,
     negativeKeywordId: string,
   ): Promise<NegativeKeyword> {
-    return this.client.get<NegativeKeyword>(
+    return await this.client.get<NegativeKeyword>(
       `${this.basePath}/ad_campaign/${campaignId}/negative_keyword/${negativeKeywordId}`,
     );
   }
@@ -988,7 +988,7 @@ export class MarketingApi {
     campaignId: string,
     negativeKeywordId: string,
   ): Promise<void> {
-    return this.client.delete<void>(
+    return await this.client.delete<void>(
       `${this.basePath}/ad_campaign/${campaignId}/negative_keyword/${negativeKeywordId}`,
     );
   }
@@ -1001,7 +1001,7 @@ export class MarketingApi {
     negativeKeywordId: string,
     body: NegativeKeywordRequest,
   ): Promise<BaseResponse> {
-    return this.client.put<BaseResponse>(
+    return await this.client.put<BaseResponse>(
       `${this.basePath}/ad_campaign/${campaignId}/negative_keyword/${negativeKeywordId}`,
       body,
     );
@@ -1018,7 +1018,7 @@ export class MarketingApi {
     const params: Record<string, string | number> = {};
     if (limit) params.limit = limit;
     if (offset) params.offset = offset;
-    return this.client.get<NegativeKeywordPagedCollection>(
+    return await this.client.get<NegativeKeywordPagedCollection>(
       `${this.basePath}/ad_group/${adGroupId}/negative_keyword`,
       params,
     );
@@ -1031,7 +1031,7 @@ export class MarketingApi {
     adGroupId: string,
     body: CreateNegativeKeywordRequest,
   ): Promise<BaseResponse> {
-    return this.client.post<BaseResponse>(
+    return await this.client.post<BaseResponse>(
       `${this.basePath}/ad_group/${adGroupId}/negative_keyword`,
       body,
     );
@@ -1044,7 +1044,7 @@ export class MarketingApi {
     adGroupId: string,
     body: BulkCreateNegativeKeywordRequest,
   ): Promise<BulkCreateNegativeKeywordResponse> {
-    return this.client.post<BulkCreateNegativeKeywordResponse>(
+    return await this.client.post<BulkCreateNegativeKeywordResponse>(
       `${this.basePath}/ad_group/${adGroupId}/bulk_create_negative_keywords`,
       body,
     );
@@ -1057,7 +1057,7 @@ export class MarketingApi {
     adGroupId: string,
     body: BulkDeleteNegativeKeywordRequest,
   ): Promise<BulkDeleteNegativeKeywordResponse> {
-    return this.client.post<BulkDeleteNegativeKeywordResponse>(
+    return await this.client.post<BulkDeleteNegativeKeywordResponse>(
       `${this.basePath}/ad_group/${adGroupId}/bulk_delete_negative_keywords`,
       body,
     );
@@ -1070,7 +1070,7 @@ export class MarketingApi {
     adGroupId: string,
     body: BulkUpdateNegativeKeywordRequest,
   ): Promise<BulkUpdateNegativeKeywordResponse> {
-    return this.client.post<BulkUpdateNegativeKeywordResponse>(
+    return await this.client.post<BulkUpdateNegativeKeywordResponse>(
       `${this.basePath}/ad_group/${adGroupId}/bulk_update_negative_keywords`,
       body,
     );
@@ -1083,7 +1083,7 @@ export class MarketingApi {
     adGroupId: string,
     negativeKeywordId: string,
   ): Promise<NegativeKeyword> {
-    return this.client.get<NegativeKeyword>(
+    return await this.client.get<NegativeKeyword>(
       `${this.basePath}/ad_group/${adGroupId}/negative_keyword/${negativeKeywordId}`,
     );
   }
@@ -1095,7 +1095,7 @@ export class MarketingApi {
     adGroupId: string,
     negativeKeywordId: string,
   ): Promise<void> {
-    return this.client.delete<void>(
+    return await this.client.delete<void>(
       `${this.basePath}/ad_group/${adGroupId}/negative_keyword/${negativeKeywordId}`,
     );
   }
@@ -1108,7 +1108,7 @@ export class MarketingApi {
     negativeKeywordId: string,
     body: NegativeKeywordRequest,
   ): Promise<BaseResponse> {
-    return this.client.put<BaseResponse>(
+    return await this.client.put<BaseResponse>(
       `${this.basePath}/ad_group/${adGroupId}/negative_keyword/${negativeKeywordId}`,
       body,
     );

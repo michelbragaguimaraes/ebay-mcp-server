@@ -1,4 +1,4 @@
-import { EbayApiClient } from '../client.js';
+import type { EbayApiClient } from '../client.js';
 
 /**
  * eDelivery API - International shipping eDelivery
@@ -7,19 +7,19 @@ import { EbayApiClient } from '../client.js';
 export class EDeliveryApi {
   private readonly basePath = '/sell/logistics/v1';
 
-  constructor(private client: EbayApiClient) {}
+  constructor(private client: EbayApiClient) { }
 
   /**
    * Create shipping quote
    */
   async createShippingQuote(shippingQuoteRequest: Record<string, unknown>) {
-    return this.client.post(`${this.basePath}/shipping_quote`, shippingQuoteRequest);
+    return await this.client.post(`${this.basePath}/shipping_quote`, shippingQuoteRequest);
   }
 
   /**
    * Get shipping quote
    */
   async getShippingQuote(shippingQuoteId: string) {
-    return this.client.get(`${this.basePath}/shipping_quote/${shippingQuoteId}`);
+    return await this.client.get(`${this.basePath}/shipping_quote/${shippingQuoteId}`);
   }
 }

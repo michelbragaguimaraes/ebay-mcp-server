@@ -1,5 +1,5 @@
 import type { components } from '../../types/sell_fulfillment_v1_oas3.js';
-import { EbayApiClient } from '../client.js';
+import type { EbayApiClient } from '../client.js';
 
 type IssueRefundRequest = components["schemas"]["IssueRefundRequest"];
 type ShippingFulfillmentDetails = components["schemas"]["ShippingFulfillmentDetails"];
@@ -26,14 +26,14 @@ export class FulfillmentApi {
     if (filter) params.filter = filter;
     if (limit) params.limit = limit;
     if (offset) params.offset = offset;
-    return this.client.get<OrderSearchPagedCollection>(`${this.basePath}/order`, params);
+    return await this.client.get<OrderSearchPagedCollection>(`${this.basePath}/order`, params);
   }
 
   /**
    * Get a specific order
    */
   async getOrder(orderId: string): Promise<Order> {
-    return this.client.get<Order>(`${this.basePath}/order/${orderId}`);
+    return await this.client.get<Order>(`${this.basePath}/order/${orderId}`);
   }
 
   /**
@@ -43,7 +43,7 @@ export class FulfillmentApi {
     orderId: string,
     fulfillment: ShippingFulfillmentDetails
   ): Promise<void> {
-    return this.client.post<void>(
+    return await this.client.post<void>(
       `${this.basePath}/order/${orderId}/shipping_fulfillment`,
       fulfillment
     );
@@ -53,7 +53,7 @@ export class FulfillmentApi {
    * Get shipping fulfillments for an order
    */
   async getShippingFulfillments(orderId: string): Promise<ShippingFulfillmentPagedCollection> {
-    return this.client.get<ShippingFulfillmentPagedCollection>(`${this.basePath}/order/${orderId}/shipping_fulfillment`);
+    return await this.client.get<ShippingFulfillmentPagedCollection>(`${this.basePath}/order/${orderId}/shipping_fulfillment`);
   }
 
   /**
@@ -62,7 +62,7 @@ export class FulfillmentApi {
    * @param fulfillmentId The unique identifier of the fulfillment.
    */
   async getShippingFulfillment(orderId: string, fulfillmentId: string): Promise<ShippingFulfillment> {
-    return this.client.get<ShippingFulfillment>(
+    return await this.client.get<ShippingFulfillment>(
       `${this.basePath}/order/${orderId}/shipping_fulfillment/${fulfillmentId}`
     );
   }
@@ -71,6 +71,6 @@ export class FulfillmentApi {
    * Issue a refund
    */
   async issueRefund(orderId: string, refund: IssueRefundRequest): Promise<Refund> {
-    return this.client.post<Refund>(`${this.basePath}/order/${orderId}/issue_refund`, refund);
+    return await this.client.post<Refund>(`${this.basePath}/order/${orderId}/issue_refund`, refund);
   }
 }

@@ -1,4 +1,4 @@
-import { EbayApiClient } from '../client.js';
+import type { EbayApiClient } from '../client.js';
 
 /**
  * Negotiation API - Buyer-seller negotiations and offers
@@ -7,7 +7,7 @@ import { EbayApiClient } from '../client.js';
 export class NegotiationApi {
   private readonly basePath = '/sell/negotiation/v1';
 
-  constructor(private client: EbayApiClient) {}
+  constructor(private client: EbayApiClient) { }
 
   /**
    * Find eligible items for a seller-initiated offer
@@ -76,6 +76,6 @@ export class NegotiationApi {
     if (filter) params.filter = filter;
     if (limit) params.limit = limit;
     if (offset) params.offset = offset;
-    return this.client.get(`${this.basePath}/offer`, params);
+    return await this.client.get(`${this.basePath}/offer`, params);
   }
 }

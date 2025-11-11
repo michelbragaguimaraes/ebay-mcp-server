@@ -1,4 +1,5 @@
 import type { EbaySellerApi } from "@/api/index.js";
+import { TokenStorage } from "@/auth/token-storage.js";
 import { getOAuthAuthorizationUrl, validateScopes } from "@/config/environment.js";
 import { createTokenTemplateFileExecute } from "@/tools/token-template.js";
 import { convertToTimestamp, validateTokenExpiry } from "@/utils/date-converter.js";
@@ -324,11 +325,11 @@ export async function executeTool(
         // Set tokens (will use defaults if expiry times not provided)
         await api.setUserTokens(accessToken, refreshToken, accessExpiry, refreshExpiry);
 
-        // Get the stored token info to check expiry status
-        const tokenInfo = api.getTokenInfo();
+        // Load stored tokens to check expiry status
+        const storedTokens = await TokenStorage.loadTokens();
 
         // If autoRefresh is enabled and access token is expired but refresh token is valid
-        if (autoRefresh && tokenInfo.accessTokenExpired && !tokenInfo.refreshTokenExpired) {
+        if (autoRefresh && storedTokens && TokenStorage.isAccessTokenExpired(storedTokens) && !TokenStorage.isRefreshTokenExpired(storedTokens)) {
           try {
             // Force a refresh by calling getAccessToken
             const authClient = api.getAuthClient().getOAuthClient();
@@ -347,7 +348,7 @@ export async function executeTool(
             return {
               success: true,
               message: "User tokens stored, but failed to refresh expired access token. You may need to re-authorize.",
-              tokenInfo,
+              tokenInfo: api.getTokenInfo(),
               refreshed: false,
               refreshError: refreshError instanceof Error ? refreshError.message : 'Unknown error'
             };
@@ -357,7 +358,7 @@ export async function executeTool(
         return {
           success: true,
           message: "User tokens successfully stored. These tokens will be used for all subsequent API requests and will be automatically refreshed when needed.",
-          tokenInfo,
+          tokenInfo: api.getTokenInfo(),
           refreshed: false
         };
       } catch (error) {

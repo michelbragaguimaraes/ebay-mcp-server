@@ -1,5 +1,5 @@
-import type { components } from "@/types/sell_fulfillment_v1_oas3.js";
 import type { EbayApiClient } from "@/api/client.js";
+import type { components } from "@/types/sell_fulfillment_v1_oas3.js";
 
 type AcceptPaymentDisputeRequest = components["schemas"]["AcceptPaymentDisputeRequest"];
 type ContestPaymentDisputeRequest = components["schemas"]["ContestPaymentDisputeRequest"];
@@ -24,7 +24,7 @@ export class DisputeApi {
    * Get payment dispute details
    */
   async getPaymentDispute(paymentDisputeId: string): Promise<PaymentDispute> {
-    return this.client.get<PaymentDispute>(
+    return await this.client.get<PaymentDispute>(
       `${this.basePath}/payment_dispute/${paymentDisputeId}`,
     );
   }
@@ -41,7 +41,7 @@ export class DisputeApi {
       evidence_id: evidenceId,
       file_id: fileId,
     };
-    return this.client.get<ArrayBuffer>(
+    return await this.client.get<ArrayBuffer>(
       `${this.basePath}/payment_dispute/${paymentDisputeId}/fetch_evidence_content`,
       params
     );
@@ -51,7 +51,7 @@ export class DisputeApi {
    * Get payment dispute activity
    */
   async getActivities(paymentDisputeId: string): Promise<PaymentDisputeActivityHistory> {
-    return this.client.get<PaymentDisputeActivityHistory>(
+    return await this.client.get<PaymentDisputeActivityHistory>(
       `${this.basePath}/payment_dispute/${paymentDisputeId}/activity`
     );
   }
@@ -68,7 +68,7 @@ export class DisputeApi {
     limit?: number;
     offset?: number;
   }): Promise<DisputeSummaryResponse> {
-    return this.client.get<DisputeSummaryResponse>(`${this.basePath}/payment_dispute_summary`, params);
+    return await this.client.get<DisputeSummaryResponse>(`${this.basePath}/payment_dispute_summary`, params);
   }
 
   /**
@@ -78,7 +78,7 @@ export class DisputeApi {
     paymentDisputeId: string,
     body?: ContestPaymentDisputeRequest
   ): Promise<void> {
-    return this.client.post<void>(
+    return await this.client.post<void>(
       `${this.basePath}/payment_dispute/${paymentDisputeId}/contest`,
       body
     );
@@ -91,7 +91,7 @@ export class DisputeApi {
     paymentDisputeId: string,
     body?: AcceptPaymentDisputeRequest
   ): Promise<void> {
-    return this.client.post<void>(
+    return await this.client.post<void>(
       `${this.basePath}/payment_dispute/${paymentDisputeId}/accept`,
       body
     );
@@ -104,7 +104,7 @@ export class DisputeApi {
     paymentDisputeId: string,
     body: ArrayBuffer
   ): Promise<FileEvidence> {
-    return this.client.post<FileEvidence>(
+    return await this.client.post<FileEvidence>(
       `${this.basePath}/payment_dispute/${paymentDisputeId}/upload_evidence_file`,
       body,
       { headers: { 'Content-Type': 'multipart/form-data' } }
@@ -118,7 +118,7 @@ export class DisputeApi {
     paymentDisputeId: string,
     body: AddEvidencePaymentDisputeRequest
   ): Promise<AddEvidencePaymentDisputeResponse> {
-    return this.client.post<AddEvidencePaymentDisputeResponse>(
+    return await this.client.post<AddEvidencePaymentDisputeResponse>(
       `${this.basePath}/payment_dispute/${paymentDisputeId}/add_evidence`,
       body
     );
@@ -131,7 +131,7 @@ export class DisputeApi {
     paymentDisputeId: string,
     body: UpdateEvidencePaymentDisputeRequest
   ): Promise<void> {
-    return this.client.post<void>(
+    return await this.client.post<void>(
       `${this.basePath}/payment_dispute/${paymentDisputeId}/update_evidence`,
       body
     );

@@ -1,4 +1,4 @@
-import { EbayApiClient } from '../client.js';
+import type { EbayApiClient } from '../client.js';
 
 /**
  * Compliance API - Listing compliance checks
@@ -7,7 +7,7 @@ import { EbayApiClient } from '../client.js';
 export class ComplianceApi {
   private readonly basePath = '/sell/compliance/v1';
 
-  constructor(private client: EbayApiClient) {}
+  constructor(private client: EbayApiClient) { }
 
   /**
    * Get listing violations
@@ -21,7 +21,7 @@ export class ComplianceApi {
     if (complianceType) params.compliance_type = complianceType;
     if (offset) params.offset = offset;
     if (limit) params.limit = limit;
-    return this.client.get(`${this.basePath}/listing_violation`, params);
+    return await this.client.get(`${this.basePath}/listing_violation`, params);
   }
 
   /**
@@ -30,14 +30,14 @@ export class ComplianceApi {
   async getListingViolationsSummary(complianceType?: string) {
     const params: Record<string, string> = {};
     if (complianceType) params.compliance_type = complianceType;
-    return this.client.get(`${this.basePath}/listing_violation_summary`, params);
+    return await this.client.get(`${this.basePath}/listing_violation_summary`, params);
   }
 
   /**
    * Suppress a violation
    */
   async suppressViolation(listingViolationId: string) {
-    return this.client.post(
+    return await this.client.post(
       `${this.basePath}/suppress_violation`,
       { listing_violation_id: listingViolationId }
     );

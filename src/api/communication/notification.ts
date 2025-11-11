@@ -1,4 +1,4 @@
-import { EbayApiClient } from '../client.js';
+import type { EbayApiClient } from '../client.js';
 
 /**
  * Notification API - Event notifications and subscriptions
@@ -7,7 +7,7 @@ import { EbayApiClient } from '../client.js';
 export class NotificationApi {
   private readonly basePath = '/commerce/notification/v1';
 
-  constructor(private client: EbayApiClient) {}
+  constructor(private client: EbayApiClient) { }
 
   /**
    * Get public key for validating notifications

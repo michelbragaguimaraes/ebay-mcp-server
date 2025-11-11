@@ -1,7 +1,7 @@
-import axios, { type AxiosInstance, type AxiosRequestConfig, type AxiosError } from "axios";
 import { EbayOAuthClient } from "@/auth/oauth.js";
 import { getBaseUrl } from "@/config/environment.js";
 import type { EbayApiError, EbayConfig } from "@/types/ebay.js";
+import axios, { type AxiosError, type AxiosInstance, type AxiosRequestConfig } from "axios";
 
 /**
  * Rate limit tracking
@@ -96,7 +96,7 @@ export class EbayApiClient {
         return response;
       },
       async (error: AxiosError) => {
-        const axiosError = error as AxiosError;
+        const axiosError = error;
 
         // Handle rate limit errors (429)
         if (axiosError.response?.status === 429) {
@@ -124,7 +124,7 @@ export class EbayApiClient {
             );
 
             await new Promise(resolve => setTimeout(resolve, delay));
-            return this.httpClient.request(config!);
+            return await this.httpClient.request(config!);
           }
         }
 
@@ -221,8 +221,13 @@ export class EbayApiClient {
   /**
    * Set user access and refresh tokens
    */
-  async setUserTokens(accessToken: string, refreshToken: string): Promise<void> {
-    await this.authClient.setUserTokens(accessToken, refreshToken);
+  async setUserTokens(
+    accessToken: string,
+    refreshToken: string,
+    accessTokenExpiry?: number,
+    refreshTokenExpiry?: number,
+  ): Promise<void> {
+    await this.authClient.setUserTokens(accessToken, refreshToken, accessTokenExpiry, refreshTokenExpiry);
   }
 
   /**

@@ -1,4 +1,4 @@
-import { EbayApiClient } from '../client.js';
+import type { EbayApiClient } from '../client.js';
 
 /**
  * Message API - Buyer-seller messaging
@@ -7,7 +7,7 @@ import { EbayApiClient } from '../client.js';
 export class MessageApi {
   private readonly basePath = '/commerce/message/v1';
 
-  constructor(private client: EbayApiClient) {}
+  constructor(private client: EbayApiClient) { }
 
   /**
    * Bulk update conversation
@@ -126,7 +126,7 @@ export class MessageApi {
    * @deprecated Use getConversations() instead
    */
   async searchMessages(filter?: string, limit?: number, offset?: number) {
-    return this.getConversations(filter, limit, offset);
+    return await this.getConversations(filter, limit, offset);
   }
 
   /**
@@ -134,7 +134,7 @@ export class MessageApi {
    * @deprecated Use getConversation() instead
    */
   async getMessage(messageId: string) {
-    return this.getConversation(messageId);
+    return await this.getConversation(messageId);
   }
 
   /**
@@ -142,7 +142,7 @@ export class MessageApi {
    * @deprecated Use sendMessage() instead
    */
   async replyToMessage(messageId: string, messageContent: string) {
-    return this.sendMessage({
+    return await this.sendMessage({
       conversation_id: messageId,
       message_content: messageContent
     });

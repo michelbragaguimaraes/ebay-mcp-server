@@ -1,4 +1,4 @@
-import { EbayApiClient } from '../client.js';
+import type { EbayApiClient } from '../client.js';
 
 /**
  * Feedback API - Manage buyer and seller feedback
@@ -7,7 +7,7 @@ import { EbayApiClient } from '../client.js';
 export class FeedbackApi {
   private readonly basePath = '/commerce/feedback/v1';
 
-  constructor(private client: EbayApiClient) {}
+  constructor(private client: EbayApiClient) { }
 
   /**
    * Get items awaiting feedback
@@ -130,6 +130,6 @@ export class FeedbackApi {
    * @deprecated Use getFeedbackRatingSummary() instead
    */
   async getFeedbackSummary() {
-    return this.getFeedbackRatingSummary();
+    return await this.getFeedbackRatingSummary();
   }
 }

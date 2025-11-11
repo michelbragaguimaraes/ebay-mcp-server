@@ -18,7 +18,7 @@ export class TranslationApi {
     translationContext: string,
     text: string[],
   ) {
-    return this.client.post(`${this.basePath}/translate`, {
+    return await this.client.post(`${this.basePath}/translate`, {
       from,
       to,
       translationContext,

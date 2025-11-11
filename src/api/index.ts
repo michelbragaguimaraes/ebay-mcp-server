@@ -1,4 +1,3 @@
-import type { EbayConfig } from "@/types/ebay.js";
 import { AccountApi } from "@/api/account-management/account.js";
 import { AnalyticsApi } from "@/api/analytics-and-report/analytics.js";
 import { EbayApiClient } from "@/api/client.js";
@@ -18,6 +17,7 @@ import { EDeliveryApi } from "@/api/other/edelivery.js";
 import { IdentityApi } from "@/api/other/identity.js";
 import { TranslationApi } from "@/api/other/translation.js";
 import { VeroApi } from "@/api/other/vero.js";
+import type { EbayConfig } from "@/types/ebay.js";
 
 /**
  * Main API facade providing access to all eBay APIs
@@ -93,8 +93,13 @@ export class EbaySellerApi {
   /**
    * Set user access and refresh tokens
    */
-  async setUserTokens(accessToken: string, refreshToken: string): Promise<void> {
-    await this.client.setUserTokens(accessToken, refreshToken);
+  async setUserTokens(
+    accessToken: string,
+    refreshToken: string,
+    accessTokenExpiry?: number,
+    refreshTokenExpiry?: number,
+  ): Promise<void> {
+    await this.client.setUserTokens(accessToken, refreshToken, accessTokenExpiry, refreshTokenExpiry);
   }
 
   /**
@@ -131,3 +136,4 @@ export * from "@/api/other/edelivery.js";
 export * from "@/api/other/identity.js";
 export * from "@/api/other/translation.js";
 export * from "@/api/other/vero.js";
+
