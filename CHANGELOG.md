@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.3] - 2025-11-12
+
+### Fixed
+- **Marketing API Test Suite**: Fixed 11 failing tests in `tests/unit/api/marketing.test.ts`
+  - Fixed `updateAdGroupBids` test: Added missing `adGroupId` parameter and corrected endpoint path
+  - Fixed `updateAdGroupKeywords` test: Added missing `adGroupId` parameter and corrected endpoint path
+  - Fixed keyword bulk operation tests: Changed singular endpoints to plural (`bulk_create_keywords`, `bulk_delete_keywords`, `bulk_update_keyword_bids`)
+  - Fixed negative keyword tests: Changed singular endpoints to plural for both campaign and ad group levels
+  - Updated mocks to return `void` for methods with `Promise<void>` return type
+
+### Quality Improvements
+- All 784 tests now passing (100% test suite health)
+- Function coverage: 99.17% (exceeds 91% threshold)
+- Line coverage: 85.18% (exceeds 83% threshold)
+- Improved test reliability and accuracy for eBay Marketing API operations
+
 ### Added
 - **Automated MCP Client Setup Script** (`scripts/setup-mcp-clients.sh`)
   - Auto-detects and configures Claude Desktop, Gemini CLI, and ChatGPT Desktop
