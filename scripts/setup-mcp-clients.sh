@@ -135,7 +135,7 @@ read_config() {
     # Read optional tokens
     ACCESS_TOKEN=$(jq -r '.ebay.tokens.accessToken // empty' "$SETUP_FILE")
     REFRESH_TOKEN=$(jq -r '.ebay.tokens.refreshToken // empty' "$SETUP_FILE")
-    CLIENT_TOKEN=$(jq -r '.ebay.tokens.clientToken // empty' "$SETUP_FILE")
+    CLIENT_TOKEN=$(jq -r '.ebay.tokens.appAccessToken // empty' "$SETUP_FILE")
     CLIENT_REFRESH_TOKEN=$(jq -r '.ebay.tokens.clientRefreshToken // empty' "$SETUP_FILE")
 
     # Read MCP server settings
