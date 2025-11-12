@@ -230,8 +230,9 @@ export class EbayOAuthClient {
 
   /**
    * Refresh user access token using refresh token
+   * This method is public and can be called by LLMs when encountering authentication errors
    */
-  private async refreshUserToken(): Promise<void> {
+  async refreshUserToken(): Promise<void> {
     if (!this.userTokens) {
       throw new Error("No user tokens available to refresh");
     }

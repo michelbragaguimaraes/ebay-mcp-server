@@ -99,6 +99,60 @@ export class EbayApiClient {
       },
       async (error: AxiosError) => {
         const axiosError = error;
+        const config = axiosError.config;
+
+        // Handle authentication errors (401 Unauthorized)
+        if (axiosError.response?.status === 401) {
+          const retryCount = (config as any).__authRetryCount || 0;
+
+          // Only retry once to avoid infinite loops
+          if (retryCount === 0) {
+            (config as any).__authRetryCount = 1;
+
+            console.error('eBay API authentication error (401). Attempting to refresh user token...');
+
+            try {
+              // Force token refresh by getting a new access token
+              // The getAccessToken() method will automatically refresh if needed
+              const newToken = await this.authClient.getAccessToken();
+
+              // Update the request with the new token
+              if (config?.headers) {
+                config.headers.Authorization = `Bearer ${newToken}`;
+              }
+
+              console.error('Token refreshed successfully. Retrying request...');
+
+              // Retry the request with the new token
+              return await this.httpClient.request(config!);
+            } catch (refreshError) {
+              console.error('Failed to refresh token:', refreshError);
+
+              // If refresh fails, provide clear guidance
+              const ebayError = axiosError.response?.data as EbayApiError;
+              const originalError = ebayError.errors?.[0]?.longMessage ||
+                                   ebayError.errors?.[0]?.message ||
+                                   'Invalid access token';
+
+              throw new Error(
+                `${originalError}. ` +
+                `Token refresh failed: ${refreshError instanceof Error ? refreshError.message : 'Unknown error'}. ` +
+                `Please use the ebay_set_user_tokens_with_expiry tool to provide valid tokens.`
+              );
+            }
+          }
+
+          // If retry already attempted, provide helpful error message
+          const ebayError = axiosError.response?.data as EbayApiError;
+          const errorMessage = ebayError.errors?.[0]?.longMessage ||
+                              ebayError.errors?.[0]?.message ||
+                              'Invalid access token';
+
+          throw new Error(
+            `${errorMessage}. ` +
+            `Automatic token refresh failed. Please use the ebay_set_user_tokens_with_expiry tool to provide valid tokens.`
+          );
+        }
 
         // Handle rate limit errors (429)
         if (axiosError.response?.status === 429) {
@@ -113,7 +167,6 @@ export class EbayApiClient {
 
         // Handle server errors with retry suggestion (500, 502, 503, 504)
         if (axiosError.response?.status && axiosError.response.status >= 500) {
-          const config = axiosError.config;
           const retryCount = (config as any).__retryCount || 0;
 
           if (retryCount < 3) {
@@ -261,6 +314,15 @@ export class EbayApiClient {
   }
 
   /**
+   * Manually refresh user access token using the refresh token
+   * This is useful when you encounter "Invalid access token" errors
+   * The token will be automatically saved to storage after refresh
+   */
+  async refreshUserToken(): Promise<void> {
+    await this.authClient.refreshUserToken();
+  }
+
+  /**
    * Make a GET request with a full URL (for APIs that use different base URLs)
    * Used by Identity API which uses apiz subdomain
    */
@@ -279,22 +341,68 @@ export class EbayApiClient {
     }
 
     // Get auth token
-    const token = await this.authClient.getAccessToken();
+    let token = await this.authClient.getAccessToken();
 
     // Record the request
     this.rateLimitTracker.recordRequest();
 
-    // Make request with full URL
-    const response = await axios.get<T>(fullUrl, {
-      params,
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      timeout: 30000,
-    });
+    try {
+      // Make request with full URL
+      const response = await axios.get<T>(fullUrl, {
+        params,
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        timeout: 30000,
+      });
 
-    return response.data;
+      return response.data;
+    } catch (error) {
+      // Handle 401 authentication errors with automatic token refresh
+      if (axios.isAxiosError(error) && error.response?.status === 401) {
+        console.error('eBay API authentication error (401). Attempting to refresh user token...');
+
+        try {
+          // Refresh the token
+          await this.authClient.refreshUserToken();
+
+          // Get the new token
+          token = await this.authClient.getAccessToken();
+
+          console.error('Token refreshed successfully. Retrying request...');
+
+          // Retry the request with the new token
+          const response = await axios.get<T>(fullUrl, {
+            params,
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+            timeout: 30000,
+          });
+
+          return response.data;
+        } catch (refreshError) {
+          console.error('Failed to refresh token:', refreshError);
+
+          const ebayError = error.response?.data as EbayApiError;
+          const originalError = ebayError.errors?.[0]?.longMessage ||
+                               ebayError.errors?.[0]?.message ||
+                               'Invalid access token';
+
+          throw new Error(
+            `${originalError}. ` +
+            `Token refresh failed: ${refreshError instanceof Error ? refreshError.message : 'Unknown error'}. ` +
+            `Please use the ebay_set_user_tokens_with_expiry tool to provide valid tokens.`
+          );
+        }
+      }
+
+      // Re-throw other errors
+      throw error;
+    }
   }
 }
