@@ -7,7 +7,7 @@ import type { EbayApiClient } from '../client.js';
 export class NegotiationApi {
   private readonly basePath = '/sell/negotiation/v1';
 
-  constructor(private client: EbayApiClient) { }
+  constructor(private client: EbayApiClient) {}
 
   /**
    * Find eligible items for a seller-initiated offer
@@ -56,10 +56,7 @@ export class NegotiationApi {
     }
 
     try {
-      return await this.client.post(
-        `${this.basePath}/send_offer_to_interested_buyers`,
-        offerData
-      );
+      return await this.client.post(`${this.basePath}/send_offer_to_interested_buyers`, offerData);
     } catch (error) {
       throw new Error(
         `Failed to send offer to interested buyers: ${error instanceof Error ? error.message : 'Unknown error'}`

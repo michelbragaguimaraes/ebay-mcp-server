@@ -60,11 +60,7 @@ export class TokenStorage {
    */
   static async saveTokens(tokens: StoredTokenData): Promise<void> {
     try {
-      await fs.writeFile(
-        TOKEN_FILE_PATH,
-        JSON.stringify(tokens, null, 2),
-        'utf-8'
-      );
+      await fs.writeFile(TOKEN_FILE_PATH, JSON.stringify(tokens, null, 2), 'utf-8');
     } catch (error) {
       throw new Error(
         `Failed to save tokens: ${error instanceof Error ? error.message : 'Unknown error'}`

@@ -7,7 +7,7 @@ import type { EbayApiClient } from '../client.js';
 export class FeedbackApi {
   private readonly basePath = '/commerce/feedback/v1';
 
-  constructor(private client: EbayApiClient) { }
+  constructor(private client: EbayApiClient) {}
 
   /**
    * Get items awaiting feedback
@@ -57,7 +57,7 @@ export class FeedbackApi {
 
     try {
       return await this.client.get(`${this.basePath}/feedback`, {
-        transaction_id: transactionId
+        transaction_id: transactionId,
       });
     } catch (error) {
       throw new Error(
@@ -116,7 +116,7 @@ export class FeedbackApi {
     try {
       return await this.client.post(`${this.basePath}/respond_to_feedback`, {
         feedback_id: feedbackId,
-        response_text: responseText
+        response_text: responseText,
       });
     } catch (error) {
       throw new Error(

@@ -11,7 +11,7 @@ describe('AnalyticsApi', () => {
       get: vi.fn(),
       post: vi.fn(),
       put: vi.fn(),
-      delete: vi.fn()
+      delete: vi.fn(),
     } as unknown as EbayApiClient;
     api = new AnalyticsApi(client);
   });
@@ -23,9 +23,9 @@ describe('AnalyticsApi', () => {
           {
             listingId: '123',
             dimension: 'LISTING',
-            metrics: { CLICK_THROUGH_RATE: '5.2', IMPRESSION: '1000' }
-          }
-        ]
+            metrics: { CLICK_THROUGH_RATE: '5.2', IMPRESSION: '1000' },
+          },
+        ],
       };
       vi.mocked(client.get).mockResolvedValue(mockResponse);
 
@@ -39,26 +39,26 @@ describe('AnalyticsApi', () => {
       expect(client.get).toHaveBeenCalledWith('/sell/analytics/v1/traffic_report', {
         dimension: 'LISTING',
         filter: 'listingId:123',
-        metric: 'CLICK_THROUGH_RATE,IMPRESSION'
+        metric: 'CLICK_THROUGH_RATE,IMPRESSION',
       });
     });
 
     it('should throw error when dimension is missing', async () => {
-      await expect(
-        api.getTrafficReport('' as any, 'filter', 'metric')
-      ).rejects.toThrow('dimension is required');
+      await expect(api.getTrafficReport('' as any, 'filter', 'metric')).rejects.toThrow(
+        'dimension is required'
+      );
     });
 
     it('should throw error when filter is missing', async () => {
-      await expect(
-        api.getTrafficReport('LISTING', '' as any, 'metric')
-      ).rejects.toThrow('filter is required');
+      await expect(api.getTrafficReport('LISTING', '' as any, 'metric')).rejects.toThrow(
+        'filter is required'
+      );
     });
 
     it('should throw error when metric is missing', async () => {
-      await expect(
-        api.getTrafficReport('LISTING', 'filter', '' as any)
-      ).rejects.toThrow('metric is required');
+      await expect(api.getTrafficReport('LISTING', 'filter', '' as any)).rejects.toThrow(
+        'metric is required'
+      );
     });
 
     it('should include optional sort parameter', async () => {
@@ -71,7 +71,7 @@ describe('AnalyticsApi', () => {
         dimension: 'DAY',
         filter: 'listingId:123',
         metric: 'IMPRESSION',
-        sort: 'IMPRESSION'
+        sort: 'IMPRESSION',
       });
     });
   });
@@ -85,9 +85,9 @@ describe('AnalyticsApi', () => {
             defaultProgram: true,
             evaluationDate: '2024-01-01',
             program: 'CUSTOMER_SERVICE',
-            standardsLevel: 'STANDARD'
-          }
-        ]
+            standardsLevel: 'STANDARD',
+          },
+        ],
       };
       vi.mocked(client.get).mockResolvedValue(mockResponse);
 
@@ -111,7 +111,7 @@ describe('AnalyticsApi', () => {
       const mockResponse = {
         cycle: { cycleType: 'CURRENT' },
         defaultProgram: true,
-        program: 'CUSTOMER_SERVICE'
+        program: 'CUSTOMER_SERVICE',
       };
       vi.mocked(client.get).mockResolvedValue(mockResponse);
 
@@ -124,23 +124,23 @@ describe('AnalyticsApi', () => {
     });
 
     it('should throw error when program is missing', async () => {
-      await expect(
-        api.getSellerStandardsProfile('' as any, 'CURRENT')
-      ).rejects.toThrow('program is required');
+      await expect(api.getSellerStandardsProfile('' as any, 'CURRENT')).rejects.toThrow(
+        'program is required'
+      );
     });
 
     it('should throw error when cycle is missing', async () => {
-      await expect(
-        api.getSellerStandardsProfile('CUSTOMER_SERVICE', '' as any)
-      ).rejects.toThrow('cycle is required');
+      await expect(api.getSellerStandardsProfile('CUSTOMER_SERVICE', '' as any)).rejects.toThrow(
+        'cycle is required'
+      );
     });
 
     it('should handle errors when fetching profile', async () => {
       vi.mocked(client.get).mockRejectedValue(new Error('Not Found'));
 
-      await expect(
-        api.getSellerStandardsProfile('CUSTOMER_SERVICE', 'CURRENT')
-      ).rejects.toThrow('Failed to get seller standards profile: Not Found');
+      await expect(api.getSellerStandardsProfile('CUSTOMER_SERVICE', 'CURRENT')).rejects.toThrow(
+        'Failed to get seller standards profile: Not Found'
+      );
     });
   });
 
@@ -150,9 +150,9 @@ describe('AnalyticsApi', () => {
         dimensionMetrics: [
           {
             name: 'TRANSACTION',
-            value: '95.5'
-          }
-        ]
+            value: '95.5',
+          },
+        ],
       };
       vi.mocked(client.get).mockResolvedValue(mockResponse);
 
@@ -162,15 +162,15 @@ describe('AnalyticsApi', () => {
       expect(client.get).toHaveBeenCalledWith(
         '/sell/analytics/v1/customer_service_metric/TRANSACTION/CURRENT',
         {
-          evaluation_marketplace_id: 'EBAY_US'
+          evaluation_marketplace_id: 'EBAY_US',
         }
       );
     });
 
     it('should throw error when customerServiceMetricType is missing', async () => {
-      await expect(
-        api.getCustomerServiceMetric('' as any, 'CURRENT', 'EBAY_US')
-      ).rejects.toThrow('customerServiceMetricType is required');
+      await expect(api.getCustomerServiceMetric('' as any, 'CURRENT', 'EBAY_US')).rejects.toThrow(
+        'customerServiceMetricType is required'
+      );
     });
 
     it('should throw error when evaluationType is missing', async () => {

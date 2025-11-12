@@ -13,7 +13,7 @@ describe('Communication APIs', () => {
       get: vi.fn(),
       post: vi.fn(),
       put: vi.fn(),
-      delete: vi.fn()
+      delete: vi.fn(),
     } as unknown as EbayApiClient;
   });
 
@@ -34,7 +34,7 @@ describe('Communication APIs', () => {
         expect(client.get).toHaveBeenCalledWith('/sell/negotiation/v1/offer', {
           filter: 'filter:test',
           limit: 10,
-          offset: 5
+          offset: 5,
         });
       });
 
@@ -52,7 +52,7 @@ describe('Communication APIs', () => {
       it('should send offer to interested buyers', async () => {
         const mockResponse = { offerId: '123' };
         const offerData = {
-          offeredItems: [{ offerId: '123', price: { value: '10.00', currency: 'USD' } }]
+          offeredItems: [{ offerId: '123', price: { value: '10.00', currency: 'USD' } }],
         };
         vi.mocked(client.post).mockResolvedValue(mockResponse);
 
@@ -65,9 +65,9 @@ describe('Communication APIs', () => {
       });
 
       it('should throw error when offerData is missing', async () => {
-        await expect(
-          api.sendOfferToInterestedBuyers(undefined as any)
-        ).rejects.toThrow('offerData is required');
+        await expect(api.sendOfferToInterestedBuyers(undefined as any)).rejects.toThrow(
+          'offerData is required'
+        );
       });
     });
 
@@ -81,7 +81,7 @@ describe('Communication APIs', () => {
         expect(client.get).toHaveBeenCalledWith('/sell/negotiation/v1/find_eligible_items', {
           filter: 'filter:test',
           limit: 10,
-          offset: 0
+          offset: 0,
         });
       });
 
@@ -113,7 +113,7 @@ describe('Communication APIs', () => {
         expect(client.get).toHaveBeenCalledWith('/commerce/message/v1/conversation', {
           filter: 'filter:test',
           limit: 10,
-          offset: 0
+          offset: 0,
         });
       });
 
@@ -154,9 +154,7 @@ describe('Communication APIs', () => {
       });
 
       it('should throw error when messageData is missing', async () => {
-        await expect(api.sendMessage(undefined as any)).rejects.toThrow(
-          'messageData is required'
-        );
+        await expect(api.sendMessage(undefined as any)).rejects.toThrow('messageData is required');
       });
     });
 
@@ -168,7 +166,10 @@ describe('Communication APIs', () => {
 
         await api.updateConversation(updateData);
 
-        expect(client.post).toHaveBeenCalledWith('/commerce/message/v1/update_conversation', updateData);
+        expect(client.post).toHaveBeenCalledWith(
+          '/commerce/message/v1/update_conversation',
+          updateData
+        );
       });
 
       it('should throw error when updateData is missing', async () => {
@@ -186,7 +187,10 @@ describe('Communication APIs', () => {
 
         await api.bulkUpdateConversation(updateData);
 
-        expect(client.post).toHaveBeenCalledWith('/commerce/message/v1/bulk_update_conversation', updateData);
+        expect(client.post).toHaveBeenCalledWith(
+          '/commerce/message/v1/bulk_update_conversation',
+          updateData
+        );
       });
 
       it('should throw error when updateData is missing', async () => {
@@ -206,7 +210,7 @@ describe('Communication APIs', () => {
         expect(client.get).toHaveBeenCalledWith('/commerce/message/v1/conversation', {
           filter: 'filter:test',
           limit: 10,
-          offset: 0
+          offset: 0,
         });
       });
 
@@ -227,7 +231,7 @@ describe('Communication APIs', () => {
 
         expect(client.post).toHaveBeenCalledWith('/commerce/message/v1/send_message', {
           conversation_id: 'conv123',
-          message_content: 'Hello'
+          message_content: 'Hello',
         });
       });
     });
@@ -254,13 +258,17 @@ describe('Communication APIs', () => {
       it('should handle API errors in updateConversation', async () => {
         vi.mocked(client.post).mockRejectedValue(new Error('API Error'));
 
-        await expect(api.updateConversation({ read: true })).rejects.toThrow('Failed to update conversation');
+        await expect(api.updateConversation({ read: true })).rejects.toThrow(
+          'Failed to update conversation'
+        );
       });
 
       it('should handle API errors in bulkUpdateConversation', async () => {
         vi.mocked(client.post).mockRejectedValue(new Error('API Error'));
 
-        await expect(api.bulkUpdateConversation({ ids: ['123'] })).rejects.toThrow('Failed to bulk update conversation');
+        await expect(api.bulkUpdateConversation({ ids: ['123'] })).rejects.toThrow(
+          'Failed to bulk update conversation'
+        );
       });
 
       it('should validate filter parameter type', async () => {
@@ -268,11 +276,15 @@ describe('Communication APIs', () => {
       });
 
       it('should validate limit parameter type', async () => {
-        await expect(api.getConversations(undefined, 0)).rejects.toThrow('limit must be a positive number');
+        await expect(api.getConversations(undefined, 0)).rejects.toThrow(
+          'limit must be a positive number'
+        );
       });
 
       it('should validate offset parameter type', async () => {
-        await expect(api.getConversations(undefined, undefined, -1)).rejects.toThrow('offset must be a non-negative number');
+        await expect(api.getConversations(undefined, undefined, -1)).rejects.toThrow(
+          'offset must be a non-negative number'
+        );
       });
     });
   });
@@ -294,7 +306,7 @@ describe('Communication APIs', () => {
         expect(client.get).toHaveBeenCalledWith('/commerce/feedback/v1/awaiting_feedback', {
           filter: 'filter:test',
           limit: 10,
-          offset: 0
+          offset: 0,
         });
       });
 
@@ -316,7 +328,7 @@ describe('Communication APIs', () => {
         await api.getFeedback('txn123');
 
         expect(client.get).toHaveBeenCalledWith('/commerce/feedback/v1/feedback', {
-          transaction_id: 'txn123'
+          transaction_id: 'txn123',
         });
       });
 
@@ -342,16 +354,13 @@ describe('Communication APIs', () => {
         const feedbackData = {
           orderLineItemId: 'order123',
           rating: 'POSITIVE' as const,
-          feedbackText: 'Great buyer!'
+          feedbackText: 'Great buyer!',
         };
         vi.mocked(client.post).mockResolvedValue(mockResponse);
 
         await api.leaveFeedbackForBuyer(feedbackData);
 
-        expect(client.post).toHaveBeenCalledWith(
-          '/commerce/feedback/v1/feedback',
-          feedbackData
-        );
+        expect(client.post).toHaveBeenCalledWith('/commerce/feedback/v1/feedback', feedbackData);
       });
 
       it('should throw error when feedbackData is missing', async () => {
@@ -368,10 +377,10 @@ describe('Communication APIs', () => {
 
         await api.respondToFeedback('feedback123', 'Thank you for the feedback!');
 
-        expect(client.post).toHaveBeenCalledWith(
-          '/commerce/feedback/v1/respond_to_feedback',
-          { feedback_id: 'feedback123', response_text: 'Thank you for the feedback!' }
-        );
+        expect(client.post).toHaveBeenCalledWith('/commerce/feedback/v1/respond_to_feedback', {
+          feedback_id: 'feedback123',
+          response_text: 'Thank you for the feedback!',
+        });
       });
 
       it('should throw error when feedbackId is missing', async () => {
@@ -469,13 +478,16 @@ describe('Communication APIs', () => {
         const destination = {
           name: 'webhook',
           endpoint: 'https://example.com/webhook',
-          verificationToken: 'token123'
+          verificationToken: 'token123',
         };
         vi.mocked(client.post).mockResolvedValue(mockResponse);
 
         await api.createDestination(destination);
 
-        expect(client.post).toHaveBeenCalledWith('/commerce/notification/v1/destination', destination);
+        expect(client.post).toHaveBeenCalledWith(
+          '/commerce/notification/v1/destination',
+          destination
+        );
       });
 
       it('should throw error when destination is missing', async () => {
@@ -535,7 +547,7 @@ describe('Communication APIs', () => {
 
         expect(client.get).toHaveBeenCalledWith('/commerce/notification/v1/subscription', {
           limit: 10,
-          continuation_token: 'cursor123'
+          continuation_token: 'cursor123',
         });
       });
 
@@ -704,7 +716,7 @@ describe('Communication APIs', () => {
 
         expect(client.get).toHaveBeenCalledWith('/commerce/notification/v1/topic', {
           limit: 10,
-          continuation_token: 'cursor123'
+          continuation_token: 'cursor123',
         });
       });
 

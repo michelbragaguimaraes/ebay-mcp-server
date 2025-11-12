@@ -7,18 +7,13 @@ import type { EbayApiClient } from '../client.js';
 export class AnalyticsApi {
   private readonly basePath = '/sell/analytics/v1';
 
-  constructor(private client: EbayApiClient) { }
+  constructor(private client: EbayApiClient) {}
 
   /**
    * Get traffic report for listings
    * @throws Error if required parameters are missing or invalid
    */
-  async getTrafficReport(
-    dimension: string,
-    filter: string,
-    metric: string,
-    sort?: string
-  ) {
+  async getTrafficReport(dimension: string, filter: string, metric: string, sort?: string) {
     // Input validation
     if (!dimension || typeof dimension !== 'string') {
       throw new Error('dimension is required and must be a string');
@@ -36,7 +31,7 @@ export class AnalyticsApi {
     const params: Record<string, string> = {
       dimension,
       filter,
-      metric
+      metric,
     };
     if (sort) params.sort = sort;
 
@@ -79,9 +74,7 @@ export class AnalyticsApi {
     }
 
     try {
-      return await this.client.get(
-        `${this.basePath}/seller_standards_profile/${program}/${cycle}`
-      );
+      return await this.client.get(`${this.basePath}/seller_standards_profile/${program}/${cycle}`);
     } catch (error) {
       throw new Error(
         `Failed to get seller standards profile: ${error instanceof Error ? error.message : 'Unknown error'}`
@@ -111,7 +104,7 @@ export class AnalyticsApi {
     }
 
     const params = {
-      evaluation_marketplace_id: evaluationMarketplaceId
+      evaluation_marketplace_id: evaluationMarketplaceId,
     };
 
     try {

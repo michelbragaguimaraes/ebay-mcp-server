@@ -1,4 +1,4 @@
-import type { StoredTokenData } from "@/types/ebay.js";
+import type { StoredTokenData } from '@/types/ebay.js';
 
 /**
  * Mock token storage for testing
@@ -12,7 +12,7 @@ export class MockTokenStorage {
 
   static async loadTokens(): Promise<StoredTokenData> {
     if (!this.tokens) {
-      throw new Error("No tokens stored");
+      throw new Error('No tokens stored');
     }
     return this.tokens;
   }
@@ -50,17 +50,15 @@ export class MockTokenStorage {
 /**
  * Create mock stored token data for testing
  */
-export function createMockTokens(
-  overrides: Partial<StoredTokenData> = {}
-): StoredTokenData {
+export function createMockTokens(overrides: Partial<StoredTokenData> = {}): StoredTokenData {
   const now = Date.now();
   return {
-    userAccessToken: "mock_access_token",
-    userRefreshToken: "mock_refresh_token",
-    tokenType: "Bearer",
+    userAccessToken: 'mock_access_token',
+    userRefreshToken: 'mock_refresh_token',
+    tokenType: 'Bearer',
     userAccessTokenExpiry: now + 7200 * 1000, // 2 hours from now
     userRefreshTokenExpiry: now + 18 * 30 * 24 * 60 * 60 * 1000, // 18 months
-    scope: "https://api.ebay.com/oauth/api_scope/sell.inventory",
+    scope: 'https://api.ebay.com/oauth/api_scope/sell.inventory',
     ...overrides,
   };
 }

@@ -10,7 +10,7 @@ import { getIdentityBaseUrl } from '../../config/environment.js';
 export class IdentityApi {
   private readonly basePath = '/commerce/identity/v1';
 
-  constructor(private client: EbayApiClient) { }
+  constructor(private client: EbayApiClient) {}
 
   /**
    * Get user information

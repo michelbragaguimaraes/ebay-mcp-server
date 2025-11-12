@@ -26,7 +26,7 @@ export function convertToTimestamp(dateInput: string | Date | number): number {
       const asSeconds = dateInput * 1000;
 
       // If multiplying by 1000 gives reasonable future date, it's seconds
-      if (asSeconds > now - (100 * 365 * 24 * 60 * 60 * 1000)) {
+      if (asSeconds > now - 100 * 365 * 24 * 60 * 60 * 1000) {
         return Math.floor(asSeconds);
       }
     }
@@ -57,13 +57,15 @@ export function convertToTimestamp(dateInput: string | Date | number): number {
       else if (unit.startsWith('hour')) multiplier = 60 * 60 * 1000;
       else if (unit.startsWith('day')) multiplier = 24 * 60 * 60 * 1000;
 
-      return Date.now() + (amount * multiplier);
+      return Date.now() + amount * multiplier;
     }
 
     // Try parsing as ISO date or other standard format
     const parsed = Date.parse(dateInput);
     if (isNaN(parsed)) {
-      throw new Error(`Invalid date format: ${dateInput}. Supported formats: ISO 8601, Unix timestamp, or relative time (e.g., "in 2 hours")`);
+      throw new Error(
+        `Invalid date format: ${dateInput}. Supported formats: ISO 8601, Unix timestamp, or relative time (e.g., "in 2 hours")`
+      );
     }
 
     return parsed;
@@ -82,7 +84,7 @@ export function convertToTimestamp(dateInput: string | Date | number): number {
  */
 export function calculateExpiry(expiresInSeconds: number, fromTimestamp?: number): number {
   const baseTime = fromTimestamp ?? Date.now();
-  return baseTime + (expiresInSeconds * 1000);
+  return baseTime + expiresInSeconds * 1000;
 }
 
 /**
@@ -195,6 +197,6 @@ export function validateTokenExpiry(
     accessTokenRemaining: getTimeRemaining(accessTokenExpiry),
     refreshTokenRemaining: getTimeRemaining(refreshTokenExpiry),
     warnings,
-    recommendations
+    recommendations,
   };
 }

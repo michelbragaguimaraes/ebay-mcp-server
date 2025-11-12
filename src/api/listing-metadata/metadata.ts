@@ -7,7 +7,7 @@ import type { EbayApiClient } from '../client.js';
 export class MetadataApi {
   private readonly basePath = '/sell/metadata/v1';
 
-  constructor(private client: EbayApiClient) { }
+  constructor(private client: EbayApiClient) {}
 
   /**
    * Get automotive parts compatibility policies for a marketplace
@@ -342,9 +342,7 @@ export class MetadataApi {
     }
 
     try {
-      return await this.client.get(
-        `${this.basePath}/marketplace/${marketplaceId}/get_currencies`
-      );
+      return await this.client.get(`${this.basePath}/marketplace/${marketplaceId}/get_currencies`);
     } catch (error) {
       throw new Error(
         `Failed to get currencies: ${error instanceof Error ? error.message : 'Unknown error'}`

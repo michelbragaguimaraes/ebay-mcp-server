@@ -1,13 +1,13 @@
 import type { components } from '../../types/sell_inventory_v1_oas3.js';
 import type { EbayApiClient } from '../client.js';
 
-type EbayOfferDetailsWithKeys = components["schemas"]["EbayOfferDetailsWithKeys"];
-type InventoryItem = components["schemas"]["InventoryItem"];
-type GetInventoryItemResponse = components["schemas"]["InventoryItemWithSkuLocaleGroupid"];
-type GetInventoryItemsResponse = components["schemas"]["InventoryItems"];
-type CreateOfferResponse = components["schemas"]["OfferResponse"];
-type GetOffersResponse = components["schemas"]["Offers"];
-type PublishResponse = components["schemas"]["PublishResponse"];
+type EbayOfferDetailsWithKeys = components['schemas']['EbayOfferDetailsWithKeys'];
+type InventoryItem = components['schemas']['InventoryItem'];
+type GetInventoryItemResponse = components['schemas']['InventoryItemWithSkuLocaleGroupid'];
+type GetInventoryItemsResponse = components['schemas']['InventoryItems'];
+type CreateOfferResponse = components['schemas']['OfferResponse'];
+type GetOffersResponse = components['schemas']['Offers'];
+type PublishResponse = components['schemas']['PublishResponse'];
 
 /**
  * Inventory API - Manage listings and inventory
@@ -16,7 +16,7 @@ type PublishResponse = components["schemas"]["PublishResponse"];
 export class InventoryApi {
   private readonly basePath = '/sell/inventory/v1';
 
-  constructor(private client: EbayApiClient) { }
+  constructor(private client: EbayApiClient) {}
 
   /**
    * Get all inventory items
@@ -39,7 +39,10 @@ export class InventoryApi {
     }
 
     try {
-      return await this.client.get<GetInventoryItemsResponse>(`${this.basePath}/inventory_item`, params);
+      return await this.client.get<GetInventoryItemsResponse>(
+        `${this.basePath}/inventory_item`,
+        params
+      );
     } catch (error) {
       throw new Error(
         `Failed to get inventory items: ${error instanceof Error ? error.message : 'Unknown error'}`
@@ -57,7 +60,9 @@ export class InventoryApi {
     }
 
     try {
-      return await this.client.get<GetInventoryItemResponse>(`${this.basePath}/inventory_item/${sku}`);
+      return await this.client.get<GetInventoryItemResponse>(
+        `${this.basePath}/inventory_item/${sku}`
+      );
     } catch (error) {
       throw new Error(
         `Failed to get inventory item: ${error instanceof Error ? error.message : 'Unknown error'}`
@@ -115,7 +120,10 @@ export class InventoryApi {
     }
 
     try {
-      return await this.client.post(`${this.basePath}/bulk_create_or_replace_inventory_item`, requests);
+      return await this.client.post(
+        `${this.basePath}/bulk_create_or_replace_inventory_item`,
+        requests
+      );
     } catch (error) {
       throw new Error(
         `Failed to bulk create or replace inventory items: ${error instanceof Error ? error.message : 'Unknown error'}`
@@ -185,7 +193,10 @@ export class InventoryApi {
    * Endpoint: PUT /inventory_item/{sku}/product_compatibility
    * @throws Error if required parameters are missing or invalid
    */
-  async createOrReplaceProductCompatibility(sku: string, compatibility: Record<string, unknown>): Promise<unknown> {
+  async createOrReplaceProductCompatibility(
+    sku: string,
+    compatibility: Record<string, unknown>
+  ): Promise<unknown> {
     if (!sku || typeof sku !== 'string') {
       throw new Error('sku is required and must be a string');
     }
@@ -194,7 +205,10 @@ export class InventoryApi {
     }
 
     try {
-      return await this.client.put(`${this.basePath}/inventory_item/${sku}/product_compatibility`, compatibility);
+      return await this.client.put(
+        `${this.basePath}/inventory_item/${sku}/product_compatibility`,
+        compatibility
+      );
     } catch (error) {
       throw new Error(
         `Failed to create or replace product compatibility: ${error instanceof Error ? error.message : 'Unknown error'}`
@@ -213,7 +227,9 @@ export class InventoryApi {
     }
 
     try {
-      return await this.client.delete(`${this.basePath}/inventory_item/${sku}/product_compatibility`);
+      return await this.client.delete(
+        `${this.basePath}/inventory_item/${sku}/product_compatibility`
+      );
     } catch (error) {
       throw new Error(
         `Failed to delete product compatibility: ${error instanceof Error ? error.message : 'Unknown error'}`
@@ -232,7 +248,9 @@ export class InventoryApi {
     }
 
     try {
-      return await this.client.get(`${this.basePath}/inventory_item_group/${inventoryItemGroupKey}`);
+      return await this.client.get(
+        `${this.basePath}/inventory_item_group/${inventoryItemGroupKey}`
+      );
     } catch (error) {
       throw new Error(
         `Failed to get inventory item group: ${error instanceof Error ? error.message : 'Unknown error'}`
@@ -245,7 +263,10 @@ export class InventoryApi {
    * Endpoint: PUT /inventory_item_group/{inventoryItemGroupKey}
    * @throws Error if required parameters are missing or invalid
    */
-  async createOrReplaceInventoryItemGroup(inventoryItemGroupKey: string, inventoryItemGroup: Record<string, unknown>): Promise<unknown> {
+  async createOrReplaceInventoryItemGroup(
+    inventoryItemGroupKey: string,
+    inventoryItemGroup: Record<string, unknown>
+  ): Promise<unknown> {
     if (!inventoryItemGroupKey || typeof inventoryItemGroupKey !== 'string') {
       throw new Error('inventoryItemGroupKey is required and must be a string');
     }
@@ -254,7 +275,10 @@ export class InventoryApi {
     }
 
     try {
-      return await this.client.put(`${this.basePath}/inventory_item_group/${inventoryItemGroupKey}`, inventoryItemGroup);
+      return await this.client.put(
+        `${this.basePath}/inventory_item_group/${inventoryItemGroupKey}`,
+        inventoryItemGroup
+      );
     } catch (error) {
       throw new Error(
         `Failed to create or replace inventory item group: ${error instanceof Error ? error.message : 'Unknown error'}`
@@ -273,7 +297,9 @@ export class InventoryApi {
     }
 
     try {
-      return await this.client.delete(`${this.basePath}/inventory_item_group/${inventoryItemGroupKey}`);
+      return await this.client.delete(
+        `${this.basePath}/inventory_item_group/${inventoryItemGroupKey}`
+      );
     } catch (error) {
       throw new Error(
         `Failed to delete inventory item group: ${error instanceof Error ? error.message : 'Unknown error'}`
@@ -335,7 +361,10 @@ export class InventoryApi {
    * Endpoint: POST /location/{merchantLocationKey}
    * @throws Error if required parameters are missing or invalid
    */
-  async createOrReplaceInventoryLocation(merchantLocationKey: string, location: Record<string, unknown>): Promise<void> {
+  async createOrReplaceInventoryLocation(
+    merchantLocationKey: string,
+    location: Record<string, unknown>
+  ): Promise<void> {
     if (!merchantLocationKey || typeof merchantLocationKey !== 'string') {
       throw new Error('merchantLocationKey is required and must be a string');
     }
@@ -414,7 +443,10 @@ export class InventoryApi {
    * Endpoint: POST /location/{merchantLocationKey}/update_location_details
    * @throws Error if required parameters are missing or invalid
    */
-  async updateLocationDetails(merchantLocationKey: string, locationDetails: Record<string, unknown>): Promise<void> {
+  async updateLocationDetails(
+    merchantLocationKey: string,
+    locationDetails: Record<string, unknown>
+  ): Promise<void> {
     if (!merchantLocationKey || typeof merchantLocationKey !== 'string') {
       throw new Error('merchantLocationKey is required and must be a string');
     }
@@ -423,7 +455,10 @@ export class InventoryApi {
     }
 
     try {
-      return await this.client.post(`${this.basePath}/location/${merchantLocationKey}/update_location_details`, locationDetails);
+      return await this.client.post(
+        `${this.basePath}/location/${merchantLocationKey}/update_location_details`,
+        locationDetails
+      );
     } catch (error) {
       throw new Error(
         `Failed to update location details: ${error instanceof Error ? error.message : 'Unknown error'}`
@@ -435,7 +470,11 @@ export class InventoryApi {
    * Get all offers
    * @throws Error if parameters are invalid
    */
-  async getOffers(sku?: string, marketplaceId?: string, limit?: number): Promise<GetOffersResponse> {
+  async getOffers(
+    sku?: string,
+    marketplaceId?: string,
+    limit?: number
+  ): Promise<GetOffersResponse> {
     const params: Record<string, string | number> = {};
 
     if (sku !== undefined) {

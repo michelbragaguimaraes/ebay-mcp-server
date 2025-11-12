@@ -1,11 +1,11 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import type { Request, Response, NextFunction } from "express";
-import { createBearerAuthMiddleware, requireScopes } from "@/auth/oauth-middleware.js";
-import type { TokenVerifier } from "@/auth/token-verifier.js";
-import type { VerifiedToken } from "@/auth/oauth-types.js";
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import type { Request, Response, NextFunction } from 'express';
+import { createBearerAuthMiddleware, requireScopes } from '@/auth/oauth-middleware.js';
+import type { TokenVerifier } from '@/auth/token-verifier.js';
+import type { VerifiedToken } from '@/auth/oauth-types.js';
 
-describe("OAuth Middleware", () => {
-  describe("createBearerAuthMiddleware", () => {
+describe('OAuth Middleware', () => {
+  describe('createBearerAuthMiddleware', () => {
     let mockVerifier: TokenVerifier;
     let mockRequest: Partial<Request>;
     let mockResponse: Partial<Response>;
@@ -36,11 +36,11 @@ describe("OAuth Middleware", () => {
       } as unknown as TokenVerifier;
     });
 
-    it("should reject requests without authorization header", async () => {
+    it('should reject requests without authorization header', async () => {
       const middleware = createBearerAuthMiddleware({
         verifier: mockVerifier,
-        resourceMetadataUrl: "http://localhost:3000/.well-known/oauth-protected-resource",
-        realm: "test-realm",
+        resourceMetadataUrl: 'http://localhost:3000/.well-known/oauth-protected-resource',
+        realm: 'test-realm',
       });
 
       await middleware(mockRequest as Request, mockResponse as Response, mockNext);
@@ -49,19 +49,19 @@ describe("OAuth Middleware", () => {
       expect(statusMock).toHaveBeenCalledWith(401);
       expect(setHeaderMock).toHaveBeenCalled();
       expect(jsonMock).toHaveBeenCalledWith({
-        error: "invalid_token",
-        error_description: "No authorization header provided",
+        error: 'invalid_token',
+        error_description: 'No authorization header provided',
       });
     });
 
-    it("should reject invalid authorization header format", async () => {
+    it('should reject invalid authorization header format', async () => {
       mockRequest.headers = {
-        authorization: "InvalidFormat token123",
+        authorization: 'InvalidFormat token123',
       };
 
       const middleware = createBearerAuthMiddleware({
         verifier: mockVerifier,
-        resourceMetadataUrl: "http://localhost:3000/.well-known/oauth-protected-resource",
+        resourceMetadataUrl: 'http://localhost:3000/.well-known/oauth-protected-resource',
       });
 
       await middleware(mockRequest as Request, mockResponse as Response, mockNext);
@@ -70,14 +70,14 @@ describe("OAuth Middleware", () => {
       expect(statusMock).toHaveBeenCalledWith(401);
     });
 
-    it("should reject authorization header without token", async () => {
+    it('should reject authorization header without token', async () => {
       mockRequest.headers = {
-        authorization: "Bearer",
+        authorization: 'Bearer',
       };
 
       const middleware = createBearerAuthMiddleware({
         verifier: mockVerifier,
-        resourceMetadataUrl: "http://localhost:3000/.well-known/oauth-protected-resource",
+        resourceMetadataUrl: 'http://localhost:3000/.well-known/oauth-protected-resource',
       });
 
       await middleware(mockRequest as Request, mockResponse as Response, mockNext);
@@ -86,46 +86,46 @@ describe("OAuth Middleware", () => {
       expect(statusMock).toHaveBeenCalledWith(401);
     });
 
-    it("should verify valid bearer token", async () => {
+    it('should verify valid bearer token', async () => {
       const validToken: VerifiedToken = {
-        token: "valid-token",
-        clientId: "test-client",
-        scopes: ["mcp:tools"],
+        token: 'valid-token',
+        clientId: 'test-client',
+        scopes: ['mcp:tools'],
         expiresAt: Date.now() / 1000 + 3600,
-        audience: "http://localhost:3000",
-        subject: "user123",
+        audience: 'http://localhost:3000',
+        subject: 'user123',
       };
 
       (mockVerifier.verifyToken as ReturnType<typeof vi.fn>).mockResolvedValue(validToken);
 
       mockRequest.headers = {
-        authorization: "Bearer valid-token",
+        authorization: 'Bearer valid-token',
       };
 
       const middleware = createBearerAuthMiddleware({
         verifier: mockVerifier,
-        resourceMetadataUrl: "http://localhost:3000/.well-known/oauth-protected-resource",
+        resourceMetadataUrl: 'http://localhost:3000/.well-known/oauth-protected-resource',
       });
 
       await middleware(mockRequest as Request, mockResponse as Response, mockNext);
 
-      expect(mockVerifier.verifyToken).toHaveBeenCalledWith("valid-token");
+      expect(mockVerifier.verifyToken).toHaveBeenCalledWith('valid-token');
       expect(mockNext).toHaveBeenCalled();
       expect((mockRequest as any).auth).toEqual(validToken);
     });
 
-    it("should reject invalid token", async () => {
+    it('should reject invalid token', async () => {
       (mockVerifier.verifyToken as ReturnType<typeof vi.fn>).mockRejectedValue(
-        new Error("Token expired")
+        new Error('Token expired')
       );
 
       mockRequest.headers = {
-        authorization: "Bearer invalid-token",
+        authorization: 'Bearer invalid-token',
       };
 
       const middleware = createBearerAuthMiddleware({
         verifier: mockVerifier,
-        resourceMetadataUrl: "http://localhost:3000/.well-known/oauth-protected-resource",
+        resourceMetadataUrl: 'http://localhost:3000/.well-known/oauth-protected-resource',
       });
 
       await middleware(mockRequest as Request, mockResponse as Response, mockNext);
@@ -133,23 +133,23 @@ describe("OAuth Middleware", () => {
       expect(mockNext).not.toHaveBeenCalled();
       expect(statusMock).toHaveBeenCalledWith(401);
       expect(jsonMock).toHaveBeenCalledWith({
-        error: "invalid_token",
-        error_description: "Token expired",
+        error: 'invalid_token',
+        error_description: 'Token expired',
       });
     });
 
-    it("should handle verifier errors gracefully", async () => {
+    it('should handle verifier errors gracefully', async () => {
       (mockVerifier.verifyToken as ReturnType<typeof vi.fn>).mockImplementation(() => {
-        throw new Error("Unexpected error");
+        throw new Error('Unexpected error');
       });
 
       mockRequest.headers = {
-        authorization: "Bearer some-token",
+        authorization: 'Bearer some-token',
       };
 
       const middleware = createBearerAuthMiddleware({
         verifier: mockVerifier,
-        resourceMetadataUrl: "http://localhost:3000/.well-known/oauth-protected-resource",
+        resourceMetadataUrl: 'http://localhost:3000/.well-known/oauth-protected-resource',
       });
 
       await middleware(mockRequest as Request, mockResponse as Response, mockNext);
@@ -158,7 +158,7 @@ describe("OAuth Middleware", () => {
     });
   });
 
-  describe("requireScopes", () => {
+  describe('requireScopes', () => {
     let mockRequest: Partial<Request>;
     let mockResponse: Partial<Response>;
     let mockNext: NextFunction;
@@ -177,28 +177,28 @@ describe("OAuth Middleware", () => {
       mockNext = vi.fn();
     });
 
-    it("should reject requests without auth", () => {
-      const middleware = requireScopes(["mcp:admin"]);
+    it('should reject requests without auth', () => {
+      const middleware = requireScopes(['mcp:admin']);
 
       middleware(mockRequest as Request, mockResponse as Response, mockNext);
 
       expect(mockNext).not.toHaveBeenCalled();
       expect(statusMock).toHaveBeenCalledWith(401);
       expect(jsonMock).toHaveBeenCalledWith({
-        error: "unauthorized",
-        error_description: "No authentication information found",
+        error: 'unauthorized',
+        error_description: 'No authentication information found',
       });
     });
 
-    it("should allow requests with required scopes", () => {
+    it('should allow requests with required scopes', () => {
       (mockRequest as any).auth = {
-        token: "test-token",
-        clientId: "test-client",
-        scopes: ["mcp:admin", "mcp:tools"],
+        token: 'test-token',
+        clientId: 'test-client',
+        scopes: ['mcp:admin', 'mcp:tools'],
         expiresAt: Date.now() / 1000 + 3600,
       };
 
-      const middleware = requireScopes(["mcp:admin"]);
+      const middleware = requireScopes(['mcp:admin']);
 
       middleware(mockRequest as Request, mockResponse as Response, mockNext);
 
@@ -206,37 +206,37 @@ describe("OAuth Middleware", () => {
       expect(statusMock).not.toHaveBeenCalled();
     });
 
-    it("should reject requests with insufficient scopes", () => {
+    it('should reject requests with insufficient scopes', () => {
       (mockRequest as any).auth = {
-        token: "test-token",
-        clientId: "test-client",
-        scopes: ["mcp:tools"],
+        token: 'test-token',
+        clientId: 'test-client',
+        scopes: ['mcp:tools'],
         expiresAt: Date.now() / 1000 + 3600,
       };
 
-      const middleware = requireScopes(["mcp:admin", "mcp:superuser"]);
+      const middleware = requireScopes(['mcp:admin', 'mcp:superuser']);
 
       middleware(mockRequest as Request, mockResponse as Response, mockNext);
 
       expect(mockNext).not.toHaveBeenCalled();
       expect(statusMock).toHaveBeenCalledWith(403);
       expect(jsonMock).toHaveBeenCalledWith({
-        error: "insufficient_scope",
-        error_description: "Missing required scopes: mcp:admin, mcp:superuser",
-        required_scopes: ["mcp:admin", "mcp:superuser"],
-        provided_scopes: ["mcp:tools"],
+        error: 'insufficient_scope',
+        error_description: 'Missing required scopes: mcp:admin, mcp:superuser',
+        required_scopes: ['mcp:admin', 'mcp:superuser'],
+        provided_scopes: ['mcp:tools'],
       });
     });
 
-    it("should allow requests with all required scopes", () => {
+    it('should allow requests with all required scopes', () => {
       (mockRequest as any).auth = {
-        token: "test-token",
-        clientId: "test-client",
-        scopes: ["mcp:admin", "mcp:tools", "mcp:read"],
+        token: 'test-token',
+        clientId: 'test-client',
+        scopes: ['mcp:admin', 'mcp:tools', 'mcp:read'],
         expiresAt: Date.now() / 1000 + 3600,
       };
 
-      const middleware = requireScopes(["mcp:admin", "mcp:tools"]);
+      const middleware = requireScopes(['mcp:admin', 'mcp:tools']);
 
       middleware(mockRequest as Request, mockResponse as Response, mockNext);
 

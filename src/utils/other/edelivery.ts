@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 /**
  * Zod schemas for eDelivery API input validation
@@ -15,7 +15,7 @@ const idSchema = (name: string, description: string) =>
     message: `${name} is required`,
     required_error: `${name.toLowerCase().replace(/\s+/g, '_')} is required`,
     invalid_type_error: `${name.toLowerCase().replace(/\s+/g, '_')} must be a string`,
-    description
+    description,
   });
 
 /**
@@ -25,11 +25,12 @@ const idSchema = (name: string, description: string) =>
  */
 export const createShippingQuoteSchema = z.object({
   shipping_quote_request: z.record(z.unknown(), {
-    message: "Shipping quote request data is required",
-    required_error: "shipping_quote_request is required",
-    invalid_type_error: "shipping_quote_request must be an object",
-    description: "The shipping quote request containing shipment details, addresses, and package information"
-  })
+    message: 'Shipping quote request data is required',
+    required_error: 'shipping_quote_request is required',
+    invalid_type_error: 'shipping_quote_request must be an object',
+    description:
+      'The shipping quote request containing shipment details, addresses, and package information',
+  }),
 });
 
 /**
@@ -38,5 +39,5 @@ export const createShippingQuoteSchema = z.object({
  * Path: shipping_quote_id (required)
  */
 export const getShippingQuoteSchema = z.object({
-  shipping_quote_id: idSchema("Shipping quote ID", "The unique identifier for the shipping quote")
+  shipping_quote_id: idSchema('Shipping quote ID', 'The unique identifier for the shipping quote'),
 });

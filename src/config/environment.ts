@@ -1,8 +1,8 @@
-import { config } from "dotenv";
-import { readFileSync } from "fs";
-import { fileURLToPath } from "url";
-import { dirname, join } from "path";
-import type { EbayConfig } from "@/types/ebay.js";
+import { config } from 'dotenv';
+import { readFileSync } from 'fs';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+import type { EbayConfig } from '@/types/ebay.js';
 
 config();
 
@@ -20,8 +20,8 @@ interface ScopeDefinition {
  */
 function getProductionScopes(): string[] {
   try {
-    const scopesPath = join(__dirname, "../../docs/auth/production_scopes.json");
-    const scopesData = readFileSync(scopesPath, "utf-8");
+    const scopesPath = join(__dirname, '../../docs/auth/production_scopes.json');
+    const scopesData = readFileSync(scopesPath, 'utf-8');
     const scopes: ScopeDefinition[] = JSON.parse(scopesData);
 
     // Filter out empty objects and extract unique scope strings
@@ -34,9 +34,9 @@ function getProductionScopes(): string[] {
 
     return Array.from(uniqueScopes);
   } catch (error) {
-    console.error("Failed to load production scopes:", error);
+    console.error('Failed to load production scopes:', error);
     // Return a minimal set of core scopes as fallback
-    return ["https://api.ebay.com/oauth/api_scope"];
+    return ['https://api.ebay.com/oauth/api_scope'];
   }
 }
 
@@ -45,8 +45,8 @@ function getProductionScopes(): string[] {
  */
 function getSandboxScopes(): string[] {
   try {
-    const scopesPath = join(__dirname, "../../docs/auth/sandbox_scopes.json");
-    const scopesData = readFileSync(scopesPath, "utf-8");
+    const scopesPath = join(__dirname, '../../docs/auth/sandbox_scopes.json');
+    const scopesData = readFileSync(scopesPath, 'utf-8');
     const scopes: ScopeDefinition[] = JSON.parse(scopesData);
 
     // Filter out empty objects and extract unique scope strings
@@ -59,19 +59,17 @@ function getSandboxScopes(): string[] {
 
     return Array.from(uniqueScopes);
   } catch (error) {
-    console.error("Failed to load sandbox scopes:", error);
+    console.error('Failed to load sandbox scopes:', error);
     // Return a minimal set of core scopes as fallback
-    return ["https://api.ebay.com/oauth/api_scope"];
+    return ['https://api.ebay.com/oauth/api_scope'];
   }
 }
 
 /**
  * Get default scopes for the specified environment
  */
-export function getDefaultScopes(environment: "production" | "sandbox"): string[] {
-  return environment === "production"
-    ? getProductionScopes()
-    : getSandboxScopes();
+export function getDefaultScopes(environment: 'production' | 'sandbox'): string[] {
+  return environment === 'production' ? getProductionScopes() : getSandboxScopes();
 }
 
 /**
@@ -79,7 +77,7 @@ export function getDefaultScopes(environment: "production" | "sandbox"): string[
  */
 export function validateScopes(
   scopes: string[],
-  environment: "production" | "sandbox"
+  environment: 'production' | 'sandbox'
 ): { warnings: string[]; validScopes: string[] } {
   const validScopes = getDefaultScopes(environment);
   const validScopeSet = new Set(validScopes);
@@ -91,7 +89,7 @@ export function validateScopes(
       requestedValidScopes.push(scope);
     } else {
       // Check if this is a scope for the other environment
-      const otherEnvironment = environment === "production" ? "sandbox" : "production";
+      const otherEnvironment = environment === 'production' ? 'sandbox' : 'production';
       const otherScopes = getDefaultScopes(otherEnvironment);
 
       if (otherScopes.includes(scope)) {
@@ -124,19 +122,17 @@ export function validateEnvironmentConfig(): {
 
   // Check required environment variables
   if (!process.env.EBAY_CLIENT_ID) {
-    errors.push("EBAY_CLIENT_ID is not set. OAuth will not work.");
+    errors.push('EBAY_CLIENT_ID is not set. OAuth will not work.');
   }
 
   if (!process.env.EBAY_CLIENT_SECRET) {
-    errors.push("EBAY_CLIENT_SECRET is not set. OAuth will not work.");
+    errors.push('EBAY_CLIENT_SECRET is not set. OAuth will not work.');
   }
 
   // Validate EBAY_ENVIRONMENT
   const environment = process.env.EBAY_ENVIRONMENT;
-  if (environment && environment !== "production" && environment !== "sandbox") {
-    errors.push(
-      `EBAY_ENVIRONMENT must be either "production" or "sandbox", got: "${environment}"`
-    );
+  if (environment && environment !== 'production' && environment !== 'sandbox') {
+    errors.push(`EBAY_ENVIRONMENT must be either "production" or "sandbox", got: "${environment}"`);
   }
 
   // Check if environment is set
@@ -149,7 +145,7 @@ export function validateEnvironmentConfig(): {
   // Check if redirect URI is set (needed for OAuth user flow)
   if (!process.env.EBAY_REDIRECT_URI) {
     warnings.push(
-      "EBAY_REDIRECT_URI is not set. User OAuth flow will not work. Set this to enable user token generation."
+      'EBAY_REDIRECT_URI is not set. User OAuth flow will not work. Set this to enable user token generation.'
     );
   }
 
@@ -158,7 +154,7 @@ export function validateEnvironmentConfig(): {
     getProductionScopes();
   } catch (error) {
     errors.push(
-      `Failed to load production scopes: ${error instanceof Error ? error.message : "Unknown error"}`
+      `Failed to load production scopes: ${error instanceof Error ? error.message : 'Unknown error'}`
     );
   }
 
@@ -166,7 +162,7 @@ export function validateEnvironmentConfig(): {
     getSandboxScopes();
   } catch (error) {
     errors.push(
-      `Failed to load sandbox scopes: ${error instanceof Error ? error.message : "Unknown error"}`
+      `Failed to load sandbox scopes: ${error instanceof Error ? error.message : 'Unknown error'}`
     );
   }
 
@@ -182,19 +178,17 @@ export function validateEnvironmentConfig(): {
 export function getEbayConfig(): EbayConfig {
   const clientId = process.env.EBAY_CLIENT_ID;
   const clientSecret = process.env.EBAY_CLIENT_SECRET;
-  const environment = (process.env.EBAY_ENVIRONMENT || "sandbox") as
-    | "production"
-    | "sandbox";
+  const environment = (process.env.EBAY_ENVIRONMENT || 'sandbox') as 'production' | 'sandbox';
 
   if (!clientId || !clientSecret) {
     console.error(
-      "Missing required eBay credentials. Please set EBAY_CLIENT_ID and EBAY_CLIENT_SECRET environment variables.",
+      'Missing required eBay credentials. Please set EBAY_CLIENT_ID and EBAY_CLIENT_SECRET environment variables.'
     );
     return {
-      clientId: "",
-      clientSecret: "",
-      redirectUri: "",
-      environment: "sandbox",
+      clientId: '',
+      clientSecret: '',
+      redirectUri: '',
+      environment: 'sandbox',
     };
   }
 
@@ -206,25 +200,21 @@ export function getEbayConfig(): EbayConfig {
   };
 }
 
-export function getBaseUrl(environment: "production" | "sandbox"): string {
-  return environment === "production"
-    ? "https://api.ebay.com"
-    : "https://api.sandbox.ebay.com";
+export function getBaseUrl(environment: 'production' | 'sandbox'): string {
+  return environment === 'production' ? 'https://api.ebay.com' : 'https://api.sandbox.ebay.com';
 }
 
 /**
  * Get base URL for Identity API (uses apiz subdomain)
  */
-export function getIdentityBaseUrl(environment: "production" | "sandbox"): string {
-  return environment === "production"
-    ? "https://apiz.ebay.com"
-    : "https://apiz.sandbox.ebay.com";
+export function getIdentityBaseUrl(environment: 'production' | 'sandbox'): string {
+  return environment === 'production' ? 'https://apiz.ebay.com' : 'https://apiz.sandbox.ebay.com';
 }
 
-export function getAuthUrl(environment: "production" | "sandbox"): string {
-  return environment === "production"
-    ? "https://api.ebay.com/identity/v1/oauth2/token"
-    : "https://api.sandbox.ebay.com/identity/v1/oauth2/token";
+export function getAuthUrl(environment: 'production' | 'sandbox'): string {
+  return environment === 'production'
+    ? 'https://api.ebay.com/identity/v1/oauth2/token'
+    : 'https://api.sandbox.ebay.com/identity/v1/oauth2/token';
 }
 
 /**
@@ -234,39 +224,35 @@ export function getAuthUrl(environment: "production" | "sandbox"): string {
 export function getOAuthAuthorizationUrl(
   clientId: string,
   redirectUri: string,
-  environment: "production" | "sandbox",
+  environment: 'production' | 'sandbox',
   scopes?: string[],
-  state?: string,
+  state?: string
 ): string {
   // Use environment-specific scopes if no custom scopes provided
   const defaultScopes = getDefaultScopes(environment);
   const scopesList = scopes && scopes.length > 0 ? scopes : defaultScopes;
-  const scopeParam = scopesList.join(" ");
+  const scopeParam = scopesList.join(' ');
 
   // Build the authorize URL
   const authDomain =
-    environment === "production"
-      ? "https://auth.ebay.com"
-      : "https://auth.sandbox.ebay.com";
+    environment === 'production' ? 'https://auth.ebay.com' : 'https://auth.sandbox.ebay.com';
 
   const authorizeEndpoint = `${authDomain}/oauth2/authorize`;
 
   const params = new URLSearchParams({
     client_id: clientId,
     redirect_uri: redirectUri,
-    response_type: "code",
+    response_type: 'code',
     scope: scopeParam,
   });
 
   if (state) {
-    params.append("state", state);
+    params.append('state', state);
   }
 
   // Build the signin URL that redirects to authorize
   const signinDomain =
-    environment === "production"
-      ? "https://signin.ebay.com"
-      : "https://signin.sandbox.ebay.com";
+    environment === 'production' ? 'https://signin.ebay.com' : 'https://signin.sandbox.ebay.com';
 
   const ruParam = encodeURIComponent(`${authorizeEndpoint}?${params.toString()}`);
 

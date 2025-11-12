@@ -1,13 +1,13 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import nock from "nock";
-import { EbayOAuthClient } from "../../../src/auth/oauth.js";
-import type { EbayConfig, StoredTokenData } from "../../../src/types/ebay.js";
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import nock from 'nock';
+import { EbayOAuthClient } from '../../../src/auth/oauth.js';
+import type { EbayConfig, StoredTokenData } from '../../../src/types/ebay.js';
 import {
   createMockTokens,
   createExpiredAccessToken,
   createFullyExpiredTokens,
-} from "../../helpers/mock-token-storage.js";
-import { mockOAuthTokenEndpoint, cleanupMocks } from "../../helpers/mock-http.js";
+} from '../../helpers/mock-token-storage.js';
+import { mockOAuthTokenEndpoint, cleanupMocks } from '../../helpers/mock-http.js';
 
 // Mock TokenStorage - use vi.hoisted to ensure mock is available when hoisted
 const mockTokenStorage = vi.hoisted(() => ({
@@ -19,11 +19,11 @@ const mockTokenStorage = vi.hoisted(() => ({
   isUserRefreshTokenExpired: vi.fn(),
 }));
 
-vi.mock("../../../src/auth/token-storage.js", () => ({
+vi.mock('../../../src/auth/token-storage.js', () => ({
   TokenStorage: mockTokenStorage,
 }));
 
-describe("EbayOAuthClient", () => {
+describe('EbayOAuthClient', () => {
   let oauthClient: EbayOAuthClient;
   let config: EbayConfig;
 
@@ -34,10 +34,10 @@ describe("EbayOAuthClient", () => {
 
     // Default config
     config = {
-      clientId: "test_client_id",
-      clientSecret: "test_client_secret",
-      environment: "sandbox",
-      redirectUri: "https://localhost/callback",
+      clientId: 'test_client_id',
+      clientSecret: 'test_client_secret',
+      environment: 'sandbox',
+      redirectUri: 'https://localhost/callback',
     };
 
     oauthClient = new EbayOAuthClient(config);
@@ -47,8 +47,8 @@ describe("EbayOAuthClient", () => {
     cleanupMocks();
   });
 
-  describe("initialize", () => {
-    it("should load user tokens from storage if available", async () => {
+  describe('initialize', () => {
+    it('should load user tokens from storage if available', async () => {
       const mockTokens = createMockTokens();
       mockTokenStorage.hasTokens.mockResolvedValue(true);
       mockTokenStorage.loadTokens.mockResolvedValue(mockTokens);
@@ -60,7 +60,7 @@ describe("EbayOAuthClient", () => {
       expect(oauthClient.hasUserTokens()).toBe(true);
     });
 
-    it("should not load tokens if none are available", async () => {
+    it('should not load tokens if none are available', async () => {
       mockTokenStorage.hasTokens.mockResolvedValue(false);
 
       await oauthClient.initialize();
@@ -70,19 +70,19 @@ describe("EbayOAuthClient", () => {
       expect(oauthClient.hasUserTokens()).toBe(false);
     });
 
-    it("should validate token scopes on initialization", async () => {
+    it('should validate token scopes on initialization', async () => {
       // Mock console.warn to verify validation warnings
-      const consoleWarnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+      const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
       const mockTokens = createMockTokens({
-        scope: "https://api.ebay.com/oauth/api_scope/buy.browse", // Sandbox-only scope
+        scope: 'https://api.ebay.com/oauth/api_scope/buy.browse', // Sandbox-only scope
       });
 
       mockTokenStorage.hasTokens.mockResolvedValue(true);
       mockTokenStorage.loadTokens.mockResolvedValue(mockTokens);
 
       // Using production environment, so sandbox scope should trigger warning
-      const prodConfig = { ...config, environment: "production" as const };
+      const prodConfig = { ...config, environment: 'production' as const };
       const prodOAuthClient = new EbayOAuthClient(prodConfig);
 
       await prodOAuthClient.initialize();
@@ -92,8 +92,8 @@ describe("EbayOAuthClient", () => {
     });
   });
 
-  describe("hasUserTokens", () => {
-    it("should return true when user tokens are set", async () => {
+  describe('hasUserTokens', () => {
+    it('should return true when user tokens are set', async () => {
       const mockTokens = createMockTokens();
       mockTokenStorage.hasTokens.mockResolvedValue(true);
       mockTokenStorage.loadTokens.mockResolvedValue(mockTokens);
@@ -103,13 +103,13 @@ describe("EbayOAuthClient", () => {
       expect(oauthClient.hasUserTokens()).toBe(true);
     });
 
-    it("should return false when no user tokens are set", () => {
+    it('should return false when no user tokens are set', () => {
       expect(oauthClient.hasUserTokens()).toBe(false);
     });
   });
 
-  describe("getAccessToken", () => {
-    it("should return valid user access token", async () => {
+  describe('getAccessToken', () => {
+    it('should return valid user access token', async () => {
       const mockTokens = createMockTokens();
       mockTokenStorage.hasTokens.mockResolvedValue(true);
       mockTokenStorage.loadTokens.mockResolvedValue(mockTokens);
@@ -122,9 +122,9 @@ describe("EbayOAuthClient", () => {
       expect(mockTokenStorage.isUserAccessTokenExpired).toHaveBeenCalledWith(mockTokens);
     });
 
-    it("should refresh expired access token using valid refresh token", async () => {
+    it('should refresh expired access token using valid refresh token', async () => {
       const expiredTokens = createExpiredAccessToken();
-      const newAccessToken = "new_access_token";
+      const newAccessToken = 'new_access_token';
 
       mockTokenStorage.hasTokens.mockResolvedValue(true);
       mockTokenStorage.loadTokens.mockResolvedValue(expiredTokens);
@@ -132,9 +132,9 @@ describe("EbayOAuthClient", () => {
       mockTokenStorage.isUserRefreshTokenExpired.mockReturnValue(false);
 
       // Mock refresh token API call
-      mockOAuthTokenEndpoint("sandbox", {
+      mockOAuthTokenEndpoint('sandbox', {
         access_token: newAccessToken,
-        token_type: "Bearer",
+        token_type: 'Bearer',
         expires_in: 7200,
         refresh_token: expiredTokens.userRefreshToken,
         refresh_token_expires_in: 47304000,
@@ -147,7 +147,7 @@ describe("EbayOAuthClient", () => {
       expect(mockTokenStorage.saveTokens).toHaveBeenCalled();
     });
 
-    it("should throw error when both access and refresh tokens are expired", async () => {
+    it('should throw error when both access and refresh tokens are expired', async () => {
       const fullyExpiredTokens = createFullyExpiredTokens();
 
       mockTokenStorage.hasTokens.mockResolvedValue(true);
@@ -157,19 +157,17 @@ describe("EbayOAuthClient", () => {
 
       await oauthClient.initialize();
 
-      await expect(oauthClient.getAccessToken()).rejects.toThrow(
-        "User authorization expired"
-      );
+      await expect(oauthClient.getAccessToken()).rejects.toThrow('User authorization expired');
       expect(mockTokenStorage.clearTokens).toHaveBeenCalled();
     });
 
-    it("should fallback to client credentials when no user tokens", async () => {
+    it('should fallback to client credentials when no user tokens', async () => {
       mockTokenStorage.hasTokens.mockResolvedValue(false);
 
-      const clientToken = "client_credentials_token";
-      mockOAuthTokenEndpoint("sandbox", {
+      const clientToken = 'client_credentials_token';
+      mockOAuthTokenEndpoint('sandbox', {
         access_token: clientToken,
-        token_type: "Bearer",
+        token_type: 'Bearer',
         expires_in: 7200,
       });
 
@@ -179,13 +177,13 @@ describe("EbayOAuthClient", () => {
       expect(token).toBe(clientToken);
     });
 
-    it("should reuse cached client credentials token if still valid", async () => {
+    it('should reuse cached client credentials token if still valid', async () => {
       mockTokenStorage.hasTokens.mockResolvedValue(false);
 
-      const clientToken = "client_credentials_token";
-      mockOAuthTokenEndpoint("sandbox", {
+      const clientToken = 'client_credentials_token';
+      mockOAuthTokenEndpoint('sandbox', {
         access_token: clientToken,
-        token_type: "Bearer",
+        token_type: 'Bearer',
         expires_in: 7200,
       });
 
@@ -204,10 +202,10 @@ describe("EbayOAuthClient", () => {
     });
   });
 
-  describe("setUserTokens", () => {
-    it("should store user tokens", async () => {
-      const accessToken = "user_access_token";
-      const refreshToken = "user_refresh_token";
+  describe('setUserTokens', () => {
+    it('should store user tokens', async () => {
+      const accessToken = 'user_access_token';
+      const refreshToken = 'user_refresh_token';
 
       await oauthClient.setUserTokens(accessToken, refreshToken);
 
@@ -215,15 +213,15 @@ describe("EbayOAuthClient", () => {
         expect.objectContaining({
           userAccessToken: accessToken,
           userRefreshToken: refreshToken,
-          tokenType: "Bearer",
+          tokenType: 'Bearer',
         })
       );
       expect(oauthClient.hasUserTokens()).toBe(true);
     });
 
-    it("should set expiry times when storing tokens", async () => {
-      const accessToken = "user_access_token";
-      const refreshToken = "user_refresh_token";
+    it('should set expiry times when storing tokens', async () => {
+      const accessToken = 'user_access_token';
+      const refreshToken = 'user_refresh_token';
       const beforeTime = Date.now();
 
       await oauthClient.setUserTokens(accessToken, refreshToken);
@@ -235,19 +233,19 @@ describe("EbayOAuthClient", () => {
     });
   });
 
-  describe("exchangeCodeForToken", () => {
-    it("should exchange authorization code for user tokens", async () => {
-      const code = "authorization_code_12345";
-      const accessToken = "exchanged_access_token";
-      const refreshToken = "exchanged_refresh_token";
+  describe('exchangeCodeForToken', () => {
+    it('should exchange authorization code for user tokens', async () => {
+      const code = 'authorization_code_12345';
+      const accessToken = 'exchanged_access_token';
+      const refreshToken = 'exchanged_refresh_token';
 
-      mockOAuthTokenEndpoint("sandbox", {
+      mockOAuthTokenEndpoint('sandbox', {
         access_token: accessToken,
-        token_type: "Bearer",
+        token_type: 'Bearer',
         expires_in: 7200,
         refresh_token: refreshToken,
         refresh_token_expires_in: 47304000,
-        scope: "https://api.ebay.com/oauth/api_scope/sell.inventory",
+        scope: 'https://api.ebay.com/oauth/api_scope/sell.inventory',
       });
 
       const result = await oauthClient.exchangeCodeForToken(code);
@@ -258,33 +256,31 @@ describe("EbayOAuthClient", () => {
       expect(oauthClient.hasUserTokens()).toBe(true);
     });
 
-    it("should throw error if redirect URI is not configured", async () => {
+    it('should throw error if redirect URI is not configured', async () => {
       const configWithoutRedirect = { ...config, redirectUri: undefined };
       const clientWithoutRedirect = new EbayOAuthClient(configWithoutRedirect);
 
-      await expect(
-        clientWithoutRedirect.exchangeCodeForToken("code_12345")
-      ).rejects.toThrow("Redirect URI is required");
+      await expect(clientWithoutRedirect.exchangeCodeForToken('code_12345')).rejects.toThrow(
+        'Redirect URI is required'
+      );
     });
 
-    it("should handle OAuth exchange errors", async () => {
-      const code = "invalid_code";
+    it('should handle OAuth exchange errors', async () => {
+      const code = 'invalid_code';
 
-      nock("https://api.sandbox.ebay.com")
-        .post("/identity/v1/oauth2/token")
-        .reply(400, {
-          error: "invalid_grant",
-          error_description: "Invalid authorization code",
-        });
+      nock('https://api.sandbox.ebay.com').post('/identity/v1/oauth2/token').reply(400, {
+        error: 'invalid_grant',
+        error_description: 'Invalid authorization code',
+      });
 
       await expect(oauthClient.exchangeCodeForToken(code)).rejects.toThrow(
-        "Invalid authorization code"
+        'Invalid authorization code'
       );
     });
   });
 
-  describe("clearAllTokens", () => {
-    it("should clear all tokens", async () => {
+  describe('clearAllTokens', () => {
+    it('should clear all tokens', async () => {
       const mockTokens = createMockTokens();
       mockTokenStorage.hasTokens.mockResolvedValue(true);
       mockTokenStorage.loadTokens.mockResolvedValue(mockTokens);
@@ -299,10 +295,11 @@ describe("EbayOAuthClient", () => {
     });
   });
 
-  describe("getTokenInfo", () => {
-    it("should return token status information", async () => {
+  describe('getTokenInfo', () => {
+    it('should return token status information', async () => {
       const mockTokens = createMockTokens({
-        scope: "https://api.ebay.com/oauth/api_scope/sell.inventory https://api.ebay.com/oauth/api_scope/sell.fulfillment",
+        scope:
+          'https://api.ebay.com/oauth/api_scope/sell.inventory https://api.ebay.com/oauth/api_scope/sell.fulfillment',
       });
 
       mockTokenStorage.hasTokens.mockResolvedValue(true);
@@ -318,7 +315,7 @@ describe("EbayOAuthClient", () => {
       expect(info.scopeInfo?.tokenScopes).toHaveLength(2);
     });
 
-    it("should return info when no tokens are available", () => {
+    it('should return info when no tokens are available', () => {
       const info = oauthClient.getTokenInfo();
 
       expect(info.hasUserToken).toBe(false);
@@ -327,8 +324,8 @@ describe("EbayOAuthClient", () => {
     });
   });
 
-  describe("isAuthenticated", () => {
-    it("should return true when valid user tokens exist", async () => {
+  describe('isAuthenticated', () => {
+    it('should return true when valid user tokens exist', async () => {
       const mockTokens = createMockTokens();
       mockTokenStorage.hasTokens.mockResolvedValue(true);
       mockTokenStorage.loadTokens.mockResolvedValue(mockTokens);
@@ -339,7 +336,7 @@ describe("EbayOAuthClient", () => {
       expect(oauthClient.isAuthenticated()).toBe(true);
     });
 
-    it("should return false when tokens are expired", async () => {
+    it('should return false when tokens are expired', async () => {
       const expiredTokens = createFullyExpiredTokens();
       mockTokenStorage.hasTokens.mockResolvedValue(true);
       mockTokenStorage.loadTokens.mockResolvedValue(expiredTokens);
@@ -350,7 +347,7 @@ describe("EbayOAuthClient", () => {
       expect(oauthClient.isAuthenticated()).toBe(false);
     });
 
-    it("should return false when no tokens are available", () => {
+    it('should return false when no tokens are available', () => {
       expect(oauthClient.isAuthenticated()).toBe(false);
     });
   });

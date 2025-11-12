@@ -7,7 +7,7 @@ import type { EbayApiClient } from '../client.js';
 export class EDeliveryApi {
   private readonly basePath = '/sell/logistics/v1';
 
-  constructor(private client: EbayApiClient) { }
+  constructor(private client: EbayApiClient) {}
 
   /**
    * Create shipping quote

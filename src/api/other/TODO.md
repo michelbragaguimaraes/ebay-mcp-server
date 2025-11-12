@@ -3,6 +3,7 @@
 ## Missing Endpoints
 
 ### eDelivery API (`edelivery.ts`)
+
 - [ ] `getActualCosts`
 - [ ] `getAddressPreferences`
 - [ ] `createAddressPreference`
@@ -43,6 +44,7 @@
 - [ ] `getWallets`
 
 ### VERO API (`vero.ts`)
+
 - [ ] `getVeroReasonCode`
 - [ ] `getVeroReasonCodes`
 - [ ] `getVeroReport`

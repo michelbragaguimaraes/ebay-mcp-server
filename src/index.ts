@@ -1,10 +1,8 @@
-
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import { EbaySellerApi } from "@/api/index.js";
-import { getEbayConfig, validateEnvironmentConfig } from "@/config/environment.js";
-import { getToolDefinitions, executeTool } from "@/tools/index.js";
-
+import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+import { EbaySellerApi } from '@/api/index.js';
+import { getEbayConfig, validateEnvironmentConfig } from '@/config/environment.js';
+import { getToolDefinitions, executeTool } from '@/tools/index.js';
 
 /**
  * eBay API MCP Server
@@ -17,16 +15,15 @@ class EbayMcpServer {
   constructor() {
     this.server = new McpServer(
       {
-        name: "ebay-api-mcp-server",
-        version: "1.0.0",
+        name: 'ebay-api-mcp-server',
+        version: '1.0.0',
         title: 'eBay API MCP Server',
-
       },
       {
         capabilities: {
           tools: {},
         },
-      },
+      }
     );
 
     // Initialize eBay API client
@@ -61,19 +58,18 @@ class EbayMcpServer {
             return {
               content: [
                 {
-                  type: "text" as const,
+                  type: 'text' as const,
                   text: JSON.stringify(result, null, 2),
                 },
               ],
             };
           } catch (error) {
-            const errorMessage =
-              error instanceof Error ? error.message : "Unknown error";
+            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
 
             return {
               content: [
                 {
-                  type: "text" as const,
+                  type: 'text' as const,
                   text: JSON.stringify({ error: errorMessage }, null, 2),
                 },
               ],
@@ -86,7 +82,7 @@ class EbayMcpServer {
   }
 
   private setupErrorHandling(): void {
-    process.on("SIGINT", async () => {
+    process.on('SIGINT', async () => {
       await this.server.close();
       process.exit(0);
     });
@@ -98,20 +94,20 @@ class EbayMcpServer {
 
     // Display warnings
     if (validation.warnings.length > 0) {
-      console.error("\n⚠️  Environment Configuration Warnings:");
-      validation.warnings.forEach(warning => {
+      console.error('\n⚠️  Environment Configuration Warnings:');
+      validation.warnings.forEach((warning) => {
         console.error(`  • ${warning}`);
       });
-      console.error("");
+      console.error('');
     }
 
     // Display errors and exit if configuration is invalid
     if (!validation.isValid) {
-      console.error("\n❌ Environment Configuration Errors:");
-      validation.errors.forEach(error => {
+      console.error('\n❌ Environment Configuration Errors:');
+      validation.errors.forEach((error) => {
         console.error(`  • ${error}`);
       });
-      console.error("\nPlease fix the configuration errors and restart the server.\n");
+      console.error('\nPlease fix the configuration errors and restart the server.\n');
       process.exit(1);
     }
 
@@ -120,13 +116,13 @@ class EbayMcpServer {
 
     const transport = new StdioServerTransport();
     await this.server.connect(transport);
-    console.error("eBay API MCP Server running on stdio");
+    console.error('eBay API MCP Server running on stdio');
   }
 }
 
 // Start the server
 const server = new EbayMcpServer();
 server.run().catch((error) => {
-  console.error("Fatal error running server:", error);
+  console.error('Fatal error running server:', error);
   process.exit(1);
 });

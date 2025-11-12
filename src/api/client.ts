@@ -1,7 +1,7 @@
-import { EbayOAuthClient } from "@/auth/oauth.js";
-import { getBaseUrl } from "@/config/environment.js";
-import type { EbayApiError, EbayConfig } from "@/types/ebay.js";
-import axios, { type AxiosError, type AxiosInstance, type AxiosRequestConfig } from "axios";
+import { EbayOAuthClient } from '@/auth/oauth.js';
+import { getBaseUrl } from '@/config/environment.js';
+import type { EbayApiError, EbayConfig } from '@/types/ebay.js';
+import axios, { type AxiosError, type AxiosInstance, type AxiosRequestConfig } from 'axios';
 
 /**
  * Rate limit tracking
@@ -57,8 +57,8 @@ export class EbayApiClient {
       baseURL: this.baseUrl,
       timeout: 30000,
       headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
     });
 
@@ -81,7 +81,7 @@ export class EbayApiClient {
 
         return config;
       },
-      (error) => Promise.reject(error),
+      (error) => Promise.reject(error)
     );
 
     // Add response interceptor for error handling and retry logic
@@ -109,7 +109,9 @@ export class EbayApiClient {
           if (retryCount === 0) {
             (config as any).__authRetryCount = 1;
 
-            console.error('eBay API authentication error (401). Attempting to refresh user token...');
+            console.error(
+              'eBay API authentication error (401). Attempting to refresh user token...'
+            );
 
             try {
               // Force token refresh by getting a new access token
@@ -130,27 +132,29 @@ export class EbayApiClient {
 
               // If refresh fails, provide clear guidance
               const ebayError = axiosError.response?.data as EbayApiError;
-              const originalError = ebayError.errors?.[0]?.longMessage ||
-                                   ebayError.errors?.[0]?.message ||
-                                   'Invalid access token';
+              const originalError =
+                ebayError.errors?.[0]?.longMessage ||
+                ebayError.errors?.[0]?.message ||
+                'Invalid access token';
 
               throw new Error(
                 `${originalError}. ` +
-                `Token refresh failed: ${refreshError instanceof Error ? refreshError.message : 'Unknown error'}. ` +
-                `Please use the ebay_set_user_tokens_with_expiry tool to provide valid tokens.`
+                  `Token refresh failed: ${refreshError instanceof Error ? refreshError.message : 'Unknown error'}. ` +
+                  `Please use the ebay_set_user_tokens_with_expiry tool to provide valid tokens.`
               );
             }
           }
 
           // If retry already attempted, provide helpful error message
           const ebayError = axiosError.response?.data as EbayApiError;
-          const errorMessage = ebayError.errors?.[0]?.longMessage ||
-                              ebayError.errors?.[0]?.message ||
-                              'Invalid access token';
+          const errorMessage =
+            ebayError.errors?.[0]?.longMessage ||
+            ebayError.errors?.[0]?.message ||
+            'Invalid access token';
 
           throw new Error(
             `${errorMessage}. ` +
-            `Automatic token refresh failed. Please use the ebay_set_user_tokens_with_expiry tool to provide valid tokens.`
+              `Automatic token refresh failed. Please use the ebay_set_user_tokens_with_expiry tool to provide valid tokens.`
           );
         }
 
@@ -161,7 +165,7 @@ export class EbayApiClient {
 
           throw new Error(
             `eBay API rate limit exceeded. Retry after ${waitTime / 1000} seconds. ` +
-            `Consider reducing request frequency or upgrading to user tokens for higher limits.`
+              `Consider reducing request frequency or upgrading to user tokens for higher limits.`
           );
         }
 
@@ -175,10 +179,10 @@ export class EbayApiClient {
 
             console.error(
               `eBay API server error (${axiosError.response.status}). ` +
-              `Retrying in ${delay}ms (attempt ${retryCount + 1}/3)...`
+                `Retrying in ${delay}ms (attempt ${retryCount + 1}/3)...`
             );
 
-            await new Promise(resolve => setTimeout(resolve, delay));
+            await new Promise((resolve) => setTimeout(resolve, delay));
             return await this.httpClient.request(config!);
           }
         }
@@ -194,7 +198,7 @@ export class EbayApiClient {
         }
 
         throw error;
-      },
+      }
     );
   }
 
@@ -212,10 +216,7 @@ export class EbayApiClient {
   /**
    * Make a GET request to eBay API
    */
-  async get<T = unknown>(
-    endpoint: string,
-    params?: Record<string, unknown>,
-  ): Promise<T> {
+  async get<T = unknown>(endpoint: string, params?: Record<string, unknown>): Promise<T> {
     this.validateAccessToken();
     const response = await this.httpClient.get<T>(endpoint, { params });
     return response.data;
@@ -227,7 +228,7 @@ export class EbayApiClient {
   async post<T = unknown>(
     endpoint: string,
     data?: unknown,
-    config?: AxiosRequestConfig,
+    config?: AxiosRequestConfig
   ): Promise<T> {
     this.validateAccessToken();
     const response = await this.httpClient.post<T>(endpoint, data, config);
@@ -280,9 +281,14 @@ export class EbayApiClient {
     accessToken: string,
     refreshToken: string,
     accessTokenExpiry?: number,
-    refreshTokenExpiry?: number,
+    refreshTokenExpiry?: number
   ): Promise<void> {
-    await this.authClient.setUserTokens(accessToken, refreshToken, accessTokenExpiry, refreshTokenExpiry);
+    await this.authClient.setUserTokens(
+      accessToken,
+      refreshToken,
+      accessTokenExpiry,
+      refreshTokenExpiry
+    );
   }
 
   /**
@@ -326,10 +332,7 @@ export class EbayApiClient {
    * Make a GET request with a full URL (for APIs that use different base URLs)
    * Used by Identity API which uses apiz subdomain
    */
-  async getWithFullUrl<T = unknown>(
-    fullUrl: string,
-    params?: Record<string, unknown>,
-  ): Promise<T> {
+  async getWithFullUrl<T = unknown>(fullUrl: string, params?: Record<string, unknown>): Promise<T> {
     this.validateAccessToken();
 
     // Check rate limit
@@ -352,8 +355,8 @@ export class EbayApiClient {
         params,
         headers: {
           Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-          Accept: "application/json",
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
         },
         timeout: 30000,
       });
@@ -378,8 +381,8 @@ export class EbayApiClient {
             params,
             headers: {
               Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-              Accept: "application/json",
+              'Content-Type': 'application/json',
+              Accept: 'application/json',
             },
             timeout: 30000,
           });
@@ -389,14 +392,15 @@ export class EbayApiClient {
           console.error('Failed to refresh token:', refreshError);
 
           const ebayError = error.response?.data as EbayApiError;
-          const originalError = ebayError.errors?.[0]?.longMessage ||
-                               ebayError.errors?.[0]?.message ||
-                               'Invalid access token';
+          const originalError =
+            ebayError.errors?.[0]?.longMessage ||
+            ebayError.errors?.[0]?.message ||
+            'Invalid access token';
 
           throw new Error(
             `${originalError}. ` +
-            `Token refresh failed: ${refreshError instanceof Error ? refreshError.message : 'Unknown error'}. ` +
-            `Please use the ebay_set_user_tokens_with_expiry tool to provide valid tokens.`
+              `Token refresh failed: ${refreshError instanceof Error ? refreshError.message : 'Unknown error'}. ` +
+              `Please use the ebay_set_user_tokens_with_expiry tool to provide valid tokens.`
           );
         }
       }

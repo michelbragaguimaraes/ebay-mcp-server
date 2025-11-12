@@ -1,12 +1,12 @@
-import axios from "axios";
-import { getAuthUrl, getBaseUrl, getDefaultScopes, validateScopes } from "@/config/environment.js";
+import axios from 'axios';
+import { getAuthUrl, getBaseUrl, getDefaultScopes, validateScopes } from '@/config/environment.js';
 import type {
   EbayAppAccessTokenResponse,
   EbayConfig,
   EbayUserToken,
   StoredTokenData,
-} from "@/types/ebay.js";
-import { TokenStorage } from "@/auth/token-storage.js";
+} from '@/types/ebay.js';
+import { TokenStorage } from '@/auth/token-storage.js';
 
 /**
  * Manages eBay OAuth 2.0 authentication
@@ -17,7 +17,7 @@ export class EbayOAuthClient {
   private appAccessTokenExpiry = 0;
   private userTokens: StoredTokenData | null = null;
 
-  constructor(private config: EbayConfig) { }
+  constructor(private config: EbayConfig) {}
 
   /**
    * Initialize user tokens from storage if available
@@ -33,8 +33,10 @@ export class EbayOAuthClient {
 
         if (validation.warnings.length > 0) {
           console.warn('⚠️  Token scope validation warnings:');
-          validation.warnings.forEach(warning => console.warn(`  - ${warning}`));
-          console.warn('  Token will still be used, but some scopes may not work in this environment.');
+          validation.warnings.forEach((warning) => console.warn(`  - ${warning}`));
+          console.warn(
+            '  Token will still be used, but some scopes may not work in this environment.'
+          );
         }
       }
     }
@@ -66,21 +68,18 @@ export class EbayOAuthClient {
           await this.refreshUserToken();
           return this.userTokens.userAccessToken;
         } catch (error) {
-          console.error(
-            "Failed to refresh user token, falling back to app access token:",
-            error,
-          );
+          console.error('Failed to refresh user token, falling back to app access token:', error);
           // Clear invalid tokens
           this.userTokens = null;
           await TokenStorage.clearTokens();
         }
       } else {
         // Refresh token expired
-        console.error("User refresh token expired. User needs to re-authorize.");
+        console.error('User refresh token expired. User needs to re-authorize.');
         this.userTokens = null;
         await TokenStorage.clearTokens();
         throw new Error(
-          "User authorization expired. Please provide new access and refresh tokens.",
+          'User authorization expired. Please provide new access and refresh tokens.'
         );
       }
     }
@@ -102,7 +101,7 @@ export class EbayOAuthClient {
     accessToken: string,
     refreshToken: string,
     accessTokenExpiry?: number,
-    refreshTokenExpiry?: number,
+    refreshTokenExpiry?: number
   ): Promise<void> {
     // Store tokens with default expiry (adjust based on actual token response)
     // Access tokens typically expire in 2 hours (7200 seconds)
@@ -111,9 +110,9 @@ export class EbayOAuthClient {
     const storedTokens: StoredTokenData = {
       userAccessToken: accessToken,
       userRefreshToken: refreshToken,
-      tokenType: "Bearer",
-      userAccessTokenExpiry: accessTokenExpiry ?? (now + 7200 * 1000), // 2 hours default
-      userRefreshTokenExpiry: refreshTokenExpiry ?? (now + 18 * 30 * 24 * 60 * 60 * 1000), // ~18 months default
+      tokenType: 'Bearer',
+      userAccessTokenExpiry: accessTokenExpiry ?? now + 7200 * 1000, // 2 hours default
+      userRefreshTokenExpiry: refreshTokenExpiry ?? now + 18 * 30 * 24 * 60 * 60 * 1000, // ~18 months default
     };
 
     this.userTokens = storedTokens;
@@ -132,27 +131,27 @@ export class EbayOAuthClient {
     }
 
     const authUrl = `${getBaseUrl(this.config.environment)}/identity/v1/oauth2/token`;
-    const credentials = Buffer.from(
-      `${this.config.clientId}:${this.config.clientSecret}`,
-    ).toString("base64");
+    const credentials = Buffer.from(`${this.config.clientId}:${this.config.clientSecret}`).toString(
+      'base64'
+    );
 
     // Client credentials flow only supports basic scope
     // User authorization flows can request additional scopes
-    const scopeParam = "https://api.ebay.com/oauth/api_scope";
+    const scopeParam = 'https://api.ebay.com/oauth/api_scope';
 
     try {
       const response = await axios.post<EbayAppAccessTokenResponse>(
         authUrl,
         new URLSearchParams({
-          grant_type: "client_credentials",
+          grant_type: 'client_credentials',
           scope: scopeParam,
         }).toString(),
         {
           headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
+            'Content-Type': 'application/x-www-form-urlencoded',
             Authorization: `Basic ${credentials}`,
           },
-        },
+        }
       );
 
       this.appAccessToken = response.data.access_token;
@@ -163,7 +162,7 @@ export class EbayOAuthClient {
     } catch (error) {
       if (axios.isAxiosError(error)) {
         throw new Error(
-          `Failed to get app access token: ${error.response?.data?.error_description || error.message}`,
+          `Failed to get app access token: ${error.response?.data?.error_description || error.message}`
         );
       }
       throw error;
@@ -175,30 +174,28 @@ export class EbayOAuthClient {
    */
   async exchangeCodeForToken(code: string): Promise<EbayUserToken> {
     if (!this.config.redirectUri) {
-      throw new Error(
-        "Redirect URI is required for authorization code exchange",
-      );
+      throw new Error('Redirect URI is required for authorization code exchange');
     }
 
     const authUrl = getAuthUrl(this.config.environment);
-    const credentials = Buffer.from(
-      `${this.config.clientId}:${this.config.clientSecret}`,
-    ).toString("base64");
+    const credentials = Buffer.from(`${this.config.clientId}:${this.config.clientSecret}`).toString(
+      'base64'
+    );
 
     try {
       const response = await axios.post(
         authUrl,
         new URLSearchParams({
-          grant_type: "authorization_code",
+          grant_type: 'authorization_code',
           code,
           redirect_uri: this.config.redirectUri,
         }).toString(),
         {
           headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
+            'Content-Type': 'application/x-www-form-urlencoded',
             Authorization: `Basic ${credentials}`,
           },
-        },
+        }
       );
 
       const tokenData: EbayUserToken = response.data;
@@ -221,7 +218,7 @@ export class EbayOAuthClient {
     } catch (error) {
       if (axios.isAxiosError(error)) {
         throw new Error(
-          `Failed to exchange code for token: ${error.response?.data?.error_description || error.message}`,
+          `Failed to exchange code for token: ${error.response?.data?.error_description || error.message}`
         );
       }
       throw error;
@@ -234,27 +231,27 @@ export class EbayOAuthClient {
    */
   async refreshUserToken(): Promise<void> {
     if (!this.userTokens) {
-      throw new Error("No user tokens available to refresh");
+      throw new Error('No user tokens available to refresh');
     }
 
     const authUrl = getAuthUrl(this.config.environment);
-    const credentials = Buffer.from(
-      `${this.config.clientId}:${this.config.clientSecret}`,
-    ).toString("base64");
+    const credentials = Buffer.from(`${this.config.clientId}:${this.config.clientSecret}`).toString(
+      'base64'
+    );
 
     try {
       const response = await axios.post(
         authUrl,
         new URLSearchParams({
-          grant_type: "refresh_token",
+          grant_type: 'refresh_token',
           refresh_token: this.userTokens.userRefreshToken,
         }).toString(),
         {
           headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
+            'Content-Type': 'application/x-www-form-urlencoded',
             Authorization: `Basic ${credentials}`,
           },
-        },
+        }
       );
 
       const tokenData: EbayUserToken = response.data;
@@ -277,7 +274,7 @@ export class EbayOAuthClient {
     } catch (error) {
       if (axios.isAxiosError(error)) {
         throw new Error(
-          `Failed to refresh token: ${error.response?.data?.error_description || error.message}`,
+          `Failed to refresh token: ${error.response?.data?.error_description || error.message}`
         );
       }
       throw error;
@@ -288,10 +285,7 @@ export class EbayOAuthClient {
    * Check if currently authenticated (either user or app credentials)
    */
   isAuthenticated(): boolean {
-    if (
-      this.userTokens &&
-      !TokenStorage.isUserAccessTokenExpired(this.userTokens)
-    ) {
+    if (this.userTokens && !TokenStorage.isUserAccessTokenExpired(this.userTokens)) {
       return true;
     }
     return this.appAccessToken !== null && Date.now() < this.appAccessTokenExpiry;
@@ -310,11 +304,18 @@ export class EbayOAuthClient {
   /**
    * Get current token info for debugging
    */
-  getTokenInfo(): { hasUserToken: boolean; hasAppAccessToken: boolean; scopeInfo?: { tokenScopes: string[]; environmentScopes: string[]; missingScopes: string[] } } {
-    const info: { hasUserToken: boolean; hasAppAccessToken: boolean; scopeInfo?: { tokenScopes: string[]; environmentScopes: string[]; missingScopes: string[] } } = {
+  getTokenInfo(): {
+    hasUserToken: boolean;
+    hasAppAccessToken: boolean;
+    scopeInfo?: { tokenScopes: string[]; environmentScopes: string[]; missingScopes: string[] };
+  } {
+    const info: {
+      hasUserToken: boolean;
+      hasAppAccessToken: boolean;
+      scopeInfo?: { tokenScopes: string[]; environmentScopes: string[]; missingScopes: string[] };
+    } = {
       hasUserToken:
-        this.userTokens !== null &&
-        !TokenStorage.isUserAccessTokenExpired(this.userTokens),
+        this.userTokens !== null && !TokenStorage.isUserAccessTokenExpired(this.userTokens),
       hasAppAccessToken: this.appAccessToken !== null && Date.now() < this.appAccessTokenExpiry,
     };
 
@@ -323,7 +324,7 @@ export class EbayOAuthClient {
       const tokenScopes = this.userTokens.scope.split(' ');
       const environmentScopes = getDefaultScopes(this.config.environment);
       const tokenScopeSet = new Set(tokenScopes);
-      const missingScopes = environmentScopes.filter(scope => !tokenScopeSet.has(scope));
+      const missingScopes = environmentScopes.filter((scope) => !tokenScopeSet.has(scope));
 
       info.scopeInfo = {
         tokenScopes,

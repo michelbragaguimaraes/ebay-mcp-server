@@ -1,90 +1,70 @@
+import type { EbayApiClient } from '@/api/client.js';
+import type { components } from '@/types/sell_marketing_v1_oas3.js';
 
-import type { EbayApiClient } from "@/api/client.js";
-import type { components } from "@/types/sell_marketing_v1_oas3.js";
-
-type AdGroupRequest = components["schemas"]["CreateAdGroupRequest"];
-type BulkCreateAdRequest = components["schemas"]["BulkCreateAdRequest"];
+type AdGroupRequest = components['schemas']['CreateAdGroupRequest'];
+type BulkCreateAdRequest = components['schemas']['BulkCreateAdRequest'];
 type BulkCreateAdsByInventoryReferenceRequest =
-  components["schemas"]["BulkCreateAdsByInventoryReferenceRequest"];
-type BulkCreateKeywordsRequest =
-  components["schemas"]["BulkCreateKeywordRequest"];
-type BulkDeleteAdRequest = components["schemas"]["BulkDeleteAdRequest"];
-type BulkDeleteKeywordsRequest = components["schemas"]["BulkDeleteAdRequest"]; // Note: No BulkDeleteKeywordRequest in schema
+  components['schemas']['BulkCreateAdsByInventoryReferenceRequest'];
+type BulkCreateKeywordsRequest = components['schemas']['BulkCreateKeywordRequest'];
+type BulkDeleteAdRequest = components['schemas']['BulkDeleteAdRequest'];
+type BulkDeleteKeywordsRequest = components['schemas']['BulkDeleteAdRequest']; // Note: No BulkDeleteKeywordRequest in schema
 type BulkUpdateAdStatusByListingIdRequest =
-  components["schemas"]["BulkUpdateAdStatusByListingIdRequest"];
-type BulkUpdateAdStatusRequest =
-  components["schemas"]["BulkUpdateAdStatusRequest"];
-type BulkUpdateKeywordBidsRequest =
-  components["schemas"]["BulkUpdateKeywordRequest"];
-type CloneCampaignRequest = components["schemas"]["CloneCampaignRequest"];
-type CreateAdRequest = components["schemas"]["CreateAdRequest"];
+  components['schemas']['BulkUpdateAdStatusByListingIdRequest'];
+type BulkUpdateAdStatusRequest = components['schemas']['BulkUpdateAdStatusRequest'];
+type BulkUpdateKeywordBidsRequest = components['schemas']['BulkUpdateKeywordRequest'];
+type CloneCampaignRequest = components['schemas']['CloneCampaignRequest'];
+type CreateAdRequest = components['schemas']['CreateAdRequest'];
 type CreateAdsByInventoryReferenceRequest =
-  components["schemas"]["CreateAdsByInventoryReferenceRequest"];
-type CreateCampaignRequest = components["schemas"]["CreateCampaignRequest"];
-type CreateKeywordRequest = components["schemas"]["CreateKeywordRequest"];
-type CreateNegativeKeywordRequest =
-  components["schemas"]["CreateNegativeKeywordRequest"];
-type CreateReportTask = components["schemas"]["CreateReportTask"];
-type ItemPromotion = components["schemas"]["ItemPromotion"];
-type UpdateBidPercentageRequest =
-  components["schemas"]["UpdateBidPercentageRequest"];
+  components['schemas']['CreateAdsByInventoryReferenceRequest'];
+type CreateCampaignRequest = components['schemas']['CreateCampaignRequest'];
+type CreateKeywordRequest = components['schemas']['CreateKeywordRequest'];
+type CreateNegativeKeywordRequest = components['schemas']['CreateNegativeKeywordRequest'];
+type CreateReportTask = components['schemas']['CreateReportTask'];
+type ItemPromotion = components['schemas']['ItemPromotion'];
+type UpdateBidPercentageRequest = components['schemas']['UpdateBidPercentageRequest'];
 type UpdateCampaignIdentificationRequest =
-  components["schemas"]["UpdateCampaignIdentificationRequest"];
-type Ad = components["schemas"]["Ad"];
-type AdGroup = components["schemas"]["AdGroup"];
-type AdGroupPagedCollection =
-  components["schemas"]["AdGroupPagedCollectionResponse"];
-type AdPagedCollectionResponse =
-  components["schemas"]["AdPagedCollectionResponse"];
-type AdReferences = components["schemas"]["AdReferences"];
-type Ads = components["schemas"]["Ads"];
-type BaseResponse = components["schemas"]["BaseResponse"];
-type BulkAdResponse = components["schemas"]["BulkAdResponse"];
-type BulkAdUpdateResponse = components["schemas"]["BulkAdUpdateResponse"];
+  components['schemas']['UpdateCampaignIdentificationRequest'];
+type Ad = components['schemas']['Ad'];
+type AdGroup = components['schemas']['AdGroup'];
+type AdGroupPagedCollection = components['schemas']['AdGroupPagedCollectionResponse'];
+type AdPagedCollectionResponse = components['schemas']['AdPagedCollectionResponse'];
+type AdReferences = components['schemas']['AdReferences'];
+type Ads = components['schemas']['Ads'];
+type BaseResponse = components['schemas']['BaseResponse'];
+type BulkAdResponse = components['schemas']['BulkAdResponse'];
+type BulkAdUpdateResponse = components['schemas']['BulkAdUpdateResponse'];
 type BulkAdUpdateStatusByListingIdResponse =
-  components["schemas"]["BulkAdUpdateStatusByListingIdResponse"];
-type BulkAdUpdateStatusResponse =
-  components["schemas"]["BulkAdUpdateStatusResponse"];
+  components['schemas']['BulkAdUpdateStatusByListingIdResponse'];
+type BulkAdUpdateStatusResponse = components['schemas']['BulkAdUpdateStatusResponse'];
 type BulkCreateAdsByInventoryReferenceResponse =
-  components["schemas"]["BulkCreateAdsByInventoryReferenceResponse"];
-type BulkCreateKeywordsResponse =
-  components["schemas"]["BulkCreateKeywordResponse"];
-type BulkDeleteAdResponse = components["schemas"]["BulkDeleteAdResponse"];
+  components['schemas']['BulkCreateAdsByInventoryReferenceResponse'];
+type BulkCreateKeywordsResponse = components['schemas']['BulkCreateKeywordResponse'];
+type BulkDeleteAdResponse = components['schemas']['BulkDeleteAdResponse'];
 type BulkDeleteAdsByInventoryReferenceResponse =
-  components["schemas"]["BulkDeleteAdsByInventoryReferenceResponse"];
+  components['schemas']['BulkDeleteAdsByInventoryReferenceResponse'];
 type BulkUpdateAdsByInventoryReferenceResponse =
-  components["schemas"]["BulkUpdateAdsByInventoryReferenceResponse"];
-type BulkUpdateKeywordBidsResponse =
-  components["schemas"]["BulkUpdateKeywordResponse"];
-type Campaign = components["schemas"]["Campaign"];
-type CampaignPagedCollectionResponse =
-  components["schemas"]["CampaignPagedCollectionResponse"];
-type Keyword = components["schemas"]["Keyword"];
-type KeywordPagedCollection =
-  components["schemas"]["KeywordPagedCollectionResponse"];
-type NegativeKeyword = components["schemas"]["NegativeKeyword"];
+  components['schemas']['BulkUpdateAdsByInventoryReferenceResponse'];
+type BulkUpdateKeywordBidsResponse = components['schemas']['BulkUpdateKeywordResponse'];
+type Campaign = components['schemas']['Campaign'];
+type CampaignPagedCollectionResponse = components['schemas']['CampaignPagedCollectionResponse'];
+type Keyword = components['schemas']['Keyword'];
+type KeywordPagedCollection = components['schemas']['KeywordPagedCollectionResponse'];
+type NegativeKeyword = components['schemas']['NegativeKeyword'];
 type NegativeKeywordPagedCollection =
-  components["schemas"]["NegativeKeywordPagedCollectionResponse"];
-type PromotionsReportPagedCollection =
-  components["schemas"]["PromotionsReportPagedCollection"];
-type ReportMetadata = components["schemas"]["ReportMetadata"];
-type ReportMetadatas = components["schemas"]["ReportMetadatas"];
-type ReportTask = components["schemas"]["ReportTask"];
-type ReportTaskPagedCollection =
-  components["schemas"]["ReportTaskPagedCollection"];
-type SuggestedBids = components["schemas"]["SuggestedBids"];
-type SuggestedKeywords = components["schemas"]["SuggestedKeywords"];
-type SummaryReportResponse = components["schemas"]["SummaryReportResponse"];
-type BulkCreateNegativeKeywordRequest =
-  components["schemas"]["BulkCreateNegativeKeywordRequest"];
-type BulkCreateNegativeKeywordResponse =
-  components["schemas"]["BulkCreateNegativeKeywordResponse"];
-type BulkUpdateNegativeKeywordRequest =
-  components["schemas"]["BulkUpdateNegativeKeywordRequest"];
-type BulkUpdateNegativeKeywordResponse =
-  components["schemas"]["BulkUpdateNegativeKeywordResponse"];
-type NegativeKeywordRequest =
-  components["schemas"]["UpdateNegativeKeywordRequest"];
+  components['schemas']['NegativeKeywordPagedCollectionResponse'];
+type PromotionsReportPagedCollection = components['schemas']['PromotionsReportPagedCollection'];
+type ReportMetadata = components['schemas']['ReportMetadata'];
+type ReportMetadatas = components['schemas']['ReportMetadatas'];
+type ReportTask = components['schemas']['ReportTask'];
+type ReportTaskPagedCollection = components['schemas']['ReportTaskPagedCollection'];
+type SuggestedBids = components['schemas']['SuggestedBids'];
+type SuggestedKeywords = components['schemas']['SuggestedKeywords'];
+type SummaryReportResponse = components['schemas']['SummaryReportResponse'];
+type BulkCreateNegativeKeywordRequest = components['schemas']['BulkCreateNegativeKeywordRequest'];
+type BulkCreateNegativeKeywordResponse = components['schemas']['BulkCreateNegativeKeywordResponse'];
+type BulkUpdateNegativeKeywordRequest = components['schemas']['BulkUpdateNegativeKeywordRequest'];
+type BulkUpdateNegativeKeywordResponse = components['schemas']['BulkUpdateNegativeKeywordResponse'];
+type NegativeKeywordRequest = components['schemas']['UpdateNegativeKeywordRequest'];
 
 // Types that don't exist in OpenAPI schema - using fallback types
 type BulkDeleteAdsByInventoryReferenceRequest = Record<string, any>;
@@ -109,9 +89,9 @@ type BulkUpdateKeywordRequest = BulkUpdateKeywordBidsRequest;
  * Based on: docs/sell-apps/marketing-and-promotions/sell_marketing_v1_oas3.json
  */
 export class MarketingApi {
-  private readonly basePath = "/sell/marketing/v1";
+  private readonly basePath = '/sell/marketing/v1';
 
-  constructor(private client: EbayApiClient) { }
+  constructor(private client: EbayApiClient) {}
 
   /**
    * Get campaigns
@@ -119,7 +99,7 @@ export class MarketingApi {
   async getCampaigns(
     campaignStatus?: string,
     marketplaceId?: string,
-    limit?: number,
+    limit?: number
   ): Promise<CampaignPagedCollectionResponse> {
     const params: Record<string, string | number> = {};
     if (campaignStatus) params.campaign_status = campaignStatus;
@@ -127,7 +107,7 @@ export class MarketingApi {
     if (limit) params.limit = limit;
     return await this.client.get<CampaignPagedCollectionResponse>(
       `${this.basePath}/ad_campaign`,
-      params,
+      params
     );
   }
 
@@ -135,19 +115,14 @@ export class MarketingApi {
    * Get a specific campaign
    */
   async getCampaign(campaignId: string): Promise<Campaign> {
-    return await this.client.get<Campaign>(
-      `${this.basePath}/ad_campaign/${campaignId}`,
-    );
+    return await this.client.get<Campaign>(`${this.basePath}/ad_campaign/${campaignId}`);
   }
 
   /**
    * Create a campaign
    */
   async createCampaign(campaign: CreateCampaignRequest): Promise<BaseResponse> {
-    return await this.client.post<BaseResponse>(
-      `${this.basePath}/ad_campaign`,
-      campaign,
-    );
+    return await this.client.post<BaseResponse>(`${this.basePath}/ad_campaign`, campaign);
   }
 
   /**
@@ -155,14 +130,14 @@ export class MarketingApi {
    */
   async getPromotions(
     marketplaceId?: string,
-    limit?: number,
+    limit?: number
   ): Promise<ItemPromotionsPagedCollection> {
     const params: Record<string, string | number> = {};
     if (marketplaceId) params.marketplace_id = marketplaceId;
     if (limit) params.limit = limit;
     return await this.client.get<ItemPromotionsPagedCollection>(
       `${this.basePath}/promotion`,
-      params,
+      params
     );
   }
 
@@ -170,10 +145,7 @@ export class MarketingApi {
    * Create a promotion (item promotion)
    */
   async createPromotion(promotion: ItemPromotion): Promise<BaseResponse> {
-    return await this.client.post<BaseResponse>(
-      `${this.basePath}/item_promotion`,
-      promotion,
-    );
+    return await this.client.post<BaseResponse>(`${this.basePath}/item_promotion`, promotion);
   }
 
   /**
@@ -185,7 +157,7 @@ export class MarketingApi {
     adStatus?: string,
     limit?: number,
     listingIds?: string,
-    offset?: number,
+    offset?: number
   ): Promise<AdPagedCollectionResponse> {
     const params: Record<string, string | number> = {};
     if (adGroupIds) params.ad_group_ids = adGroupIds;
@@ -195,20 +167,17 @@ export class MarketingApi {
     if (offset) params.offset = offset;
     return await this.client.get<AdPagedCollectionResponse>(
       `${this.basePath}/ad_campaign/${campaignId}/ad`,
-      params,
+      params
     );
   }
 
   /**
    * Create an ad for a campaign
    */
-  async createAd(
-    campaignId: string,
-    ad: CreateAdRequest,
-  ): Promise<BaseResponse> {
+  async createAd(campaignId: string, ad: CreateAdRequest): Promise<BaseResponse> {
     return await this.client.post<BaseResponse>(
       `${this.basePath}/ad_campaign/${campaignId}/ad`,
-      ad,
+      ad
     );
   }
 
@@ -217,11 +186,11 @@ export class MarketingApi {
    */
   async createAdsByInventoryReference(
     campaignId: string,
-    ads: CreateAdsByInventoryReferenceRequest,
+    ads: CreateAdsByInventoryReferenceRequest
   ): Promise<AdReferences> {
     return await this.client.post<AdReferences>(
       `${this.basePath}/ad_campaign/${campaignId}/create_ads_by_inventory_reference`,
-      ads,
+      ads
     );
   }
 
@@ -229,31 +198,23 @@ export class MarketingApi {
    * Get a specific ad for a campaign
    */
   async getAd(campaignId: string, adId: string): Promise<Ad> {
-    return await this.client.get<Ad>(
-      `${this.basePath}/ad_campaign/${campaignId}/ad/${adId}`,
-    );
+    return await this.client.get<Ad>(`${this.basePath}/ad_campaign/${campaignId}/ad/${adId}`);
   }
 
   /**
    * Delete a specific ad from a campaign
    */
   async deleteAd(campaignId: string, adId: string): Promise<void> {
-    return await this.client.delete<void>(
-      `${this.basePath}/ad_campaign/${campaignId}/ad/${adId}`,
-    );
+    return await this.client.delete<void>(`${this.basePath}/ad_campaign/${campaignId}/ad/${adId}`);
   }
 
   /**
    * Clone an ad for a campaign
    */
-  async cloneAd(
-    campaignId: string,
-    adId: string,
-    ad: CreateAdRequest,
-  ): Promise<BaseResponse> {
+  async cloneAd(campaignId: string, adId: string, ad: CreateAdRequest): Promise<BaseResponse> {
     return await this.client.post<BaseResponse>(
       `${this.basePath}/ad_campaign/${campaignId}/ad/${adId}/clone`,
-      ad,
+      ad
     );
   }
 
@@ -263,7 +224,7 @@ export class MarketingApi {
   async getAdsByInventoryReference(
     campaignId: string,
     inventoryReferenceId: string,
-    inventoryReferenceType: string,
+    inventoryReferenceType: string
   ): Promise<Ads> {
     const params: Record<string, string> = {
       inventory_reference_id: inventoryReferenceId,
@@ -271,7 +232,7 @@ export class MarketingApi {
     };
     return await this.client.get<Ads>(
       `${this.basePath}/ad_campaign/${campaignId}/get_ads_by_inventory_reference`,
-      params,
+      params
     );
   }
 
@@ -284,7 +245,7 @@ export class MarketingApi {
     };
     return await this.client.get<Ads>(
       `${this.basePath}/ad_campaign/${campaignId}/get_ads_by_listing_id`,
-      params,
+      params
     );
   }
 
@@ -294,24 +255,21 @@ export class MarketingApi {
   async updateBid(
     campaignId: string,
     adId: string,
-    bid: UpdateBidPercentageRequest,
+    bid: UpdateBidPercentageRequest
   ): Promise<void> {
     return await this.client.post<void>(
       `${this.basePath}/ad_campaign/${campaignId}/ad/${adId}/update_bid`,
-      bid,
+      bid
     );
   }
 
   /**
    * Clone a campaign
    */
-  async cloneCampaign(
-    campaignId: string,
-    campaign: CloneCampaignRequest,
-  ): Promise<BaseResponse> {
+  async cloneCampaign(campaignId: string, campaign: CloneCampaignRequest): Promise<BaseResponse> {
     return await this.client.post<BaseResponse>(
       `${this.basePath}/ad_campaign/${campaignId}/clone`,
-      campaign,
+      campaign
     );
   }
 
@@ -319,10 +277,7 @@ export class MarketingApi {
    * End a campaign
    */
   async endCampaign(campaignId: string): Promise<void> {
-    return await this.client.post<void>(
-      `${this.basePath}/ad_campaign/${campaignId}/end`,
-      {},
-    );
+    return await this.client.post<void>(`${this.basePath}/ad_campaign/${campaignId}/end`, {});
   }
 
   /**
@@ -334,7 +289,7 @@ export class MarketingApi {
     };
     return await this.client.get<Campaign>(
       `${this.basePath}/ad_campaign/get_campaign_by_name`,
-      params,
+      params
     );
   }
 
@@ -343,11 +298,11 @@ export class MarketingApi {
    */
   async bulkCreateAdsByInventoryReference(
     campaignId: string,
-    body: BulkCreateAdsByInventoryReferenceRequest,
+    body: BulkCreateAdsByInventoryReferenceRequest
   ): Promise<BulkCreateAdsByInventoryReferenceResponse> {
     return await this.client.post<BulkCreateAdsByInventoryReferenceResponse>(
       `${this.basePath}/ad_campaign/${campaignId}/bulk_create_ads_by_inventory_reference`,
-      body,
+      body
     );
   }
 
@@ -356,11 +311,11 @@ export class MarketingApi {
    */
   async bulkCreateAdsByListingId(
     campaignId: string,
-    body: BulkCreateAdRequest,
+    body: BulkCreateAdRequest
   ): Promise<BulkAdResponse> {
     return await this.client.post<BulkAdResponse>(
       `${this.basePath}/ad_campaign/${campaignId}/bulk_create_ads_by_listing_id`,
-      body,
+      body
     );
   }
 
@@ -369,11 +324,11 @@ export class MarketingApi {
    */
   async bulkDeleteAdsByInventoryReference(
     campaignId: string,
-    body: BulkDeleteAdsByInventoryReferenceRequest,
+    body: BulkDeleteAdsByInventoryReferenceRequest
   ): Promise<BulkDeleteAdsByInventoryReferenceResponse> {
     return await this.client.post<BulkDeleteAdsByInventoryReferenceResponse>(
       `${this.basePath}/ad_campaign/${campaignId}/bulk_delete_ads_by_inventory_reference`,
-      body,
+      body
     );
   }
 
@@ -382,11 +337,11 @@ export class MarketingApi {
    */
   async bulkDeleteAdsByListingId(
     campaignId: string,
-    body: BulkDeleteAdRequest,
+    body: BulkDeleteAdRequest
   ): Promise<BulkDeleteAdResponse> {
     return await this.client.post<BulkDeleteAdResponse>(
       `${this.basePath}/ad_campaign/${campaignId}/bulk_delete_ads_by_listing_id`,
-      body,
+      body
     );
   }
 
@@ -395,11 +350,11 @@ export class MarketingApi {
    */
   async bulkUpdateAdsBidByInventoryReference(
     campaignId: string,
-    body: BulkCreateAdsByInventoryReferenceRequest,
+    body: BulkCreateAdsByInventoryReferenceRequest
   ): Promise<BulkUpdateAdsByInventoryReferenceResponse> {
     return await this.client.post<BulkUpdateAdsByInventoryReferenceResponse>(
       `${this.basePath}/ad_campaign/${campaignId}/bulk_update_ads_bid_by_inventory_reference`,
-      body,
+      body
     );
   }
 
@@ -408,11 +363,11 @@ export class MarketingApi {
    */
   async bulkUpdateAdsBidByListingId(
     campaignId: string,
-    body: BulkCreateAdRequest,
+    body: BulkCreateAdRequest
   ): Promise<BulkAdUpdateResponse> {
     return await this.client.post<BulkAdUpdateResponse>(
       `${this.basePath}/ad_campaign/${campaignId}/bulk_update_ads_bid_by_listing_id`,
-      body,
+      body
     );
   }
 
@@ -421,11 +376,11 @@ export class MarketingApi {
    */
   async bulkUpdateAdsStatus(
     campaignId: string,
-    body: BulkUpdateAdStatusRequest,
+    body: BulkUpdateAdStatusRequest
   ): Promise<BulkAdUpdateStatusResponse> {
     return await this.client.post<BulkAdUpdateStatusResponse>(
       `${this.basePath}/ad_campaign/${campaignId}/bulk_update_ads_status`,
-      body,
+      body
     );
   }
 
@@ -434,11 +389,11 @@ export class MarketingApi {
    */
   async bulkUpdateAdsStatusByListingId(
     campaignId: string,
-    body: BulkUpdateAdStatusByListingIdRequest,
+    body: BulkUpdateAdStatusByListingIdRequest
   ): Promise<BulkAdUpdateStatusByListingIdResponse> {
     return await this.client.post<BulkAdUpdateStatusByListingIdResponse>(
       `${this.basePath}/ad_campaign/${campaignId}/bulk_update_ads_status_by_listing_id`,
-      body,
+      body
     );
   }
 
@@ -446,20 +401,14 @@ export class MarketingApi {
    * Pause a campaign
    */
   async pauseCampaign(campaignId: string): Promise<void> {
-    return await this.client.post<void>(
-      `${this.basePath}/ad_campaign/${campaignId}/pause`,
-      {},
-    );
+    return await this.client.post<void>(`${this.basePath}/ad_campaign/${campaignId}/pause`, {});
   }
 
   /**
    * Resume a campaign
    */
   async resumeCampaign(campaignId: string): Promise<void> {
-    return await this.client.post<void>(
-      `${this.basePath}/ad_campaign/${campaignId}/resume`,
-      {},
-    );
+    return await this.client.post<void>(`${this.basePath}/ad_campaign/${campaignId}/resume`, {});
   }
 
   /**
@@ -467,24 +416,21 @@ export class MarketingApi {
    */
   async updateCampaignIdentification(
     campaignId: string,
-    body: UpdateCampaignIdentificationRequest,
+    body: UpdateCampaignIdentificationRequest
   ): Promise<void> {
     return await this.client.put<void>(
       `${this.basePath}/ad_campaign/${campaignId}/update_campaign_identification`,
-      body,
+      body
     );
   }
 
   /**
    * Create an ad group
    */
-  async createAdGroup(
-    campaignId: string,
-    body: AdGroupRequest,
-  ): Promise<BaseResponse> {
+  async createAdGroup(campaignId: string, body: AdGroupRequest): Promise<BaseResponse> {
     return await this.client.post<BaseResponse>(
       `${this.basePath}/ad_campaign/${campaignId}/ad_group`,
-      body,
+      body
     );
   }
 
@@ -494,11 +440,11 @@ export class MarketingApi {
   async cloneAdGroup(
     campaignId: string,
     adGroupId: string,
-    body: CreateAdGroupRequest,
+    body: CreateAdGroupRequest
   ): Promise<BaseResponse> {
     return await this.client.post<BaseResponse>(
       `${this.basePath}/ad_campaign/${campaignId}/ad_group/${adGroupId}/clone`,
-      body,
+      body
     );
   }
 
@@ -509,7 +455,7 @@ export class MarketingApi {
     campaignId: string,
     adGroupStatus?: string,
     limit?: number,
-    offset?: number,
+    offset?: number
   ): Promise<AdGroupPagedCollection> {
     const params: Record<string, string | number> = {};
     if (adGroupStatus) params.ad_group_status = adGroupStatus;
@@ -517,7 +463,7 @@ export class MarketingApi {
     if (offset) params.offset = offset;
     return await this.client.get<AdGroupPagedCollection>(
       `${this.basePath}/ad_campaign/${campaignId}/ad_group`,
-      params,
+      params
     );
   }
 
@@ -526,20 +472,17 @@ export class MarketingApi {
    */
   async getAdGroup(campaignId: string, adGroupId: string): Promise<AdGroup> {
     return await this.client.get<AdGroup>(
-      `${this.basePath}/ad_campaign/${campaignId}/ad_group/${adGroupId}`,
+      `${this.basePath}/ad_campaign/${campaignId}/ad_group/${adGroupId}`
     );
   }
 
   /**
    * Suggest bids for an ad group
    */
-  async suggestBids(
-    campaignId: string,
-    adGroupId: string,
-  ): Promise<SuggestedBids> {
+  async suggestBids(campaignId: string, adGroupId: string): Promise<SuggestedBids> {
     return await this.client.post<SuggestedBids>(
       `${this.basePath}/ad_campaign/${campaignId}/ad_group/${adGroupId}/suggest_bids`,
-      {},
+      {}
     );
   }
 
@@ -549,11 +492,11 @@ export class MarketingApi {
   async updateAdGroupBids(
     campaignId: string,
     adGroupId: string,
-    body: UpdateKeywordByKeywordIdRequest,
+    body: UpdateKeywordByKeywordIdRequest
   ): Promise<void> {
     return await this.client.post<void>(
       `${this.basePath}/ad_campaign/${campaignId}/ad_group/${adGroupId}/update_ad_group_bids`,
-      body,
+      body
     );
   }
 
@@ -563,11 +506,11 @@ export class MarketingApi {
   async updateAdGroupKeywords(
     campaignId: string,
     adGroupId: string,
-    body: BulkUpdateKeywordRequest,
+    body: BulkUpdateKeywordRequest
   ): Promise<void> {
     return await this.client.post<void>(
       `${this.basePath}/ad_campaign/${campaignId}/ad_group/${adGroupId}/update_ad_group_keywords`,
-      body,
+      body
     );
   }
 
@@ -577,11 +520,11 @@ export class MarketingApi {
   async suggestKeywords(
     campaignId: string,
     adGroupId: string,
-    body: SuggestKeywordsRequest,
+    body: SuggestKeywordsRequest
   ): Promise<SuggestedKeywords> {
     return await this.client.post<SuggestedKeywords>(
       `${this.basePath}/ad_campaign/${campaignId}/ad_group/${adGroupId}/suggest_keywords`,
-      body,
+      body
     );
   }
 
@@ -593,7 +536,7 @@ export class MarketingApi {
     adGroupId: string,
     keywordStatus?: string,
     limit?: number,
-    offset?: number,
+    offset?: number
   ): Promise<KeywordPagedCollection> {
     const params: Record<string, string | number> = {};
     if (keywordStatus) params.keyword_status = keywordStatus;
@@ -601,7 +544,7 @@ export class MarketingApi {
     if (offset) params.offset = offset;
     return await this.client.get<KeywordPagedCollection>(
       `${this.basePath}/ad_campaign/${campaignId}/ad_group/${adGroupId}/keyword`,
-      params,
+      params
     );
   }
 
@@ -611,11 +554,11 @@ export class MarketingApi {
   async bulkCreateKeywords(
     campaignId: string,
     adGroupId: string,
-    body: BulkCreateKeywordsRequest,
+    body: BulkCreateKeywordsRequest
   ): Promise<BulkCreateKeywordsResponse> {
     return await this.client.post<BulkCreateKeywordsResponse>(
       `${this.basePath}/ad_campaign/${campaignId}/ad_group/${adGroupId}/bulk_create_keywords`,
-      body,
+      body
     );
   }
 
@@ -625,11 +568,11 @@ export class MarketingApi {
   async bulkDeleteKeywords(
     campaignId: string,
     adGroupId: string,
-    body: BulkDeleteKeywordsRequest,
+    body: BulkDeleteKeywordsRequest
   ): Promise<BulkDeleteKeywordsResponse> {
     return await this.client.post<BulkDeleteKeywordsResponse>(
       `${this.basePath}/ad_campaign/${campaignId}/ad_group/${adGroupId}/bulk_delete_keywords`,
-      body,
+      body
     );
   }
 
@@ -639,11 +582,11 @@ export class MarketingApi {
   async bulkUpdateKeywordBids(
     campaignId: string,
     adGroupId: string,
-    body: BulkUpdateKeywordBidsRequest,
+    body: BulkUpdateKeywordBidsRequest
   ): Promise<BulkUpdateKeywordBidsResponse> {
     return await this.client.post<BulkUpdateKeywordBidsResponse>(
       `${this.basePath}/ad_campaign/${campaignId}/ad_group/${adGroupId}/bulk_update_keyword_bids`,
-      body,
+      body
     );
   }
 
@@ -653,37 +596,29 @@ export class MarketingApi {
   async createKeyword(
     campaignId: string,
     adGroupId: string,
-    body: CreateKeywordRequest,
+    body: CreateKeywordRequest
   ): Promise<CreateKeywordResponse> {
     return await this.client.post<CreateKeywordResponse>(
       `${this.basePath}/ad_campaign/${campaignId}/ad_group/${adGroupId}/create_keyword`,
-      body,
+      body
     );
   }
 
   /**
    * Get a keyword
    */
-  async getKeyword(
-    campaignId: string,
-    adGroupId: string,
-    keywordId: string,
-  ): Promise<Keyword> {
+  async getKeyword(campaignId: string, adGroupId: string, keywordId: string): Promise<Keyword> {
     return await this.client.get<Keyword>(
-      `${this.basePath}/ad_campaign/${campaignId}/ad_group/${adGroupId}/keyword/${keywordId}`,
+      `${this.basePath}/ad_campaign/${campaignId}/ad_group/${adGroupId}/keyword/${keywordId}`
     );
   }
 
   /**
    * Delete a keyword
    */
-  async deleteKeyword(
-    campaignId: string,
-    adGroupId: string,
-    keywordId: string,
-  ): Promise<void> {
+  async deleteKeyword(campaignId: string, adGroupId: string, keywordId: string): Promise<void> {
     return await this.client.delete<void>(
-      `${this.basePath}/ad_campaign/${campaignId}/ad_group/${adGroupId}/keyword/${keywordId}`,
+      `${this.basePath}/ad_campaign/${campaignId}/ad_group/${adGroupId}/keyword/${keywordId}`
     );
   }
 
@@ -694,11 +629,11 @@ export class MarketingApi {
     campaignId: string,
     adGroupId: string,
     keywordId: string,
-    body: UpdateBidRequest,
+    body: UpdateBidRequest
   ): Promise<void> {
     return await this.client.post<void>(
       `${this.basePath}/ad_campaign/${campaignId}/ad_group/${adGroupId}/keyword/${keywordId}/update_bid`,
-      body,
+      body
     );
   }
 
@@ -712,7 +647,7 @@ export class MarketingApi {
     endDate: string,
     sort?: string,
     listingIds?: string,
-    marketplaceId?: string,
+    marketplaceId?: string
   ): Promise<Report> {
     const params: Record<string, string> = {
       dimension,
@@ -730,19 +665,15 @@ export class MarketingApi {
    * Get ad report metadata
    */
   async getAdReportMetadata(): Promise<ReportMetadatas> {
-    return await this.client.get<ReportMetadatas>(
-      `${this.basePath}/ad_report_metadata`,
-    );
+    return await this.client.get<ReportMetadatas>(`${this.basePath}/ad_report_metadata`);
   }
 
   /**
    * Get ad report metadata for a report type
    */
-  async getAdReportMetadataForReportType(
-    reportType: string,
-  ): Promise<ReportMetadata> {
+  async getAdReportMetadataForReportType(reportType: string): Promise<ReportMetadata> {
     return await this.client.get<ReportMetadata>(
-      `${this.basePath}/ad_report_metadata/${reportType}`,
+      `${this.basePath}/ad_report_metadata/${reportType}`
     );
   }
 
@@ -759,7 +690,7 @@ export class MarketingApi {
   async getReportTasks(
     reportTaskStatuses?: string,
     limit?: number,
-    offset?: number,
+    offset?: number
   ): Promise<ReportTaskPagedCollection> {
     const params: Record<string, string | number> = {};
     if (reportTaskStatuses) params.report_task_statuses = reportTaskStatuses;
@@ -767,7 +698,7 @@ export class MarketingApi {
     if (offset) params.offset = offset;
     return await this.client.get<ReportTaskPagedCollection>(
       `${this.basePath}/ad_report_task`,
-      params,
+      params
     );
   }
 
@@ -775,9 +706,7 @@ export class MarketingApi {
    * Get a report task
    */
   async getReportTask(reportTaskId: string): Promise<ReportTask> {
-    return await this.client.get<ReportTask>(
-      `${this.basePath}/ad_report_task/${reportTaskId}`,
-    );
+    return await this.client.get<ReportTask>(`${this.basePath}/ad_report_task/${reportTaskId}`);
   }
 
   /**
@@ -785,7 +714,7 @@ export class MarketingApi {
    */
   async getItemPromotion(promotionId: string): Promise<ItemPromotionResponse> {
     return await this.client.get<ItemPromotionResponse>(
-      `${this.basePath}/item_promotion/${promotionId}`,
+      `${this.basePath}/item_promotion/${promotionId}`
     );
   }
 
@@ -793,19 +722,14 @@ export class MarketingApi {
    * Delete an item promotion
    */
   async deleteItemPromotion(promotionId: string): Promise<void> {
-    return await this.client.delete<void>(
-      `${this.basePath}/item_promotion/${promotionId}`,
-    );
+    return await this.client.delete<void>(`${this.basePath}/item_promotion/${promotionId}`);
   }
 
   /**
    * Pause an item promotion
    */
   async pauseItemPromotion(promotionId: string): Promise<void> {
-    return await this.client.post<void>(
-      `${this.basePath}/item_promotion/${promotionId}/pause`,
-      {},
-    );
+    return await this.client.post<void>(`${this.basePath}/item_promotion/${promotionId}/pause`, {});
   }
 
   /**
@@ -814,7 +738,7 @@ export class MarketingApi {
   async resumeItemPromotion(promotionId: string): Promise<void> {
     return await this.client.post<void>(
       `${this.basePath}/item_promotion/${promotionId}/resume`,
-      {},
+      {}
     );
   }
 
@@ -823,11 +747,11 @@ export class MarketingApi {
    */
   async updateItemPromotion(
     promotionId: string,
-    body: ItemPromotionRequest,
+    body: ItemPromotionRequest
   ): Promise<BaseResponse> {
     return await this.client.put<BaseResponse>(
       `${this.basePath}/item_promotion/${promotionId}`,
-      body,
+      body
     );
   }
 
@@ -838,7 +762,7 @@ export class MarketingApi {
     marketplaceId: string,
     promotionStatus?: string,
     limit?: number,
-    offset?: number,
+    offset?: number
   ): Promise<PromotionsReportPagedCollection> {
     const params: Record<string, string | number> = {
       marketplace_id: marketplaceId,
@@ -848,20 +772,18 @@ export class MarketingApi {
     if (offset) params.offset = offset;
     return await this.client.get<PromotionsReportPagedCollection>(
       `${this.basePath}/promotion_report`,
-      params,
+      params
     );
   }
 
   /**
    * Get a promotion summary report
    */
-  async getPromotionSummaryReport(
-    marketplaceId: string,
-  ): Promise<SummaryReportResponse> {
+  async getPromotionSummaryReport(marketplaceId: string): Promise<SummaryReportResponse> {
     const params = { marketplace_id: marketplaceId };
     return await this.client.get<SummaryReportResponse>(
       `${this.basePath}/promotion_summary_report`,
-      params,
+      params
     );
   }
 
@@ -870,33 +792,27 @@ export class MarketingApi {
    */
   async getTargeting(campaignId: string): Promise<TargetingResponse> {
     return await this.client.get<TargetingResponse>(
-      `${this.basePath}/ad_campaign/${campaignId}/targeting`,
+      `${this.basePath}/ad_campaign/${campaignId}/targeting`
     );
   }
 
   /**
    * Create targeting for a campaign
    */
-  async createTargeting(
-    campaignId: string,
-    body: TargetingRequest,
-  ): Promise<void> {
+  async createTargeting(campaignId: string, body: TargetingRequest): Promise<void> {
     return await this.client.post<void>(
       `${this.basePath}/ad_campaign/${campaignId}/targeting`,
-      body,
+      body
     );
   }
 
   /**
    * Update targeting for a campaign
    */
-  async updateTargeting(
-    campaignId: string,
-    body: TargetingRequest,
-  ): Promise<void> {
+  async updateTargeting(campaignId: string, body: TargetingRequest): Promise<void> {
     return await this.client.put<void>(
       `${this.basePath}/ad_campaign/${campaignId}/targeting`,
-      body,
+      body
     );
   }
 
@@ -906,14 +822,14 @@ export class MarketingApi {
   async getNegativeKeywords(
     campaignId: string,
     limit?: number,
-    offset?: number,
+    offset?: number
   ): Promise<NegativeKeywordPagedCollection> {
     const params: Record<string, string | number> = {};
     if (limit) params.limit = limit;
     if (offset) params.offset = offset;
     return await this.client.get<NegativeKeywordPagedCollection>(
       `${this.basePath}/ad_campaign/${campaignId}/negative_keyword`,
-      params,
+      params
     );
   }
 
@@ -922,11 +838,11 @@ export class MarketingApi {
    */
   async createNegativeKeyword(
     campaignId: string,
-    body: CreateNegativeKeywordRequest,
+    body: CreateNegativeKeywordRequest
   ): Promise<BaseResponse> {
     return await this.client.post<BaseResponse>(
       `${this.basePath}/ad_campaign/${campaignId}/negative_keyword`,
-      body,
+      body
     );
   }
 
@@ -935,11 +851,11 @@ export class MarketingApi {
    */
   async bulkCreateNegativeKeywords(
     campaignId: string,
-    body: BulkCreateNegativeKeywordRequest,
+    body: BulkCreateNegativeKeywordRequest
   ): Promise<BulkCreateNegativeKeywordResponse> {
     return await this.client.post<BulkCreateNegativeKeywordResponse>(
       `${this.basePath}/ad_campaign/${campaignId}/bulk_create_negative_keywords`,
-      body,
+      body
     );
   }
 
@@ -948,11 +864,11 @@ export class MarketingApi {
    */
   async bulkDeleteNegativeKeywords(
     campaignId: string,
-    body: BulkDeleteNegativeKeywordRequest,
+    body: BulkDeleteNegativeKeywordRequest
   ): Promise<BulkDeleteNegativeKeywordResponse> {
     return await this.client.post<BulkDeleteNegativeKeywordResponse>(
       `${this.basePath}/ad_campaign/${campaignId}/bulk_delete_negative_keywords`,
-      body,
+      body
     );
   }
 
@@ -961,11 +877,11 @@ export class MarketingApi {
    */
   async bulkUpdateNegativeKeywords(
     campaignId: string,
-    body: BulkUpdateNegativeKeywordRequest,
+    body: BulkUpdateNegativeKeywordRequest
   ): Promise<BulkUpdateNegativeKeywordResponse> {
     return await this.client.post<BulkUpdateNegativeKeywordResponse>(
       `${this.basePath}/ad_campaign/${campaignId}/bulk_update_negative_keywords`,
-      body,
+      body
     );
   }
 
@@ -974,22 +890,19 @@ export class MarketingApi {
    */
   async getNegativeKeyword(
     campaignId: string,
-    negativeKeywordId: string,
+    negativeKeywordId: string
   ): Promise<NegativeKeyword> {
     return await this.client.get<NegativeKeyword>(
-      `${this.basePath}/ad_campaign/${campaignId}/negative_keyword/${negativeKeywordId}`,
+      `${this.basePath}/ad_campaign/${campaignId}/negative_keyword/${negativeKeywordId}`
     );
   }
 
   /**
    * Delete a negative keyword for a campaign
    */
-  async deleteNegativeKeyword(
-    campaignId: string,
-    negativeKeywordId: string,
-  ): Promise<void> {
+  async deleteNegativeKeyword(campaignId: string, negativeKeywordId: string): Promise<void> {
     return await this.client.delete<void>(
-      `${this.basePath}/ad_campaign/${campaignId}/negative_keyword/${negativeKeywordId}`,
+      `${this.basePath}/ad_campaign/${campaignId}/negative_keyword/${negativeKeywordId}`
     );
   }
 
@@ -999,11 +912,11 @@ export class MarketingApi {
   async updateNegativeKeyword(
     campaignId: string,
     negativeKeywordId: string,
-    body: NegativeKeywordRequest,
+    body: NegativeKeywordRequest
   ): Promise<BaseResponse> {
     return await this.client.put<BaseResponse>(
       `${this.basePath}/ad_campaign/${campaignId}/negative_keyword/${negativeKeywordId}`,
-      body,
+      body
     );
   }
 
@@ -1013,14 +926,14 @@ export class MarketingApi {
   async getNegativeKeywordsForAdGroup(
     adGroupId: string,
     limit?: number,
-    offset?: number,
+    offset?: number
   ): Promise<NegativeKeywordPagedCollection> {
     const params: Record<string, string | number> = {};
     if (limit) params.limit = limit;
     if (offset) params.offset = offset;
     return await this.client.get<NegativeKeywordPagedCollection>(
       `${this.basePath}/ad_group/${adGroupId}/negative_keyword`,
-      params,
+      params
     );
   }
 
@@ -1029,11 +942,11 @@ export class MarketingApi {
    */
   async createNegativeKeywordForAdGroup(
     adGroupId: string,
-    body: CreateNegativeKeywordRequest,
+    body: CreateNegativeKeywordRequest
   ): Promise<BaseResponse> {
     return await this.client.post<BaseResponse>(
       `${this.basePath}/ad_group/${adGroupId}/negative_keyword`,
-      body,
+      body
     );
   }
 
@@ -1042,11 +955,11 @@ export class MarketingApi {
    */
   async bulkCreateNegativeKeywordsForAdGroup(
     adGroupId: string,
-    body: BulkCreateNegativeKeywordRequest,
+    body: BulkCreateNegativeKeywordRequest
   ): Promise<BulkCreateNegativeKeywordResponse> {
     return await this.client.post<BulkCreateNegativeKeywordResponse>(
       `${this.basePath}/ad_group/${adGroupId}/bulk_create_negative_keywords`,
-      body,
+      body
     );
   }
 
@@ -1055,11 +968,11 @@ export class MarketingApi {
    */
   async bulkDeleteNegativeKeywordsForAdGroup(
     adGroupId: string,
-    body: BulkDeleteNegativeKeywordRequest,
+    body: BulkDeleteNegativeKeywordRequest
   ): Promise<BulkDeleteNegativeKeywordResponse> {
     return await this.client.post<BulkDeleteNegativeKeywordResponse>(
       `${this.basePath}/ad_group/${adGroupId}/bulk_delete_negative_keywords`,
-      body,
+      body
     );
   }
 
@@ -1068,11 +981,11 @@ export class MarketingApi {
    */
   async bulkUpdateNegativeKeywordsForAdGroup(
     adGroupId: string,
-    body: BulkUpdateNegativeKeywordRequest,
+    body: BulkUpdateNegativeKeywordRequest
   ): Promise<BulkUpdateNegativeKeywordResponse> {
     return await this.client.post<BulkUpdateNegativeKeywordResponse>(
       `${this.basePath}/ad_group/${adGroupId}/bulk_update_negative_keywords`,
-      body,
+      body
     );
   }
 
@@ -1081,10 +994,10 @@ export class MarketingApi {
    */
   async getNegativeKeywordForAdGroup(
     adGroupId: string,
-    negativeKeywordId: string,
+    negativeKeywordId: string
   ): Promise<NegativeKeyword> {
     return await this.client.get<NegativeKeyword>(
-      `${this.basePath}/ad_group/${adGroupId}/negative_keyword/${negativeKeywordId}`,
+      `${this.basePath}/ad_group/${adGroupId}/negative_keyword/${negativeKeywordId}`
     );
   }
 
@@ -1093,10 +1006,10 @@ export class MarketingApi {
    */
   async deleteNegativeKeywordForAdGroup(
     adGroupId: string,
-    negativeKeywordId: string,
+    negativeKeywordId: string
   ): Promise<void> {
     return await this.client.delete<void>(
-      `${this.basePath}/ad_group/${adGroupId}/negative_keyword/${negativeKeywordId}`,
+      `${this.basePath}/ad_group/${adGroupId}/negative_keyword/${negativeKeywordId}`
     );
   }
 
@@ -1106,11 +1019,11 @@ export class MarketingApi {
   async updateNegativeKeywordForAdGroup(
     adGroupId: string,
     negativeKeywordId: string,
-    body: NegativeKeywordRequest,
+    body: NegativeKeywordRequest
   ): Promise<BaseResponse> {
     return await this.client.put<BaseResponse>(
       `${this.basePath}/ad_group/${adGroupId}/negative_keyword/${negativeKeywordId}`,
-      body,
+      body
     );
   }
 }

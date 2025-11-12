@@ -92,7 +92,7 @@ export enum EbayApiCategory {
   LISTING_METADATA = 'listing-metadata',
   MARKETING_AND_PROMOTIONS = 'marketing-and-promotions',
   ORDER_MANAGEMENT = 'order-management',
-  OTHER = 'other'
+  OTHER = 'other',
 }
 
 /**
@@ -129,5 +129,5 @@ export enum EbayApi {
   VERO = 'commerce/vero/v1',
   COMPLIANCE = 'sell/compliance/v1',
   TRANSLATION = 'commerce/translation/v1',
-  EDELIVERY = 'sell/logistics/v1'
+  EDELIVERY = 'sell/logistics/v1',
 }

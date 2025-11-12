@@ -1,14 +1,14 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import nock from "nock";
-import { EbayApiClient } from "../../../src/api/client.js";
-import type { EbayConfig } from "../../../src/types/ebay.js";
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import nock from 'nock';
+import { EbayApiClient } from '../../../src/api/client.js';
+import type { EbayConfig } from '../../../src/types/ebay.js';
 import {
   mockEbayApiEndpoint,
   mockEbayApiError,
   mockOAuthTokenEndpoint,
   cleanupMocks,
-} from "../../helpers/mock-http.js";
-import { createMockTokens } from "../../helpers/mock-token-storage.js";
+} from '../../helpers/mock-http.js';
+import { createMockTokens } from '../../helpers/mock-token-storage.js';
 
 // Mock TokenStorage - use vi.hoisted to ensure mock is available when hoisted
 const mockTokenStorage = vi.hoisted(() => ({
@@ -20,11 +20,11 @@ const mockTokenStorage = vi.hoisted(() => ({
   isUserRefreshTokenExpired: vi.fn(),
 }));
 
-vi.mock("../../../src/auth/token-storage.js", () => ({
+vi.mock('../../../src/auth/token-storage.js', () => ({
   TokenStorage: mockTokenStorage,
 }));
 
-describe("EbayApiClient Integration Tests", () => {
+describe('EbayApiClient Integration Tests', () => {
   let apiClient: EbayApiClient;
   let config: EbayConfig;
 
@@ -33,10 +33,10 @@ describe("EbayApiClient Integration Tests", () => {
     cleanupMocks();
 
     config = {
-      clientId: "test_client_id",
-      clientSecret: "test_client_secret",
-      environment: "sandbox",
-      redirectUri: "https://localhost/callback",
+      clientId: 'test_client_id',
+      clientSecret: 'test_client_secret',
+      environment: 'sandbox',
+      redirectUri: 'https://localhost/callback',
     };
 
     // Setup mock tokens
@@ -53,40 +53,35 @@ describe("EbayApiClient Integration Tests", () => {
     cleanupMocks();
   });
 
-  describe("HTTP GET Requests", () => {
-    it("should make successful GET request", async () => {
+  describe('HTTP GET Requests', () => {
+    it('should make successful GET request', async () => {
       const mockResponse = {
         total: 10,
         limit: 25,
         inventoryItems: [
-          { sku: "TEST-001", availability: { shipToLocationAvailability: { quantity: 5 } } },
-          { sku: "TEST-002", availability: { shipToLocationAvailability: { quantity: 3 } } },
+          { sku: 'TEST-001', availability: { shipToLocationAvailability: { quantity: 5 } } },
+          { sku: 'TEST-002', availability: { shipToLocationAvailability: { quantity: 3 } } },
         ],
       };
 
-      mockEbayApiEndpoint(
-        "/sell/inventory/v1/inventory_item",
-        "get",
-        "sandbox",
-        mockResponse
-      );
+      mockEbayApiEndpoint('/sell/inventory/v1/inventory_item', 'get', 'sandbox', mockResponse);
 
-      const result = await apiClient.get("/sell/inventory/v1/inventory_item");
+      const result = await apiClient.get('/sell/inventory/v1/inventory_item');
 
       expect(result).toEqual(mockResponse);
     });
 
-    it("should include query parameters in GET request", async () => {
+    it('should include query parameters in GET request', async () => {
       const mockResponse = { limit: 10, offset: 0, total: 5 };
 
       mockEbayApiEndpoint(
-        "/sell/inventory/v1/inventory_item?limit=10&offset=0",
-        "get",
-        "sandbox",
+        '/sell/inventory/v1/inventory_item?limit=10&offset=0',
+        'get',
+        'sandbox',
         mockResponse
       );
 
-      const result = await apiClient.get("/sell/inventory/v1/inventory_item", {
+      const result = await apiClient.get('/sell/inventory/v1/inventory_item', {
         limit: 10,
         offset: 0,
       });
@@ -94,69 +89,63 @@ describe("EbayApiClient Integration Tests", () => {
       expect(result).toEqual(mockResponse);
     });
 
-    it("should handle GET request errors", async () => {
+    it('should handle GET request errors', async () => {
       mockEbayApiError(
-        "/sell/inventory/v1/inventory_item/INVALID-SKU",
-        "get",
-        "sandbox",
-        "Inventory item not found",
+        '/sell/inventory/v1/inventory_item/INVALID-SKU',
+        'get',
+        'sandbox',
+        'Inventory item not found',
         404
       );
 
-      await expect(
-        apiClient.get("/sell/inventory/v1/inventory_item/INVALID-SKU")
-      ).rejects.toThrow("Inventory item not found");
+      await expect(apiClient.get('/sell/inventory/v1/inventory_item/INVALID-SKU')).rejects.toThrow(
+        'Inventory item not found'
+      );
     });
   });
 
-  describe("HTTP POST Requests", () => {
-    it("should make successful POST request", async () => {
+  describe('HTTP POST Requests', () => {
+    it('should make successful POST request', async () => {
       const requestData = {
-        sku: "TEST-001",
-        marketplaceId: "EBAY_US",
-        format: "FIXED_PRICE",
+        sku: 'TEST-001',
+        marketplaceId: 'EBAY_US',
+        format: 'FIXED_PRICE',
         pricingSummary: {
-          price: { currency: "USD", value: "99.99" },
+          price: { currency: 'USD', value: '99.99' },
         },
       };
 
-      const mockResponse = { offerId: "1234567890" };
+      const mockResponse = { offerId: '1234567890' };
 
-      mockEbayApiEndpoint(
-        "/sell/inventory/v1/offer",
-        "post",
-        "sandbox",
-        mockResponse,
-        201
-      );
+      mockEbayApiEndpoint('/sell/inventory/v1/offer', 'post', 'sandbox', mockResponse, 201);
 
-      const result = await apiClient.post("/sell/inventory/v1/offer", requestData);
+      const result = await apiClient.post('/sell/inventory/v1/offer', requestData);
 
       expect(result).toEqual(mockResponse);
     });
 
-    it("should handle POST request validation errors", async () => {
+    it('should handle POST request validation errors', async () => {
       const invalidData = {
-        sku: "TEST-001",
+        sku: 'TEST-001',
         // Missing required fields
       };
 
       mockEbayApiError(
-        "/sell/inventory/v1/offer",
-        "post",
-        "sandbox",
-        "Missing required field: marketplaceId",
+        '/sell/inventory/v1/offer',
+        'post',
+        'sandbox',
+        'Missing required field: marketplaceId',
         400
       );
 
-      await expect(
-        apiClient.post("/sell/inventory/v1/offer", invalidData)
-      ).rejects.toThrow("Missing required field: marketplaceId");
+      await expect(apiClient.post('/sell/inventory/v1/offer', invalidData)).rejects.toThrow(
+        'Missing required field: marketplaceId'
+      );
     });
   });
 
-  describe("HTTP PUT Requests", () => {
-    it("should make successful PUT request", async () => {
+  describe('HTTP PUT Requests', () => {
+    it('should make successful PUT request', async () => {
       const updateData = {
         availability: {
           shipToLocationAvailability: {
@@ -166,212 +155,187 @@ describe("EbayApiClient Integration Tests", () => {
       };
 
       mockEbayApiEndpoint(
-        "/sell/inventory/v1/inventory_item/TEST-001",
-        "put",
-        "sandbox",
+        '/sell/inventory/v1/inventory_item/TEST-001',
+        'put',
+        'sandbox',
         undefined,
         204
       );
 
-      await apiClient.put("/sell/inventory/v1/inventory_item/TEST-001", updateData);
+      await apiClient.put('/sell/inventory/v1/inventory_item/TEST-001', updateData);
 
       // No error thrown means success
       expect(true).toBe(true);
     });
 
-    it("should handle PUT request errors", async () => {
+    it('should handle PUT request errors', async () => {
       mockEbayApiError(
-        "/sell/inventory/v1/inventory_item/TEST-001",
-        "put",
-        "sandbox",
-        "Inventory item not found",
+        '/sell/inventory/v1/inventory_item/TEST-001',
+        'put',
+        'sandbox',
+        'Inventory item not found',
         404
       );
 
-      await expect(
-        apiClient.put("/sell/inventory/v1/inventory_item/TEST-001", {})
-      ).rejects.toThrow("Inventory item not found");
+      await expect(apiClient.put('/sell/inventory/v1/inventory_item/TEST-001', {})).rejects.toThrow(
+        'Inventory item not found'
+      );
     });
   });
 
-  describe("HTTP DELETE Requests", () => {
-    it("should make successful DELETE request", async () => {
+  describe('HTTP DELETE Requests', () => {
+    it('should make successful DELETE request', async () => {
       mockEbayApiEndpoint(
-        "/sell/inventory/v1/inventory_item/TEST-001",
-        "delete",
-        "sandbox",
+        '/sell/inventory/v1/inventory_item/TEST-001',
+        'delete',
+        'sandbox',
         undefined,
         204
       );
 
-      await apiClient.delete("/sell/inventory/v1/inventory_item/TEST-001");
+      await apiClient.delete('/sell/inventory/v1/inventory_item/TEST-001');
 
       // No error thrown means success
       expect(true).toBe(true);
     });
 
-    it("should handle DELETE request errors", async () => {
+    it('should handle DELETE request errors', async () => {
       mockEbayApiError(
-        "/sell/inventory/v1/inventory_item/TEST-001",
-        "delete",
-        "sandbox",
-        "Cannot delete item with active offers",
+        '/sell/inventory/v1/inventory_item/TEST-001',
+        'delete',
+        'sandbox',
+        'Cannot delete item with active offers',
         409
       );
 
-      await expect(
-        apiClient.delete("/sell/inventory/v1/inventory_item/TEST-001")
-      ).rejects.toThrow("Cannot delete item with active offers");
+      await expect(apiClient.delete('/sell/inventory/v1/inventory_item/TEST-001')).rejects.toThrow(
+        'Cannot delete item with active offers'
+      );
     });
   });
 
-  describe("Authentication", () => {
-    it("should inject Bearer token in request headers", async () => {
+  describe('Authentication', () => {
+    it('should inject Bearer token in request headers', async () => {
       const mockResponse = { items: [] };
 
       const scope = mockEbayApiEndpoint(
-        "/sell/inventory/v1/inventory_item",
-        "get",
-        "sandbox",
+        '/sell/inventory/v1/inventory_item',
+        'get',
+        'sandbox',
         mockResponse
       );
 
       // Check that Authorization header is sent
-      scope.matchHeader("Authorization", /^Bearer .+/);
+      scope.matchHeader('Authorization', /^Bearer .+/);
 
-      await apiClient.get("/sell/inventory/v1/inventory_item");
+      await apiClient.get('/sell/inventory/v1/inventory_item');
 
       expect(scope.isDone()).toBe(true);
     });
 
-    it("should throw error when no user tokens are available", async () => {
+    it('should throw error when no user tokens are available', async () => {
       mockTokenStorage.hasTokens.mockResolvedValue(false);
 
       const clientWithoutTokens = new EbayApiClient(config);
       await clientWithoutTokens.initialize();
 
-      await expect(
-        clientWithoutTokens.get("/sell/inventory/v1/inventory_item")
-      ).rejects.toThrow("Access token is missing");
+      await expect(clientWithoutTokens.get('/sell/inventory/v1/inventory_item')).rejects.toThrow(
+        'Access token is missing'
+      );
     });
 
-    it("should refresh token when expired", async () => {
+    it('should refresh token when expired', async () => {
       const expiredTokens = createMockTokens();
       mockTokenStorage.loadTokens.mockResolvedValue(expiredTokens);
       mockTokenStorage.isUserAccessTokenExpired.mockReturnValue(true);
       mockTokenStorage.isUserRefreshTokenExpired.mockReturnValue(false);
 
       // Mock refresh token call
-      mockOAuthTokenEndpoint("sandbox", {
-        access_token: "new_access_token",
-        token_type: "Bearer",
+      mockOAuthTokenEndpoint('sandbox', {
+        access_token: 'new_access_token',
+        token_type: 'Bearer',
         expires_in: 7200,
         refresh_token: expiredTokens.userRefreshToken,
         refresh_token_expires_in: 47304000,
       });
 
       // Mock API call after refresh
-      mockEbayApiEndpoint(
-        "/sell/inventory/v1/inventory_item",
-        "get",
-        "sandbox",
-        { items: [] }
-      );
+      mockEbayApiEndpoint('/sell/inventory/v1/inventory_item', 'get', 'sandbox', { items: [] });
 
       const clientWithExpiredToken = new EbayApiClient(config);
       await clientWithExpiredToken.initialize();
 
-      const result = await clientWithExpiredToken.get(
-        "/sell/inventory/v1/inventory_item"
-      );
+      const result = await clientWithExpiredToken.get('/sell/inventory/v1/inventory_item');
 
       expect(result).toBeDefined();
       expect(mockTokenStorage.saveTokens).toHaveBeenCalled();
     });
   });
 
-  describe("Error Handling", () => {
-    it("should extract eBay error message from longMessage", async () => {
+  describe('Error Handling', () => {
+    it('should extract eBay error message from longMessage', async () => {
       const errorResponse = {
         errors: [
           {
             errorId: 1001,
-            domain: "API_INVENTORY",
-            category: "REQUEST",
-            message: "Short error",
-            longMessage: "Detailed error message with more context",
+            domain: 'API_INVENTORY',
+            category: 'REQUEST',
+            message: 'Short error',
+            longMessage: 'Detailed error message with more context',
           },
         ],
       };
 
-      mockEbayApiEndpoint(
-        "/sell/inventory/v1/offer",
-        "post",
-        "sandbox",
-        errorResponse,
-        400
-      );
+      mockEbayApiEndpoint('/sell/inventory/v1/offer', 'post', 'sandbox', errorResponse, 400);
 
-      await expect(apiClient.post("/sell/inventory/v1/offer", {})).rejects.toThrow(
-        "Detailed error message with more context"
+      await expect(apiClient.post('/sell/inventory/v1/offer', {})).rejects.toThrow(
+        'Detailed error message with more context'
       );
     });
 
-    it("should fallback to message when longMessage not available", async () => {
+    it('should fallback to message when longMessage not available', async () => {
       const errorResponse = {
         errors: [
           {
             errorId: 1001,
-            domain: "API_INVENTORY",
-            category: "REQUEST",
-            message: "Error message",
+            domain: 'API_INVENTORY',
+            category: 'REQUEST',
+            message: 'Error message',
           },
         ],
       };
 
-      mockEbayApiEndpoint(
-        "/sell/inventory/v1/offer",
-        "post",
-        "sandbox",
-        errorResponse,
-        400
-      );
+      mockEbayApiEndpoint('/sell/inventory/v1/offer', 'post', 'sandbox', errorResponse, 400);
 
-      await expect(apiClient.post("/sell/inventory/v1/offer", {})).rejects.toThrow(
-        "Error message"
-      );
+      await expect(apiClient.post('/sell/inventory/v1/offer', {})).rejects.toThrow('Error message');
     });
 
-    it("should handle network errors", async () => {
+    it('should handle network errors', async () => {
       // Don't mock the endpoint, causing a network error
-      await expect(
-        apiClient.get("/sell/inventory/v1/inventory_item")
-      ).rejects.toThrow();
+      await expect(apiClient.get('/sell/inventory/v1/inventory_item')).rejects.toThrow();
     });
 
-    it("should handle timeout errors", async () => {
+    it('should handle timeout errors', async () => {
       // Create a client with very short timeout
       const quickTimeoutConfig = { ...config };
       const quickClient = new EbayApiClient(quickTimeoutConfig);
       await quickClient.initialize();
 
       // Mock a slow response using nock directly (delay longer than timeout)
-      nock("https://api.sandbox.ebay.com")
-        .get("/sell/inventory/v1/inventory_item")
+      nock('https://api.sandbox.ebay.com')
+        .get('/sell/inventory/v1/inventory_item')
         .delay(35000) // Delay 35 seconds (longer than default 30s timeout)
         .reply(200, { items: [] });
 
-      await expect(
-        quickClient.get("/sell/inventory/v1/inventory_item")
-      ).rejects.toThrow();
+      await expect(quickClient.get('/sell/inventory/v1/inventory_item')).rejects.toThrow();
     }, 40000); // Increase test timeout to 40s
   });
 
-  describe("Environment Configuration", () => {
-    it("should use sandbox base URL for sandbox environment", async () => {
+  describe('Environment Configuration', () => {
+    it('should use sandbox base URL for sandbox environment', async () => {
       const sandboxClient = new EbayApiClient({
         ...config,
-        environment: "sandbox",
+        environment: 'sandbox',
       });
 
       const mockTokens = createMockTokens();
@@ -381,20 +345,17 @@ describe("EbayApiClient Integration Tests", () => {
 
       await sandboxClient.initialize();
 
-      const scope = mockEbayApiEndpoint(
-        "/sell/inventory/v1/inventory_item",
-        "get",
-        "sandbox",
-        { items: [] }
-      );
+      const scope = mockEbayApiEndpoint('/sell/inventory/v1/inventory_item', 'get', 'sandbox', {
+        items: [],
+      });
 
-      await sandboxClient.get("/sell/inventory/v1/inventory_item");
+      await sandboxClient.get('/sell/inventory/v1/inventory_item');
 
       expect(scope.isDone()).toBe(true);
     });
 
-    it("should use production base URL for production environment", async () => {
-      const prodConfig = { ...config, environment: "production" as const };
+    it('should use production base URL for production environment', async () => {
+      const prodConfig = { ...config, environment: 'production' as const };
       const prodClient = new EbayApiClient(prodConfig);
 
       const mockTokens = createMockTokens();
@@ -404,14 +365,11 @@ describe("EbayApiClient Integration Tests", () => {
 
       await prodClient.initialize();
 
-      const scope = mockEbayApiEndpoint(
-        "/sell/inventory/v1/inventory_item",
-        "get",
-        "production",
-        { items: [] }
-      );
+      const scope = mockEbayApiEndpoint('/sell/inventory/v1/inventory_item', 'get', 'production', {
+        items: [],
+      });
 
-      await prodClient.get("/sell/inventory/v1/inventory_item");
+      await prodClient.get('/sell/inventory/v1/inventory_item');
 
       expect(scope.isDone()).toBe(true);
     });

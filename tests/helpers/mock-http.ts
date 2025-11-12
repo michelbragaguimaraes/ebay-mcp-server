@@ -1,28 +1,26 @@
-import nock from "nock";
+import nock from 'nock';
 
 /**
  * Mock eBay OAuth token endpoint
  */
 export function mockOAuthTokenEndpoint(
-  environment: "production" | "sandbox" = "sandbox",
+  environment: 'production' | 'sandbox' = 'sandbox',
   responseData?: object,
   statusCode: number = 200
 ) {
   const baseUrl =
-    environment === "production"
-      ? "https://api.ebay.com"
-      : "https://api.sandbox.ebay.com";
+    environment === 'production' ? 'https://api.ebay.com' : 'https://api.sandbox.ebay.com';
 
   const defaultResponse = {
-    access_token: "test_access_token",
-    token_type: "Bearer",
+    access_token: 'test_access_token',
+    token_type: 'Bearer',
     expires_in: 7200,
-    refresh_token: "test_refresh_token",
+    refresh_token: 'test_refresh_token',
     refresh_token_expires_in: 47304000,
   };
 
   return nock(baseUrl)
-    .post("/identity/v1/oauth2/token")
+    .post('/identity/v1/oauth2/token')
     .reply(statusCode, responseData || defaultResponse);
 }
 
@@ -31,26 +29,24 @@ export function mockOAuthTokenEndpoint(
  */
 export function mockEbayApiEndpoint(
   path: string,
-  method: "get" | "post" | "put" | "delete" = "get",
-  environment: "production" | "sandbox" = "sandbox",
+  method: 'get' | 'post' | 'put' | 'delete' = 'get',
+  environment: 'production' | 'sandbox' = 'sandbox',
   responseData?: object,
   statusCode: number = 200
 ) {
   const baseUrl =
-    environment === "production"
-      ? "https://api.ebay.com"
-      : "https://api.sandbox.ebay.com";
+    environment === 'production' ? 'https://api.ebay.com' : 'https://api.sandbox.ebay.com';
 
   const nockInstance = nock(baseUrl);
 
   switch (method) {
-    case "get":
+    case 'get':
       return nockInstance.get(path).reply(statusCode, responseData || {});
-    case "post":
+    case 'post':
       return nockInstance.post(path).reply(statusCode, responseData || {});
-    case "put":
+    case 'put':
       return nockInstance.put(path).reply(statusCode, responseData || {});
-    case "delete":
+    case 'delete':
       return nockInstance.delete(path).reply(statusCode, responseData || {});
   }
 }
@@ -60,30 +56,24 @@ export function mockEbayApiEndpoint(
  */
 export function mockEbayApiError(
   path: string,
-  method: "get" | "post" | "put" | "delete" = "get",
-  environment: "production" | "sandbox" = "sandbox",
-  errorMessage: string = "API Error",
+  method: 'get' | 'post' | 'put' | 'delete' = 'get',
+  environment: 'production' | 'sandbox' = 'sandbox',
+  errorMessage: string = 'API Error',
   statusCode: number = 400
 ) {
   const errorResponse = {
     errors: [
       {
         errorId: 1001,
-        domain: "API_INVENTORY",
-        category: "REQUEST",
+        domain: 'API_INVENTORY',
+        category: 'REQUEST',
         message: errorMessage,
         longMessage: `Detailed error: ${errorMessage}`,
       },
     ],
   };
 
-  return mockEbayApiEndpoint(
-    path,
-    method,
-    environment,
-    errorResponse,
-    statusCode
-  );
+  return mockEbayApiEndpoint(path, method, environment, errorResponse, statusCode);
 }
 
 /**

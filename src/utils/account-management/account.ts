@@ -1,5 +1,5 @@
-import { z } from "zod";
-import type { operations, components } from "@/types/sell_account_v1_oas3.js";
+import { z } from 'zod';
+import type { operations, components } from '@/types/sell_account_v1_oas3.js';
 
 /**
  * Zod schemas for Account API input validation
@@ -9,32 +9,33 @@ import type { operations, components } from "@/types/sell_account_v1_oas3.js";
  */
 
 // Extract operation parameter types for reference
-type GetCustomPoliciesParams = operations["getCustomPolicies"]["parameters"]["query"];
-type GetCustomPolicyParams = operations["getCustomPolicy"]["parameters"]["path"];
-type CreateCustomPolicyRequest = components["schemas"]["CustomPolicyCreateRequest"];
-type UpdateCustomPolicyRequest = components["schemas"]["CustomPolicyRequest"];
+type GetCustomPoliciesParams = operations['getCustomPolicies']['parameters']['query'];
+type GetCustomPolicyParams = operations['getCustomPolicy']['parameters']['path'];
+type CreateCustomPolicyRequest = components['schemas']['CustomPolicyCreateRequest'];
+type UpdateCustomPolicyRequest = components['schemas']['CustomPolicyRequest'];
 
-type GetFulfillmentPoliciesParams = operations["getFulfillmentPolicies"]["parameters"]["query"];
-type GetFulfillmentPolicyParams = operations["getFulfillmentPolicy"]["parameters"]["path"];
-type GetFulfillmentPolicyByNameParams = operations["getFulfillmentPolicyByName"]["parameters"]["query"];
-type FulfillmentPolicyRequest = components["schemas"]["FulfillmentPolicyRequest"];
+type GetFulfillmentPoliciesParams = operations['getFulfillmentPolicies']['parameters']['query'];
+type GetFulfillmentPolicyParams = operations['getFulfillmentPolicy']['parameters']['path'];
+type GetFulfillmentPolicyByNameParams =
+  operations['getFulfillmentPolicyByName']['parameters']['query'];
+type FulfillmentPolicyRequest = components['schemas']['FulfillmentPolicyRequest'];
 
-type GetPaymentPoliciesParams = operations["getPaymentPolicies"]["parameters"]["query"];
-type GetPaymentPolicyParams = operations["getPaymentPolicy"]["parameters"]["path"];
-type GetPaymentPolicyByNameParams = operations["getPaymentPolicyByName"]["parameters"]["query"];
-type PaymentPolicyRequest = components["schemas"]["PaymentPolicyRequest"];
+type GetPaymentPoliciesParams = operations['getPaymentPolicies']['parameters']['query'];
+type GetPaymentPolicyParams = operations['getPaymentPolicy']['parameters']['path'];
+type GetPaymentPolicyByNameParams = operations['getPaymentPolicyByName']['parameters']['query'];
+type PaymentPolicyRequest = components['schemas']['PaymentPolicyRequest'];
 
-type GetReturnPoliciesParams = operations["getReturnPolicies"]["parameters"]["query"];
-type GetReturnPolicyParams = operations["getReturnPolicy"]["parameters"]["path"];
-type GetReturnPolicyByNameParams = operations["getReturnPolicyByName"]["parameters"]["query"];
-type ReturnPolicyRequest = components["schemas"]["ReturnPolicyRequest"];
+type GetReturnPoliciesParams = operations['getReturnPolicies']['parameters']['query'];
+type GetReturnPolicyParams = operations['getReturnPolicy']['parameters']['path'];
+type GetReturnPolicyByNameParams = operations['getReturnPolicyByName']['parameters']['query'];
+type ReturnPolicyRequest = components['schemas']['ReturnPolicyRequest'];
 
-type GetPaymentsProgramParams = operations["getPaymentsProgram"]["parameters"]["path"];
-type GetSalesTaxParams = operations["getSalesTax"]["parameters"]["path"];
-type GetSalesTaxesParams = operations["getSalesTaxes"]["parameters"]["query"];
-type GetSubscriptionParams = operations["getSubscription"]["parameters"]["query"];
-type SalesTaxBase = components["schemas"]["SalesTaxBase"];
-type OptInToProgramRequest = components["schemas"]["Program"];
+type GetPaymentsProgramParams = operations['getPaymentsProgram']['parameters']['path'];
+type GetSalesTaxParams = operations['getSalesTax']['parameters']['path'];
+type GetSalesTaxesParams = operations['getSalesTaxes']['parameters']['query'];
+type GetSubscriptionParams = operations['getSubscription']['parameters']['query'];
+type SalesTaxBase = components['schemas']['SalesTaxBase'];
+type OptInToProgramRequest = components['schemas']['Program'];
 
 // Reusable schema for ID parameters
 const idSchema = (name: string, description: string) =>
@@ -42,20 +43,24 @@ const idSchema = (name: string, description: string) =>
     message: `${name} is required`,
     required_error: `${name.toLowerCase().replace(/\s+/g, '_')} is required`,
     invalid_type_error: `${name.toLowerCase().replace(/\s+/g, '_')} must be a string`,
-    description
+    description,
   });
 
 // Reusable schema for optional marketplace_id parameter
-const marketplaceIdSchema = z.string({
-  invalid_type_error: "marketplace_id must be a string",
-  description: "The eBay marketplace ID"
-}).optional();
+const marketplaceIdSchema = z
+  .string({
+    invalid_type_error: 'marketplace_id must be a string',
+    description: 'The eBay marketplace ID',
+  })
+  .optional();
 
 // Reusable schema for optional name parameter
-const nameSchema = z.string({
-  invalid_type_error: "name must be a string",
-  description: "The policy name"
-}).optional();
+const nameSchema = z
+  .string({
+    invalid_type_error: 'name must be a string',
+    description: 'The policy name',
+  })
+  .optional();
 
 // ============================================================
 // Custom Policy Schemas
@@ -67,10 +72,12 @@ const nameSchema = z.string({
  * Query: GetCustomPoliciesParams - policy_types (optional)
  */
 export const getCustomPoliciesSchema = z.object({
-  policy_types: z.string({
-    invalid_type_error: "policy_types must be a string",
-    description: "Comma-delimited list of custom policy types (PRODUCT_COMPLIANCE, TAKE_BACK)"
-  }).optional()
+  policy_types: z
+    .string({
+      invalid_type_error: 'policy_types must be a string',
+      description: 'Comma-delimited list of custom policy types (PRODUCT_COMPLIANCE, TAKE_BACK)',
+    })
+    .optional(),
 });
 
 /**
@@ -79,7 +86,7 @@ export const getCustomPoliciesSchema = z.object({
  * Path: GetCustomPolicyParams - custom_policy_id (required)
  */
 export const getCustomPolicySchema = z.object({
-  custom_policy_id: idSchema("Custom policy ID", "The unique identifier of the custom policy")
+  custom_policy_id: idSchema('Custom policy ID', 'The unique identifier of the custom policy'),
 });
 
 /**
@@ -88,22 +95,33 @@ export const getCustomPolicySchema = z.object({
  * Body: CreateCustomPolicyRequest - name, label, description, policyType
  */
 export const createCustomPolicySchema = z.object({
-  name: z.string({
-    invalid_type_error: "name must be a string",
-    description: "Seller-defined name for the custom policy (max 64 characters)"
-  }).max(64, "name must be 64 characters or less").optional(),
-  label: z.string({
-    invalid_type_error: "label must be a string",
-    description: "Seller-defined label for the custom policy (max 250 characters)"
-  }).max(250, "label must be 250 characters or less").optional(),
-  description: z.string({
-    invalid_type_error: "description must be a string",
-    description: "Seller-defined description of the custom policy (max 5000 characters)"
-  }).max(5000, "description must be 5000 characters or less").optional(),
-  policy_type: z.string({
-    invalid_type_error: "policy_type must be a string",
-    description: "Type of custom policy: PRODUCT_COMPLIANCE or TAKE_BACK"
-  }).optional()
+  name: z
+    .string({
+      invalid_type_error: 'name must be a string',
+      description: 'Seller-defined name for the custom policy (max 64 characters)',
+    })
+    .max(64, 'name must be 64 characters or less')
+    .optional(),
+  label: z
+    .string({
+      invalid_type_error: 'label must be a string',
+      description: 'Seller-defined label for the custom policy (max 250 characters)',
+    })
+    .max(250, 'label must be 250 characters or less')
+    .optional(),
+  description: z
+    .string({
+      invalid_type_error: 'description must be a string',
+      description: 'Seller-defined description of the custom policy (max 5000 characters)',
+    })
+    .max(5000, 'description must be 5000 characters or less')
+    .optional(),
+  policy_type: z
+    .string({
+      invalid_type_error: 'policy_type must be a string',
+      description: 'Type of custom policy: PRODUCT_COMPLIANCE or TAKE_BACK',
+    })
+    .optional(),
 });
 
 /**
@@ -113,19 +131,31 @@ export const createCustomPolicySchema = z.object({
  * Body: UpdateCustomPolicyRequest - name, label, description
  */
 export const updateCustomPolicySchema = z.object({
-  custom_policy_id: idSchema("Custom policy ID", "The unique identifier of the custom policy to update"),
-  name: z.string({
-    invalid_type_error: "name must be a string",
-    description: "Updated name for the custom policy (max 64 characters)"
-  }).max(64, "name must be 64 characters or less").optional(),
-  label: z.string({
-    invalid_type_error: "label must be a string",
-    description: "Updated label for the custom policy (max 250 characters)"
-  }).max(250, "label must be 250 characters or less").optional(),
-  description: z.string({
-    invalid_type_error: "description must be a string",
-    description: "Updated description of the custom policy (max 5000 characters)"
-  }).max(5000, "description must be 5000 characters or less").optional()
+  custom_policy_id: idSchema(
+    'Custom policy ID',
+    'The unique identifier of the custom policy to update'
+  ),
+  name: z
+    .string({
+      invalid_type_error: 'name must be a string',
+      description: 'Updated name for the custom policy (max 64 characters)',
+    })
+    .max(64, 'name must be 64 characters or less')
+    .optional(),
+  label: z
+    .string({
+      invalid_type_error: 'label must be a string',
+      description: 'Updated label for the custom policy (max 250 characters)',
+    })
+    .max(250, 'label must be 250 characters or less')
+    .optional(),
+  description: z
+    .string({
+      invalid_type_error: 'description must be a string',
+      description: 'Updated description of the custom policy (max 5000 characters)',
+    })
+    .max(5000, 'description must be 5000 characters or less')
+    .optional(),
 });
 
 /**
@@ -134,7 +164,10 @@ export const updateCustomPolicySchema = z.object({
  * Path: custom_policy_id (required)
  */
 export const deleteCustomPolicySchema = z.object({
-  custom_policy_id: idSchema("Custom policy ID", "The unique identifier of the custom policy to delete")
+  custom_policy_id: idSchema(
+    'Custom policy ID',
+    'The unique identifier of the custom policy to delete'
+  ),
 });
 
 // ============================================================
@@ -147,7 +180,7 @@ export const deleteCustomPolicySchema = z.object({
  * Query: GetFulfillmentPoliciesParams - marketplace_id (optional)
  */
 export const getFulfillmentPoliciesSchema = z.object({
-  marketplace_id: marketplaceIdSchema
+  marketplace_id: marketplaceIdSchema,
 });
 
 /**
@@ -156,7 +189,10 @@ export const getFulfillmentPoliciesSchema = z.object({
  * Path: GetFulfillmentPolicyParams - fulfillmentPolicyId (required)
  */
 export const getFulfillmentPolicySchema = z.object({
-  fulfillment_policy_id: idSchema("Fulfillment policy ID", "The unique identifier of the fulfillment policy")
+  fulfillment_policy_id: idSchema(
+    'Fulfillment policy ID',
+    'The unique identifier of the fulfillment policy'
+  ),
 });
 
 /**
@@ -166,17 +202,17 @@ export const getFulfillmentPolicySchema = z.object({
  */
 export const getFulfillmentPolicyByNameSchema = z.object({
   marketplace_id: z.string({
-    message: "Marketplace ID is required",
-    required_error: "marketplace_id is required",
-    invalid_type_error: "marketplace_id must be a string",
-    description: "The eBay marketplace ID"
+    message: 'Marketplace ID is required',
+    required_error: 'marketplace_id is required',
+    invalid_type_error: 'marketplace_id must be a string',
+    description: 'The eBay marketplace ID',
   }),
   name: z.string({
-    message: "Policy name is required",
-    required_error: "name is required",
-    invalid_type_error: "name must be a string",
-    description: "The fulfillment policy name"
-  })
+    message: 'Policy name is required',
+    required_error: 'name is required',
+    invalid_type_error: 'name must be a string',
+    description: 'The fulfillment policy name',
+  }),
 });
 
 /**
@@ -185,52 +221,81 @@ export const getFulfillmentPolicyByNameSchema = z.object({
  * Body: FulfillmentPolicyRequest - complex object with many optional fields
  */
 export const createFulfillmentPolicySchema = z.object({
-  category_types: z.array(z.object({
-    name: z.string({
-      invalid_type_error: "category type name must be a string",
-      description: "Category type: ALL_EXCLUDING_MOTORS_VEHICLES or MOTORS_VEHICLES"
-    }).optional()
-  })).optional(),
-  description: z.string({
-    invalid_type_error: "description must be a string",
-    description: "Seller-defined description of the fulfillment policy (max 250 characters)"
-  }).max(250, "description must be 250 characters or less").optional(),
-  freight_shipping: z.boolean({
-    invalid_type_error: "freight_shipping must be a boolean",
-    description: "Whether freight shipping is available for large items over 150 lbs"
-  }).optional(),
-  global_shipping: z.boolean({
-    invalid_type_error: "global_shipping must be a boolean",
-    description: "Whether to use Global Shipping Program (UK marketplace only)"
-  }).optional(),
-  handling_time: z.object({
-    unit: z.string({
-      invalid_type_error: "unit must be a string",
-      description: "Time unit (typically DAY)"
-    }).optional(),
-    value: z.number({
-      invalid_type_error: "value must be a number",
-      description: "Number of handling time units (0-20 days)"
-    }).int().optional()
-  }).optional(),
-  local_pickup: z.boolean({
-    invalid_type_error: "local_pickup must be a boolean",
-    description: "Whether local pickup is available"
-  }).optional(),
+  category_types: z
+    .array(
+      z.object({
+        name: z
+          .string({
+            invalid_type_error: 'category type name must be a string',
+            description: 'Category type: ALL_EXCLUDING_MOTORS_VEHICLES or MOTORS_VEHICLES',
+          })
+          .optional(),
+      })
+    )
+    .optional(),
+  description: z
+    .string({
+      invalid_type_error: 'description must be a string',
+      description: 'Seller-defined description of the fulfillment policy (max 250 characters)',
+    })
+    .max(250, 'description must be 250 characters or less')
+    .optional(),
+  freight_shipping: z
+    .boolean({
+      invalid_type_error: 'freight_shipping must be a boolean',
+      description: 'Whether freight shipping is available for large items over 150 lbs',
+    })
+    .optional(),
+  global_shipping: z
+    .boolean({
+      invalid_type_error: 'global_shipping must be a boolean',
+      description: 'Whether to use Global Shipping Program (UK marketplace only)',
+    })
+    .optional(),
+  handling_time: z
+    .object({
+      unit: z
+        .string({
+          invalid_type_error: 'unit must be a string',
+          description: 'Time unit (typically DAY)',
+        })
+        .optional(),
+      value: z
+        .number({
+          invalid_type_error: 'value must be a number',
+          description: 'Number of handling time units (0-20 days)',
+        })
+        .int()
+        .optional(),
+    })
+    .optional(),
+  local_pickup: z
+    .boolean({
+      invalid_type_error: 'local_pickup must be a boolean',
+      description: 'Whether local pickup is available',
+    })
+    .optional(),
   marketplace_id: marketplaceIdSchema,
-  name: z.string({
-    invalid_type_error: "name must be a string",
-    description: "Seller-defined name for the fulfillment policy (max 64 characters)"
-  }).max(64, "name must be 64 characters or less").optional(),
-  pickup_drop_off: z.boolean({
-    invalid_type_error: "pickup_drop_off must be a boolean",
-    description: "Whether Click and Collect is available"
-  }).optional(),
+  name: z
+    .string({
+      invalid_type_error: 'name must be a string',
+      description: 'Seller-defined name for the fulfillment policy (max 64 characters)',
+    })
+    .max(64, 'name must be 64 characters or less')
+    .optional(),
+  pickup_drop_off: z
+    .boolean({
+      invalid_type_error: 'pickup_drop_off must be a boolean',
+      description: 'Whether Click and Collect is available',
+    })
+    .optional(),
   shipping_options: z.array(z.record(z.any())).optional(),
-  ship_to_locations: z.object({
-    region_included: z.array(z.record(z.any())).optional(),
-    region_excluded: z.array(z.record(z.any())).optional()
-  }).optional()
+  ship_to_locations: z
+    .object({
+      region_included: z.array(z.record(z.any())).optional(),
+      region_excluded: z.array(z.record(z.any())).optional(),
+    })
+    .optional(),
 });
 
 /**
@@ -240,26 +305,37 @@ export const createFulfillmentPolicySchema = z.object({
  * Body: FulfillmentPolicyRequest
  */
 export const updateFulfillmentPolicySchema = z.object({
-  fulfillment_policy_id: idSchema("Fulfillment policy ID", "The unique identifier of the fulfillment policy to update"),
-  category_types: z.array(z.object({
-    name: z.string().optional()
-  })).optional(),
+  fulfillment_policy_id: idSchema(
+    'Fulfillment policy ID',
+    'The unique identifier of the fulfillment policy to update'
+  ),
+  category_types: z
+    .array(
+      z.object({
+        name: z.string().optional(),
+      })
+    )
+    .optional(),
   description: z.string().max(250).optional(),
   freight_shipping: z.boolean().optional(),
   global_shipping: z.boolean().optional(),
-  handling_time: z.object({
-    unit: z.string().optional(),
-    value: z.number().int().optional()
-  }).optional(),
+  handling_time: z
+    .object({
+      unit: z.string().optional(),
+      value: z.number().int().optional(),
+    })
+    .optional(),
   local_pickup: z.boolean().optional(),
   marketplace_id: marketplaceIdSchema,
   name: z.string().max(64).optional(),
   pickup_drop_off: z.boolean().optional(),
   shipping_options: z.array(z.record(z.any())).optional(),
-  ship_to_locations: z.object({
-    region_included: z.array(z.record(z.any())).optional(),
-    region_excluded: z.array(z.record(z.any())).optional()
-  }).optional()
+  ship_to_locations: z
+    .object({
+      region_included: z.array(z.record(z.any())).optional(),
+      region_excluded: z.array(z.record(z.any())).optional(),
+    })
+    .optional(),
 });
 
 /**
@@ -268,7 +344,10 @@ export const updateFulfillmentPolicySchema = z.object({
  * Path: fulfillmentPolicyId (required)
  */
 export const deleteFulfillmentPolicySchema = z.object({
-  fulfillment_policy_id: idSchema("Fulfillment policy ID", "The unique identifier of the fulfillment policy to delete")
+  fulfillment_policy_id: idSchema(
+    'Fulfillment policy ID',
+    'The unique identifier of the fulfillment policy to delete'
+  ),
 });
 
 // ============================================================
@@ -281,7 +360,7 @@ export const deleteFulfillmentPolicySchema = z.object({
  * Query: GetPaymentPoliciesParams - marketplace_id (optional)
  */
 export const getPaymentPoliciesSchema = z.object({
-  marketplace_id: marketplaceIdSchema
+  marketplace_id: marketplaceIdSchema,
 });
 
 /**
@@ -290,7 +369,7 @@ export const getPaymentPoliciesSchema = z.object({
  * Path: GetPaymentPolicyParams - paymentPolicyId (required)
  */
 export const getPaymentPolicySchema = z.object({
-  payment_policy_id: idSchema("Payment policy ID", "The unique identifier of the payment policy")
+  payment_policy_id: idSchema('Payment policy ID', 'The unique identifier of the payment policy'),
 });
 
 /**
@@ -300,17 +379,17 @@ export const getPaymentPolicySchema = z.object({
  */
 export const getPaymentPolicyByNameSchema = z.object({
   marketplace_id: z.string({
-    message: "Marketplace ID is required",
-    required_error: "marketplace_id is required",
-    invalid_type_error: "marketplace_id must be a string",
-    description: "The eBay marketplace ID"
+    message: 'Marketplace ID is required',
+    required_error: 'marketplace_id is required',
+    invalid_type_error: 'marketplace_id must be a string',
+    description: 'The eBay marketplace ID',
   }),
   name: z.string({
-    message: "Policy name is required",
-    required_error: "name is required",
-    invalid_type_error: "name must be a string",
-    description: "The payment policy name"
-  })
+    message: 'Policy name is required',
+    required_error: 'name is required',
+    invalid_type_error: 'name must be a string',
+    description: 'The payment policy name',
+  }),
 });
 
 /**
@@ -319,38 +398,58 @@ export const getPaymentPolicyByNameSchema = z.object({
  * Body: PaymentPolicyRequest - complex object with many optional fields
  */
 export const createPaymentPolicySchema = z.object({
-  category_types: z.array(z.object({
-    name: z.string().optional()
-  })).optional(),
-  description: z.string({
-    invalid_type_error: "description must be a string",
-    description: "Seller-defined description of the payment policy (max 250 characters)"
-  }).max(250, "description must be 250 characters or less").optional(),
-  deposit: z.object({
-    amount: z.object({
-      currency: z.string().optional(),
-      value: z.string().optional()
-    }).optional(),
-    due_in: z.object({
+  category_types: z
+    .array(
+      z.object({
+        name: z.string().optional(),
+      })
+    )
+    .optional(),
+  description: z
+    .string({
+      invalid_type_error: 'description must be a string',
+      description: 'Seller-defined description of the payment policy (max 250 characters)',
+    })
+    .max(250, 'description must be 250 characters or less')
+    .optional(),
+  deposit: z
+    .object({
+      amount: z
+        .object({
+          currency: z.string().optional(),
+          value: z.string().optional(),
+        })
+        .optional(),
+      due_in: z
+        .object({
+          unit: z.string().optional(),
+          value: z.number().int().optional(),
+        })
+        .optional(),
+      payment_methods: z.array(z.record(z.any())).optional(),
+    })
+    .optional(),
+  full_payment_due_in: z
+    .object({
       unit: z.string().optional(),
-      value: z.number().int().optional()
-    }).optional(),
-    payment_methods: z.array(z.record(z.any())).optional()
-  }).optional(),
-  full_payment_due_in: z.object({
-    unit: z.string().optional(),
-    value: z.number().int().optional()
-  }).optional(),
-  immediate_pay: z.boolean({
-    invalid_type_error: "immediate_pay must be a boolean",
-    description: "Whether immediate payment is required"
-  }).optional(),
+      value: z.number().int().optional(),
+    })
+    .optional(),
+  immediate_pay: z
+    .boolean({
+      invalid_type_error: 'immediate_pay must be a boolean',
+      description: 'Whether immediate payment is required',
+    })
+    .optional(),
   marketplace_id: marketplaceIdSchema,
-  name: z.string({
-    invalid_type_error: "name must be a string",
-    description: "Seller-defined name for the payment policy (max 64 characters)"
-  }).max(64, "name must be 64 characters or less").optional(),
-  payment_methods: z.array(z.record(z.any())).optional()
+  name: z
+    .string({
+      invalid_type_error: 'name must be a string',
+      description: 'Seller-defined name for the payment policy (max 64 characters)',
+    })
+    .max(64, 'name must be 64 characters or less')
+    .optional(),
+  payment_methods: z.array(z.record(z.any())).optional(),
 });
 
 /**
@@ -360,30 +459,45 @@ export const createPaymentPolicySchema = z.object({
  * Body: PaymentPolicyRequest
  */
 export const updatePaymentPolicySchema = z.object({
-  payment_policy_id: idSchema("Payment policy ID", "The unique identifier of the payment policy to update"),
-  category_types: z.array(z.object({
-    name: z.string().optional()
-  })).optional(),
+  payment_policy_id: idSchema(
+    'Payment policy ID',
+    'The unique identifier of the payment policy to update'
+  ),
+  category_types: z
+    .array(
+      z.object({
+        name: z.string().optional(),
+      })
+    )
+    .optional(),
   description: z.string().max(250).optional(),
-  deposit: z.object({
-    amount: z.object({
-      currency: z.string().optional(),
-      value: z.string().optional()
-    }).optional(),
-    due_in: z.object({
+  deposit: z
+    .object({
+      amount: z
+        .object({
+          currency: z.string().optional(),
+          value: z.string().optional(),
+        })
+        .optional(),
+      due_in: z
+        .object({
+          unit: z.string().optional(),
+          value: z.number().int().optional(),
+        })
+        .optional(),
+      payment_methods: z.array(z.record(z.any())).optional(),
+    })
+    .optional(),
+  full_payment_due_in: z
+    .object({
       unit: z.string().optional(),
-      value: z.number().int().optional()
-    }).optional(),
-    payment_methods: z.array(z.record(z.any())).optional()
-  }).optional(),
-  full_payment_due_in: z.object({
-    unit: z.string().optional(),
-    value: z.number().int().optional()
-  }).optional(),
+      value: z.number().int().optional(),
+    })
+    .optional(),
   immediate_pay: z.boolean().optional(),
   marketplace_id: marketplaceIdSchema,
   name: z.string().max(64).optional(),
-  payment_methods: z.array(z.record(z.any())).optional()
+  payment_methods: z.array(z.record(z.any())).optional(),
 });
 
 /**
@@ -392,7 +506,10 @@ export const updatePaymentPolicySchema = z.object({
  * Path: paymentPolicyId (required)
  */
 export const deletePaymentPolicySchema = z.object({
-  payment_policy_id: idSchema("Payment policy ID", "The unique identifier of the payment policy to delete")
+  payment_policy_id: idSchema(
+    'Payment policy ID',
+    'The unique identifier of the payment policy to delete'
+  ),
 });
 
 // ============================================================
@@ -405,7 +522,7 @@ export const deletePaymentPolicySchema = z.object({
  * Query: GetReturnPoliciesParams - marketplace_id (optional)
  */
 export const getReturnPoliciesSchema = z.object({
-  marketplace_id: marketplaceIdSchema
+  marketplace_id: marketplaceIdSchema,
 });
 
 /**
@@ -414,7 +531,7 @@ export const getReturnPoliciesSchema = z.object({
  * Path: GetReturnPolicyParams - returnPolicyId (required)
  */
 export const getReturnPolicySchema = z.object({
-  return_policy_id: idSchema("Return policy ID", "The unique identifier of the return policy")
+  return_policy_id: idSchema('Return policy ID', 'The unique identifier of the return policy'),
 });
 
 /**
@@ -424,17 +541,17 @@ export const getReturnPolicySchema = z.object({
  */
 export const getReturnPolicyByNameSchema = z.object({
   marketplace_id: z.string({
-    message: "Marketplace ID is required",
-    required_error: "marketplace_id is required",
-    invalid_type_error: "marketplace_id must be a string",
-    description: "The eBay marketplace ID"
+    message: 'Marketplace ID is required',
+    required_error: 'marketplace_id is required',
+    invalid_type_error: 'marketplace_id must be a string',
+    description: 'The eBay marketplace ID',
   }),
   name: z.string({
-    message: "Policy name is required",
-    required_error: "name is required",
-    invalid_type_error: "name must be a string",
-    description: "The return policy name"
-  })
+    message: 'Policy name is required',
+    required_error: 'name is required',
+    invalid_type_error: 'name must be a string',
+    description: 'The return policy name',
+  }),
 });
 
 /**
@@ -443,59 +560,90 @@ export const getReturnPolicyByNameSchema = z.object({
  * Body: ReturnPolicyRequest - complex object with many optional fields
  */
 export const createReturnPolicySchema = z.object({
-  category_types: z.array(z.object({
-    name: z.string().optional()
-  })).optional(),
-  description: z.string({
-    invalid_type_error: "description must be a string",
-    description: "Seller-defined description of the return policy (max 250 characters)"
-  }).max(250, "description must be 250 characters or less").optional(),
-  extended_holiday_returns_offered: z.boolean({
-    invalid_type_error: "extended_holiday_returns_offered must be a boolean",
-    description: "Whether extended holiday returns are offered"
-  }).optional(),
-  international_override: z.object({
-    return_method: z.string().optional(),
-    return_period: z.object({
-      unit: z.string().optional(),
-      value: z.number().int().optional()
-    }).optional(),
-    returns_accepted: z.boolean().optional(),
-    return_shipping_cost_payer: z.string().optional()
-  }).optional(),
+  category_types: z
+    .array(
+      z.object({
+        name: z.string().optional(),
+      })
+    )
+    .optional(),
+  description: z
+    .string({
+      invalid_type_error: 'description must be a string',
+      description: 'Seller-defined description of the return policy (max 250 characters)',
+    })
+    .max(250, 'description must be 250 characters or less')
+    .optional(),
+  extended_holiday_returns_offered: z
+    .boolean({
+      invalid_type_error: 'extended_holiday_returns_offered must be a boolean',
+      description: 'Whether extended holiday returns are offered',
+    })
+    .optional(),
+  international_override: z
+    .object({
+      return_method: z.string().optional(),
+      return_period: z
+        .object({
+          unit: z.string().optional(),
+          value: z.number().int().optional(),
+        })
+        .optional(),
+      returns_accepted: z.boolean().optional(),
+      return_shipping_cost_payer: z.string().optional(),
+    })
+    .optional(),
   marketplace_id: marketplaceIdSchema,
-  name: z.string({
-    invalid_type_error: "name must be a string",
-    description: "Seller-defined name for the return policy (max 64 characters)"
-  }).max(64, "name must be 64 characters or less").optional(),
-  refund_method: z.string({
-    invalid_type_error: "refund_method must be a string",
-    description: "Refund method: MONEY_BACK or MERCHANDISE_CREDIT"
-  }).optional(),
-  restocking_fee_percentage: z.string({
-    invalid_type_error: "restocking_fee_percentage must be a string",
-    description: "Restocking fee percentage (10, 15, 20, or custom)"
-  }).optional(),
-  return_instructions: z.string({
-    invalid_type_error: "return_instructions must be a string",
-    description: "Return instructions for the buyer (max 5000 characters)"
-  }).max(5000, "return_instructions must be 5000 characters or less").optional(),
-  return_method: z.string({
-    invalid_type_error: "return_method must be a string",
-    description: "Return method: REPLACEMENT or EXCHANGE"
-  }).optional(),
-  return_period: z.object({
-    unit: z.string().optional(),
-    value: z.number().int().optional()
-  }).optional(),
-  returns_accepted: z.boolean({
-    invalid_type_error: "returns_accepted must be a boolean",
-    description: "Whether returns are accepted"
-  }).optional(),
-  return_shipping_cost_payer: z.string({
-    invalid_type_error: "return_shipping_cost_payer must be a string",
-    description: "Who pays return shipping: BUYER or SELLER"
-  }).optional()
+  name: z
+    .string({
+      invalid_type_error: 'name must be a string',
+      description: 'Seller-defined name for the return policy (max 64 characters)',
+    })
+    .max(64, 'name must be 64 characters or less')
+    .optional(),
+  refund_method: z
+    .string({
+      invalid_type_error: 'refund_method must be a string',
+      description: 'Refund method: MONEY_BACK or MERCHANDISE_CREDIT',
+    })
+    .optional(),
+  restocking_fee_percentage: z
+    .string({
+      invalid_type_error: 'restocking_fee_percentage must be a string',
+      description: 'Restocking fee percentage (10, 15, 20, or custom)',
+    })
+    .optional(),
+  return_instructions: z
+    .string({
+      invalid_type_error: 'return_instructions must be a string',
+      description: 'Return instructions for the buyer (max 5000 characters)',
+    })
+    .max(5000, 'return_instructions must be 5000 characters or less')
+    .optional(),
+  return_method: z
+    .string({
+      invalid_type_error: 'return_method must be a string',
+      description: 'Return method: REPLACEMENT or EXCHANGE',
+    })
+    .optional(),
+  return_period: z
+    .object({
+      unit: z.string().optional(),
+      value: z.number().int().optional(),
+    })
+    .optional(),
+  returns_accepted: z
+    .boolean({
+      invalid_type_error: 'returns_accepted must be a boolean',
+      description: 'Whether returns are accepted',
+    })
+    .optional(),
+  return_shipping_cost_payer: z
+    .string({
+      invalid_type_error: 'return_shipping_cost_payer must be a string',
+      description: 'Who pays return shipping: BUYER or SELLER',
+    })
+    .optional(),
 });
 
 /**
@@ -505,33 +653,46 @@ export const createReturnPolicySchema = z.object({
  * Body: ReturnPolicyRequest
  */
 export const updateReturnPolicySchema = z.object({
-  return_policy_id: idSchema("Return policy ID", "The unique identifier of the return policy to update"),
-  category_types: z.array(z.object({
-    name: z.string().optional()
-  })).optional(),
+  return_policy_id: idSchema(
+    'Return policy ID',
+    'The unique identifier of the return policy to update'
+  ),
+  category_types: z
+    .array(
+      z.object({
+        name: z.string().optional(),
+      })
+    )
+    .optional(),
   description: z.string().max(250).optional(),
   extended_holiday_returns_offered: z.boolean().optional(),
-  international_override: z.object({
-    return_method: z.string().optional(),
-    return_period: z.object({
-      unit: z.string().optional(),
-      value: z.number().int().optional()
-    }).optional(),
-    returns_accepted: z.boolean().optional(),
-    return_shipping_cost_payer: z.string().optional()
-  }).optional(),
+  international_override: z
+    .object({
+      return_method: z.string().optional(),
+      return_period: z
+        .object({
+          unit: z.string().optional(),
+          value: z.number().int().optional(),
+        })
+        .optional(),
+      returns_accepted: z.boolean().optional(),
+      return_shipping_cost_payer: z.string().optional(),
+    })
+    .optional(),
   marketplace_id: marketplaceIdSchema,
   name: z.string().max(64).optional(),
   refund_method: z.string().optional(),
   restocking_fee_percentage: z.string().optional(),
   return_instructions: z.string().max(5000).optional(),
   return_method: z.string().optional(),
-  return_period: z.object({
-    unit: z.string().optional(),
-    value: z.number().int().optional()
-  }).optional(),
+  return_period: z
+    .object({
+      unit: z.string().optional(),
+      value: z.number().int().optional(),
+    })
+    .optional(),
   returns_accepted: z.boolean().optional(),
-  return_shipping_cost_payer: z.string().optional()
+  return_shipping_cost_payer: z.string().optional(),
 });
 
 /**
@@ -540,7 +701,10 @@ export const updateReturnPolicySchema = z.object({
  * Path: returnPolicyId (required)
  */
 export const deleteReturnPolicySchema = z.object({
-  return_policy_id: idSchema("Return policy ID", "The unique identifier of the return policy to delete")
+  return_policy_id: idSchema(
+    'Return policy ID',
+    'The unique identifier of the return policy to delete'
+  ),
 });
 
 // ============================================================
@@ -568,17 +732,17 @@ export const getKycSchema = z.object({});
  */
 export const optInToPaymentsProgramSchema = z.object({
   marketplace_id: z.string({
-    message: "Marketplace ID is required",
-    required_error: "marketplace_id is required",
-    invalid_type_error: "marketplace_id must be a string",
-    description: "The eBay marketplace ID"
+    message: 'Marketplace ID is required',
+    required_error: 'marketplace_id is required',
+    invalid_type_error: 'marketplace_id must be a string',
+    description: 'The eBay marketplace ID',
   }),
   payments_program_type: z.string({
-    message: "Payments program type is required",
-    required_error: "payments_program_type is required",
-    invalid_type_error: "payments_program_type must be a string",
-    description: "The payments program type (e.g., EBAY_PAYMENTS)"
-  })
+    message: 'Payments program type is required',
+    required_error: 'payments_program_type is required',
+    invalid_type_error: 'payments_program_type must be a string',
+    description: 'The payments program type (e.g., EBAY_PAYMENTS)',
+  }),
 });
 
 /**
@@ -588,17 +752,17 @@ export const optInToPaymentsProgramSchema = z.object({
  */
 export const getPaymentsProgramStatusSchema = z.object({
   marketplace_id: z.string({
-    message: "Marketplace ID is required",
-    required_error: "marketplace_id is required",
-    invalid_type_error: "marketplace_id must be a string",
-    description: "The eBay marketplace ID"
+    message: 'Marketplace ID is required',
+    required_error: 'marketplace_id is required',
+    invalid_type_error: 'marketplace_id must be a string',
+    description: 'The eBay marketplace ID',
   }),
   payments_program_type: z.string({
-    message: "Payments program type is required",
-    required_error: "payments_program_type is required",
-    invalid_type_error: "payments_program_type must be a string",
-    description: "The payments program type"
-  })
+    message: 'Payments program type is required',
+    required_error: 'payments_program_type is required',
+    invalid_type_error: 'payments_program_type must be a string',
+    description: 'The payments program type',
+  }),
 });
 
 /**
@@ -616,25 +780,29 @@ export const getRateTablesSchema = z.object({});
  */
 export const createOrReplaceSalesTaxSchema = z.object({
   country_code: z.string({
-    message: "Country code is required",
-    required_error: "country_code is required",
-    invalid_type_error: "country_code must be a string",
-    description: "Two-letter ISO 3166-1 country code"
+    message: 'Country code is required',
+    required_error: 'country_code is required',
+    invalid_type_error: 'country_code must be a string',
+    description: 'Two-letter ISO 3166-1 country code',
   }),
   jurisdiction_id: z.string({
-    message: "Jurisdiction ID is required",
-    required_error: "jurisdiction_id is required",
-    invalid_type_error: "jurisdiction_id must be a string",
-    description: "State or province ID (e.g., US state abbreviation)"
+    message: 'Jurisdiction ID is required',
+    required_error: 'jurisdiction_id is required',
+    invalid_type_error: 'jurisdiction_id must be a string',
+    description: 'State or province ID (e.g., US state abbreviation)',
   }),
-  sales_tax_percentage: z.string({
-    invalid_type_error: "sales_tax_percentage must be a string",
-    description: "Sales tax percentage (0-100)"
-  }).optional(),
-  shipping_and_handling_taxed: z.boolean({
-    invalid_type_error: "shipping_and_handling_taxed must be a boolean",
-    description: "Whether shipping and handling are taxed"
-  }).optional()
+  sales_tax_percentage: z
+    .string({
+      invalid_type_error: 'sales_tax_percentage must be a string',
+      description: 'Sales tax percentage (0-100)',
+    })
+    .optional(),
+  shipping_and_handling_taxed: z
+    .boolean({
+      invalid_type_error: 'shipping_and_handling_taxed must be a boolean',
+      description: 'Whether shipping and handling are taxed',
+    })
+    .optional(),
 });
 
 /**
@@ -643,17 +811,24 @@ export const createOrReplaceSalesTaxSchema = z.object({
  * Body: Array of sales tax requests
  */
 export const bulkCreateOrReplaceSalesTaxSchema = z.object({
-  requests: z.array(z.object({
-    country_code: z.string().optional(),
-    jurisdiction_id: z.string().optional(),
-    sales_tax_base: z.object({
-      sales_tax_percentage: z.string().optional(),
-      shipping_and_handling_taxed: z.boolean().optional()
-    }).optional()
-  }), {
-    invalid_type_error: "requests must be an array",
-    description: "Array of sales tax requests"
-  }).optional()
+  requests: z
+    .array(
+      z.object({
+        country_code: z.string().optional(),
+        jurisdiction_id: z.string().optional(),
+        sales_tax_base: z
+          .object({
+            sales_tax_percentage: z.string().optional(),
+            shipping_and_handling_taxed: z.boolean().optional(),
+          })
+          .optional(),
+      }),
+      {
+        invalid_type_error: 'requests must be an array',
+        description: 'Array of sales tax requests',
+      }
+    )
+    .optional(),
 });
 
 /**
@@ -663,17 +838,17 @@ export const bulkCreateOrReplaceSalesTaxSchema = z.object({
  */
 export const getSalesTaxSchema = z.object({
   country_code: z.string({
-    message: "Country code is required",
-    required_error: "country_code is required",
-    invalid_type_error: "country_code must be a string",
-    description: "Two-letter ISO 3166-1 country code"
+    message: 'Country code is required',
+    required_error: 'country_code is required',
+    invalid_type_error: 'country_code must be a string',
+    description: 'Two-letter ISO 3166-1 country code',
   }),
   jurisdiction_id: z.string({
-    message: "Jurisdiction ID is required",
-    required_error: "jurisdiction_id is required",
-    invalid_type_error: "jurisdiction_id must be a string",
-    description: "State or province ID"
-  })
+    message: 'Jurisdiction ID is required',
+    required_error: 'jurisdiction_id is required',
+    invalid_type_error: 'jurisdiction_id must be a string',
+    description: 'State or province ID',
+  }),
 });
 
 /**
@@ -683,17 +858,17 @@ export const getSalesTaxSchema = z.object({
  */
 export const deleteSalesTaxSchema = z.object({
   country_code: z.string({
-    message: "Country code is required",
-    required_error: "country_code is required",
-    invalid_type_error: "country_code must be a string",
-    description: "Two-letter ISO 3166-1 country code"
+    message: 'Country code is required',
+    required_error: 'country_code is required',
+    invalid_type_error: 'country_code must be a string',
+    description: 'Two-letter ISO 3166-1 country code',
   }),
   jurisdiction_id: z.string({
-    message: "Jurisdiction ID is required",
-    required_error: "jurisdiction_id is required",
-    invalid_type_error: "jurisdiction_id must be a string",
-    description: "State or province ID"
-  })
+    message: 'Jurisdiction ID is required',
+    required_error: 'jurisdiction_id is required',
+    invalid_type_error: 'jurisdiction_id must be a string',
+    description: 'State or province ID',
+  }),
 });
 
 /**
@@ -702,10 +877,12 @@ export const deleteSalesTaxSchema = z.object({
  * Query: GetSalesTaxesParams - country_code (optional)
  */
 export const getSalesTaxesSchema = z.object({
-  country_code: z.string({
-    invalid_type_error: "country_code must be a string",
-    description: "Filter by two-letter ISO 3166-1 country code"
-  }).optional()
+  country_code: z
+    .string({
+      invalid_type_error: 'country_code must be a string',
+      description: 'Filter by two-letter ISO 3166-1 country code',
+    })
+    .optional(),
 });
 
 /**
@@ -714,10 +891,12 @@ export const getSalesTaxesSchema = z.object({
  * Query: GetSubscriptionParams - limit (optional)
  */
 export const getSubscriptionSchema = z.object({
-  limit_type: z.string({
-    invalid_type_error: "limit_type must be a string",
-    description: "Type of subscription limit to retrieve"
-  }).optional()
+  limit_type: z
+    .string({
+      invalid_type_error: 'limit_type must be a string',
+      description: 'Type of subscription limit to retrieve',
+    })
+    .optional(),
 });
 
 /**
@@ -726,10 +905,12 @@ export const getSubscriptionSchema = z.object({
  * Body: OptInToProgramRequest - program_type
  */
 export const optInToProgramSchema = z.object({
-  program_type: z.string({
-    invalid_type_error: "program_type must be a string",
-    description: "The program type to opt into (e.g., OUT_OF_STOCK_CONTROL)"
-  }).optional()
+  program_type: z
+    .string({
+      invalid_type_error: 'program_type must be a string',
+      description: 'The program type to opt into (e.g., OUT_OF_STOCK_CONTROL)',
+    })
+    .optional(),
 });
 
 /**
@@ -738,10 +919,12 @@ export const optInToProgramSchema = z.object({
  * Body: OptInToProgramRequest - program_type
  */
 export const optOutOfProgramSchema = z.object({
-  program_type: z.string({
-    invalid_type_error: "program_type must be a string",
-    description: "The program type to opt out of"
-  }).optional()
+  program_type: z
+    .string({
+      invalid_type_error: 'program_type must be a string',
+      description: 'The program type to opt out of',
+    })
+    .optional(),
 });
 
 /**

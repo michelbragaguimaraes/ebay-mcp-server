@@ -7,16 +7,15 @@ import type { EbayApiClient } from '../client.js';
 export class TaxonomyApi {
   private readonly basePath = '/commerce/taxonomy/v1';
 
-  constructor(private client: EbayApiClient) { }
+  constructor(private client: EbayApiClient) {}
 
   /**
    * Get the default category tree ID for a marketplace
    */
   async getDefaultCategoryTreeId(marketplaceId: string) {
-    return await this.client.get(
-      `${this.basePath}/get_default_category_tree_id`,
-      { marketplace_id: marketplaceId }
-    );
+    return await this.client.get(`${this.basePath}/get_default_category_tree_id`, {
+      marketplace_id: marketplaceId,
+    });
   }
 
   /**
@@ -58,10 +57,7 @@ export class TaxonomyApi {
   /**
    * Get compatibility properties
    */
-  async getCompatibilityProperties(
-    categoryTreeId: string,
-    categoryId: string
-  ) {
+  async getCompatibilityProperties(categoryTreeId: string, categoryId: string) {
     return await this.client.get(
       `${this.basePath}/category_tree/${categoryTreeId}/get_compatibility_properties`,
       { category_id: categoryId }
@@ -80,7 +76,7 @@ export class TaxonomyApi {
       `${this.basePath}/category_tree/${categoryTreeId}/get_compatibility_property_values`,
       {
         category_id: categoryId,
-        compatibility_property: compatibilityProperty
+        compatibility_property: compatibilityProperty,
       }
     );
   }

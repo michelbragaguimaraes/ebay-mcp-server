@@ -1,4 +1,3 @@
-
 /**
  * eBay API MCP Server with HTTP Transport and OAuth 2.1 Authorization
  *
@@ -9,48 +8,49 @@
  * - Token verification via introspection (RFC 7662) or JWT validation
  */
 
-import express from "express";
-import cors from "cors";
-import { randomUUID } from "crypto";
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
-import { isInitializeRequest } from "@modelcontextprotocol/sdk/types.js";
-import { EbaySellerApi } from "@/api/index.js";
-import { getEbayConfig, getDefaultScopes, validateEnvironmentConfig } from "@/config/environment.js";
-import { getToolDefinitions, executeTool } from "@/tools/index.js";
-import { TokenVerifier } from "@/auth/token-verifier.js";
-import { createBearerAuthMiddleware } from "@/auth/oauth-middleware.js";
+import express from 'express';
+import cors from 'cors';
+import { randomUUID } from 'crypto';
+import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
+import { isInitializeRequest } from '@modelcontextprotocol/sdk/types.js';
+import { EbaySellerApi } from '@/api/index.js';
 import {
-  createMetadataRouter,
-  getProtectedResourceMetadataUrl,
-} from "@/auth/oauth-metadata.js";
+  getEbayConfig,
+  getDefaultScopes,
+  validateEnvironmentConfig,
+} from '@/config/environment.js';
+import { getToolDefinitions, executeTool } from '@/tools/index.js';
+import { TokenVerifier } from '@/auth/token-verifier.js';
+import { createBearerAuthMiddleware } from '@/auth/oauth-middleware.js';
+import { createMetadataRouter, getProtectedResourceMetadataUrl } from '@/auth/oauth-metadata.js';
 
 // Configuration from environment
 const CONFIG = {
   // Server settings
-  host: process.env.MCP_HOST || "localhost",
+  host: process.env.MCP_HOST || 'localhost',
   port: Number(process.env.MCP_PORT) || 3000,
 
   // OAuth settings
   oauth: {
     // Authorization server metadata URL or custom metadata
-    authServerUrl: process.env.OAUTH_AUTH_SERVER_URL || "http://localhost:8080/realms/master",
+    authServerUrl: process.env.OAUTH_AUTH_SERVER_URL || 'http://localhost:8080/realms/master',
 
     // Client credentials for token introspection
     clientId: process.env.OAUTH_CLIENT_ID,
     clientSecret: process.env.OAUTH_CLIENT_SECRET,
 
     // Scopes required for this server
-    requiredScopes: (process.env.OAUTH_REQUIRED_SCOPES || "mcp:tools")
-      .split(",")
+    requiredScopes: (process.env.OAUTH_REQUIRED_SCOPES || 'mcp:tools')
+      .split(',')
       .map((s) => s.trim()),
 
     // Whether to use token introspection (true) or JWT validation (false)
-    useIntrospection: process.env.OAUTH_USE_INTROSPECTION !== "false",
+    useIntrospection: process.env.OAUTH_USE_INTROSPECTION !== 'false',
   },
 
   // Whether OAuth is enabled (disable for local development)
-  authEnabled: process.env.OAUTH_ENABLED !== "false",
+  authEnabled: process.env.OAUTH_ENABLED !== 'false',
 };
 
 /**
@@ -61,7 +61,7 @@ function getAuthServerMetadataUrl(): string {
   const baseUrl = CONFIG.oauth.authServerUrl;
 
   // Try OIDC Discovery first
-  if (baseUrl.includes("/realms/")) {
+  if (baseUrl.includes('/realms/')) {
     // Keycloak-style URL
     return `${baseUrl}/.well-known/openid-configuration`;
   }
@@ -79,8 +79,8 @@ async function createApp(): Promise<express.Application> {
   // Enable CORS
   app.use(
     cors({
-      origin: "*",
-      exposedHeaders: ["Mcp-Session-Id"],
+      origin: '*',
+      exposedHeaders: ['Mcp-Session-Id'],
     })
   );
 
@@ -90,11 +90,9 @@ async function createApp(): Promise<express.Application> {
   // Request logging
   app.use((req, res, next) => {
     const start = Date.now();
-    res.on("finish", () => {
+    res.on('finish', () => {
       const duration = Date.now() - start;
-      console.log(
-        `${req.method} ${req.path} -> ${res.statusCode} (${duration}ms)`
-      );
+      console.log(`${req.method} ${req.path} -> ${res.statusCode} (${duration}ms)`);
     });
     next();
   });
@@ -110,8 +108,8 @@ async function createApp(): Promise<express.Application> {
     resourceServerUrl: serverUrl,
     authServerMetadata: getAuthServerMetadataUrl(),
     scopesSupported: CONFIG.oauth.requiredScopes,
-    resourceDocumentation: "https://github.com/your-repo/ebay-api-mcp-server",
-    resourceName: "eBay API MCP Server",
+    resourceDocumentation: 'https://github.com/your-repo/ebay-api-mcp-server',
+    resourceName: 'eBay API MCP Server',
     ebayEnvironment: ebayConfig.environment,
     ebayScopes: getDefaultScopes(ebayConfig.environment),
   });
@@ -119,9 +117,9 @@ async function createApp(): Promise<express.Application> {
   app.use(metadataRouter);
 
   // Health check endpoint (no auth required)
-  app.get("/health", (req, res) => {
+  app.get('/health', (req, res) => {
     res.json({
-      status: "healthy",
+      status: 'healthy',
       timestamp: new Date().toISOString(),
       oauth_enabled: CONFIG.authEnabled,
     });
@@ -132,7 +130,7 @@ async function createApp(): Promise<express.Application> {
   let authMiddleware: express.RequestHandler | undefined;
 
   if (CONFIG.authEnabled) {
-    console.log("Initializing OAuth token verifier...");
+    console.log('Initializing OAuth token verifier...');
 
     tokenVerifier = new TokenVerifier({
       authServerMetadata: getAuthServerMetadataUrl(),
@@ -145,19 +143,19 @@ async function createApp(): Promise<express.Application> {
 
     try {
       await tokenVerifier.initialize();
-      console.log("✓ Token verifier initialized");
+      console.log('✓ Token verifier initialized');
 
       authMiddleware = createBearerAuthMiddleware({
         verifier: tokenVerifier,
         resourceMetadataUrl: getProtectedResourceMetadataUrl(serverUrl),
-        realm: "ebay-mcp",
+        realm: 'ebay-mcp',
       });
     } catch (error) {
-      console.error("Failed to initialize token verifier:", error);
+      console.error('Failed to initialize token verifier:', error);
       throw error;
     }
   } else {
-    console.log("⚠️  OAuth is disabled. Server running in unauthenticated mode.");
+    console.log('⚠️  OAuth is disabled. Server running in unauthenticated mode.');
   }
 
   // MCP session storage
@@ -172,8 +170,8 @@ async function createApp(): Promise<express.Application> {
 
     const server = new McpServer(
       {
-        name: "ebay-api-mcp-server",
-        version: "0.1.0",
+        name: 'ebay-api-mcp-server',
+        version: '0.1.0',
       },
       {
         capabilities: {
@@ -197,19 +195,18 @@ async function createApp(): Promise<express.Application> {
             return {
               content: [
                 {
-                  type: "text" as const,
+                  type: 'text' as const,
                   text: JSON.stringify(result, null, 2),
                 },
               ],
             };
           } catch (error) {
-            const errorMessage =
-              error instanceof Error ? error.message : "Unknown error";
+            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
 
             return {
               content: [
                 {
-                  type: "text" as const,
+                  type: 'text' as const,
                   text: JSON.stringify({ error: errorMessage }, null, 2),
                 },
               ],
@@ -226,11 +223,8 @@ async function createApp(): Promise<express.Application> {
   /**
    * MCP POST handler
    */
-  const mcpPostHandler = async (
-    req: express.Request,
-    res: express.Response
-  ): Promise<void> => {
-    const sessionId = req.headers["mcp-session-id"] as string | undefined;
+  const mcpPostHandler = async (req: express.Request, res: express.Response): Promise<void> => {
+    const sessionId = req.headers['mcp-session-id'] as string | undefined;
     let transport: StreamableHTTPServerTransport;
 
     if (sessionId && transports.has(sessionId)) {
@@ -256,10 +250,10 @@ async function createApp(): Promise<express.Application> {
       await server.connect(transport);
     } else {
       res.status(400).json({
-        jsonrpc: "2.0",
+        jsonrpc: '2.0',
         error: {
           code: -32000,
-          message: "Bad Request: No valid session ID provided",
+          message: 'Bad Request: No valid session ID provided',
         },
         id: null,
       });
@@ -276,11 +270,11 @@ async function createApp(): Promise<express.Application> {
     req: express.Request,
     res: express.Response
   ): Promise<void> => {
-    const sessionId = req.headers["mcp-session-id"] as string | undefined;
+    const sessionId = req.headers['mcp-session-id'] as string | undefined;
     if (!sessionId || !transports.has(sessionId)) {
       res.status(400).json({
-        error: "invalid_session",
-        error_description: "Invalid or missing session ID",
+        error: 'invalid_session',
+        error_description: 'Invalid or missing session ID',
       });
       return;
     }
@@ -290,18 +284,16 @@ async function createApp(): Promise<express.Application> {
   };
 
   // Apply auth middleware to MCP endpoints if enabled
-  const mcpMiddleware = authMiddleware
-    ? [authMiddleware, mcpPostHandler]
-    : [mcpPostHandler];
+  const mcpMiddleware = authMiddleware ? [authMiddleware, mcpPostHandler] : [mcpPostHandler];
 
   const sessionMiddleware = authMiddleware
     ? [authMiddleware, handleSessionRequest]
     : [handleSessionRequest];
 
   // MCP endpoints
-  app.post("/", ...mcpMiddleware);
-  app.get("/", ...sessionMiddleware);
-  app.delete("/", ...sessionMiddleware);
+  app.post('/', ...mcpMiddleware);
+  app.get('/', ...sessionMiddleware);
+  app.delete('/', ...sessionMiddleware);
 
   return app;
 }
@@ -311,7 +303,7 @@ async function createApp(): Promise<express.Application> {
  */
 async function main() {
   try {
-    console.log("🚀 Starting eBay API MCP Server (HTTP + OAuth)...");
+    console.log('🚀 Starting eBay API MCP Server (HTTP + OAuth)...');
     console.log();
 
     // Validate environment configuration
@@ -319,8 +311,8 @@ async function main() {
 
     // Display warnings
     if (validation.warnings.length > 0) {
-      console.log("⚠️  Environment Configuration Warnings:");
-      validation.warnings.forEach(warning => {
+      console.log('⚠️  Environment Configuration Warnings:');
+      validation.warnings.forEach((warning) => {
         console.log(`  • ${warning}`);
       });
       console.log();
@@ -328,23 +320,25 @@ async function main() {
 
     // Display errors and exit if configuration is invalid
     if (!validation.isValid) {
-      console.error("❌ Environment Configuration Errors:");
-      validation.errors.forEach(error => {
+      console.error('❌ Environment Configuration Errors:');
+      validation.errors.forEach((error) => {
         console.error(`  • ${error}`);
       });
-      console.error("\nPlease fix the configuration errors and restart the server.\n");
+      console.error('\nPlease fix the configuration errors and restart the server.\n');
       process.exit(1);
     }
 
-    console.log("Configuration:");
+    console.log('Configuration:');
     console.log(`  Host: ${CONFIG.host}`);
     console.log(`  Port: ${CONFIG.port}`);
     console.log(`  OAuth Enabled: ${CONFIG.authEnabled}`);
 
     if (CONFIG.authEnabled) {
       console.log(`  Auth Server: ${CONFIG.oauth.authServerUrl}`);
-      console.log(`  Required Scopes: ${CONFIG.oauth.requiredScopes.join(", ")}`);
-      console.log(`  Verification Method: ${CONFIG.oauth.useIntrospection ? "Introspection" : "JWT"}`);
+      console.log(`  Required Scopes: ${CONFIG.oauth.requiredScopes.join(', ')}`);
+      console.log(
+        `  Verification Method: ${CONFIG.oauth.useIntrospection ? 'Introspection' : 'JWT'}`
+      );
     }
 
     console.log();
@@ -354,32 +348,34 @@ async function main() {
     const server = app.listen(CONFIG.port, CONFIG.host, () => {
       const serverUrl = `http://${CONFIG.host}:${CONFIG.port}`;
 
-      console.log("✓ Server is running!");
+      console.log('✓ Server is running!');
       console.log();
       console.log(`📡 MCP endpoint: ${serverUrl}/`);
-      console.log(`🔐 Protected Resource Metadata: ${serverUrl}/.well-known/oauth-protected-resource`);
+      console.log(
+        `🔐 Protected Resource Metadata: ${serverUrl}/.well-known/oauth-protected-resource`
+      );
       console.log(`💚 Health check: ${serverUrl}/health`);
       console.log();
 
       if (CONFIG.authEnabled) {
-        console.log("🔒 Authorization is ENABLED");
-        console.log("   Clients must provide valid Bearer tokens to access MCP endpoints");
+        console.log('🔒 Authorization is ENABLED');
+        console.log('   Clients must provide valid Bearer tokens to access MCP endpoints');
       } else {
-        console.log("⚠️  Authorization is DISABLED");
-        console.log("   Set OAUTH_ENABLED=true to enable OAuth protection");
+        console.log('⚠️  Authorization is DISABLED');
+        console.log('   Set OAUTH_ENABLED=true to enable OAuth protection');
       }
     });
 
     // Graceful shutdown
-    process.on("SIGINT", () => {
-      console.log("\n🛑 Shutting down...");
+    process.on('SIGINT', () => {
+      console.log('\n🛑 Shutting down...');
       server.close(() => {
-        console.log("✓ Server closed");
+        console.log('✓ Server closed');
         process.exit(0);
       });
     });
   } catch (error) {
-    console.error("❌ Fatal error starting server:", error);
+    console.error('❌ Fatal error starting server:', error);
     process.exit(1);
   }
 }

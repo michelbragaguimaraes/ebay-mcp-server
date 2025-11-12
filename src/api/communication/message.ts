@@ -7,7 +7,7 @@ import type { EbayApiClient } from '../client.js';
 export class MessageApi {
   private readonly basePath = '/commerce/message/v1';
 
-  constructor(private client: EbayApiClient) { }
+  constructor(private client: EbayApiClient) {}
 
   /**
    * Bulk update conversation
@@ -144,7 +144,7 @@ export class MessageApi {
   async replyToMessage(messageId: string, messageContent: string) {
     return await this.sendMessage({
       conversation_id: messageId,
-      message_content: messageContent
+      message_content: messageContent,
     });
   }
 }

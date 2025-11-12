@@ -35,7 +35,7 @@ import {
   FundingModel,
   MessageReferenceType,
   FeedbackRating,
-  ReportedItemType
+  ReportedItemType,
 } from '@/types/ebay-enums.js';
 
 describe('eBay Enums', () => {
@@ -467,7 +467,7 @@ describe('eBay Enums', () => {
         FundingModel,
         MessageReferenceType,
         FeedbackRating,
-        ReportedItemType
+        ReportedItemType,
       ];
 
       expect(enumTypes).toHaveLength(32);

@@ -7,7 +7,7 @@ import type { EbayApiClient } from '../client.js';
 export class NotificationApi {
   private readonly basePath = '/commerce/notification/v1';
 
-  constructor(private client: EbayApiClient) { }
+  constructor(private client: EbayApiClient) {}
 
   /**
    * Get public key for validating notifications
@@ -363,7 +363,10 @@ export class NotificationApi {
     }
 
     try {
-      return await this.client.post(`${this.basePath}/subscription/${subscriptionId}/filter`, filter);
+      return await this.client.post(
+        `${this.basePath}/subscription/${subscriptionId}/filter`,
+        filter
+      );
     } catch (error) {
       throw new Error(
         `Failed to create subscription filter: ${error instanceof Error ? error.message : 'Unknown error'}`
@@ -385,7 +388,9 @@ export class NotificationApi {
     }
 
     try {
-      return await this.client.get(`${this.basePath}/subscription/${subscriptionId}/filter/${filterId}`);
+      return await this.client.get(
+        `${this.basePath}/subscription/${subscriptionId}/filter/${filterId}`
+      );
     } catch (error) {
       throw new Error(
         `Failed to get subscription filter: ${error instanceof Error ? error.message : 'Unknown error'}`
@@ -407,7 +412,9 @@ export class NotificationApi {
     }
 
     try {
-      return await this.client.delete(`${this.basePath}/subscription/${subscriptionId}/filter/${filterId}`);
+      return await this.client.delete(
+        `${this.basePath}/subscription/${subscriptionId}/filter/${filterId}`
+      );
     } catch (error) {
       throw new Error(
         `Failed to delete subscription filter: ${error instanceof Error ? error.message : 'Unknown error'}`

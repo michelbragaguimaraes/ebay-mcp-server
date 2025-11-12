@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 /**
  * Zod schemas for token utility tools
@@ -19,20 +19,20 @@ export const ValidateTokenExpirySchema = z
     accessTokenExpiry: z
       .union([z.string(), z.number()])
       .describe(
-        "Access token expiry time. Can be ISO date string, Unix timestamp (seconds or milliseconds), or relative time"
+        'Access token expiry time. Can be ISO date string, Unix timestamp (seconds or milliseconds), or relative time'
       ),
     refreshTokenExpiry: z
       .union([z.string(), z.number()])
       .describe(
-        "Refresh token expiry time. Can be ISO date string, Unix timestamp (seconds or milliseconds), or relative time"
+        'Refresh token expiry time. Can be ISO date string, Unix timestamp (seconds or milliseconds), or relative time'
       ),
   })
   .passthrough();
 
 export const SetUserTokensWithExpirySchema = z
   .object({
-    accessToken: z.string().min(1).describe("eBay user access token"),
-    refreshToken: z.string().min(1).describe("eBay user refresh token"),
+    accessToken: z.string().min(1).describe('eBay user access token'),
+    refreshToken: z.string().min(1).describe('eBay user refresh token'),
     accessTokenExpiry: z
       .union([z.string(), z.number()])
       .optional()
@@ -43,14 +43,14 @@ export const SetUserTokensWithExpirySchema = z
       .union([z.string(), z.number()])
       .optional()
       .describe(
-        "Optional: Refresh token expiry time. If not provided, defaults to 18 months from now. Can be ISO date string, Unix timestamp, or relative time"
+        'Optional: Refresh token expiry time. If not provided, defaults to 18 months from now. Can be ISO date string, Unix timestamp, or relative time'
       ),
     autoRefresh: z
       .boolean()
       .optional()
       .default(true)
       .describe(
-        "If true and access token is expired but refresh token is valid, automatically refresh the access token. Default: true"
+        'If true and access token is expired but refresh token is valid, automatically refresh the access token. Default: true'
       ),
   })
   .passthrough();

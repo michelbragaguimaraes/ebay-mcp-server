@@ -1,31 +1,32 @@
-import type { EbayApiClient } from "@/api/client.js";
-import type { components } from "@/types/sell_fulfillment_v1_oas3.js";
+import type { EbayApiClient } from '@/api/client.js';
+import type { components } from '@/types/sell_fulfillment_v1_oas3.js';
 
-type AcceptPaymentDisputeRequest = components["schemas"]["AcceptPaymentDisputeRequest"];
-type ContestPaymentDisputeRequest = components["schemas"]["ContestPaymentDisputeRequest"];
-type DisputeSummaryResponse = components["schemas"]["DisputeSummaryResponse"];
-type PaymentDispute = components["schemas"]["PaymentDispute"];
-type PaymentDisputeActivityHistory = components["schemas"]["PaymentDisputeActivityHistory"];
-type FileEvidence = components["schemas"]["FileEvidence"];
-type AddEvidencePaymentDisputeRequest = components["schemas"]["AddEvidencePaymentDisputeRequest"];
-type AddEvidencePaymentDisputeResponse = components["schemas"]["AddEvidencePaymentDisputeResponse"];
-type UpdateEvidencePaymentDisputeRequest = components["schemas"]["UpdateEvidencePaymentDisputeRequest"];
+type AcceptPaymentDisputeRequest = components['schemas']['AcceptPaymentDisputeRequest'];
+type ContestPaymentDisputeRequest = components['schemas']['ContestPaymentDisputeRequest'];
+type DisputeSummaryResponse = components['schemas']['DisputeSummaryResponse'];
+type PaymentDispute = components['schemas']['PaymentDispute'];
+type PaymentDisputeActivityHistory = components['schemas']['PaymentDisputeActivityHistory'];
+type FileEvidence = components['schemas']['FileEvidence'];
+type AddEvidencePaymentDisputeRequest = components['schemas']['AddEvidencePaymentDisputeRequest'];
+type AddEvidencePaymentDisputeResponse = components['schemas']['AddEvidencePaymentDisputeResponse'];
+type UpdateEvidencePaymentDisputeRequest =
+  components['schemas']['UpdateEvidencePaymentDisputeRequest'];
 
 /**
  * Dispute API - Manage payment disputes
  * Based on: docs/sell-apps/order-management/sell_fulfillment_v1_oas3.json
  */
 export class DisputeApi {
-  private readonly basePath = "/sell/fulfillment/v1";
+  private readonly basePath = '/sell/fulfillment/v1';
 
-  constructor(private client: EbayApiClient) { }
+  constructor(private client: EbayApiClient) {}
 
   /**
    * Get payment dispute details
    */
   async getPaymentDispute(paymentDisputeId: string): Promise<PaymentDispute> {
     return await this.client.get<PaymentDispute>(
-      `${this.basePath}/payment_dispute/${paymentDisputeId}`,
+      `${this.basePath}/payment_dispute/${paymentDisputeId}`
     );
   }
 
@@ -68,7 +69,10 @@ export class DisputeApi {
     limit?: number;
     offset?: number;
   }): Promise<DisputeSummaryResponse> {
-    return await this.client.get<DisputeSummaryResponse>(`${this.basePath}/payment_dispute_summary`, params);
+    return await this.client.get<DisputeSummaryResponse>(
+      `${this.basePath}/payment_dispute_summary`,
+      params
+    );
   }
 
   /**
@@ -100,10 +104,7 @@ export class DisputeApi {
   /**
    * Upload an evidence file
    */
-  async uploadEvidenceFile(
-    paymentDisputeId: string,
-    body: ArrayBuffer
-  ): Promise<FileEvidence> {
+  async uploadEvidenceFile(paymentDisputeId: string, body: ArrayBuffer): Promise<FileEvidence> {
     return await this.client.post<FileEvidence>(
       `${this.basePath}/payment_dispute/${paymentDisputeId}/upload_evidence_file`,
       body,

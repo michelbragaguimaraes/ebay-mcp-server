@@ -1,104 +1,84 @@
-import type { EbayApiClient } from "@/api/client.js";
-import type { components } from "@/types/sell_account_v1_oas3.js";
+import type { EbayApiClient } from '@/api/client.js';
+import type { components } from '@/types/sell_account_v1_oas3.js';
 
-type CustomPolicyCreateRequest = components["schemas"]["CustomPolicyCreateRequest"];
-type CustomPolicyResponse = components["schemas"]["CustomPolicyResponse"];
-type CustomPolicy = components["schemas"]["CustomPolicy"];
-type FulfillmentPolicyRequest = components["schemas"]["FulfillmentPolicyRequest"];
-type SetFulfillmentPolicyResponse = components["schemas"]["SetFulfillmentPolicyResponse"];
-type FulfillmentPolicyResponse = components["schemas"]["FulfillmentPolicyResponse"];
-type FulfillmentPolicy = components["schemas"]["FulfillmentPolicy"];
-type KycResponse = components["schemas"]["KycResponse"];
-type PaymentPolicyRequest = components["schemas"]["PaymentPolicyRequest"];
-type SetPaymentPolicyResponse = components["schemas"]["SetPaymentPolicyResponse"];
-type GetPaymentPoliciesResponse = components["schemas"]["PaymentPolicyResponse"];
-type PaymentPolicy = components["schemas"]["PaymentPolicy"];
-type PaymentsProgramResponse = components["schemas"]["PaymentsProgramResponse"];
-type SellingPrivileges = components["schemas"]["SellingPrivileges"];
-type Programs = components["schemas"]["Programs"];
-type OptInToProgramRequest = components["schemas"]["Program"];
-type RateTableResponse = components["schemas"]["RateTableResponse"];
-type ReturnPolicyRequest = components["schemas"]["ReturnPolicyRequest"];
-type SetReturnPolicyResponse = components["schemas"]["SetReturnPolicyResponse"];
-type ReturnPolicyResponse = components["schemas"]["ReturnPolicyResponse"];
-type ReturnPolicy = components["schemas"]["ReturnPolicy"];
-type SalesTaxBase = components["schemas"]["SalesTaxBase"];
-type SalesTax = components["schemas"]["SalesTax"];
-type SalesTaxes = components["schemas"]["SalesTaxes"];
-type SubscriptionResponse = components["schemas"]["SubscriptionResponse"];
+type CustomPolicyCreateRequest = components['schemas']['CustomPolicyCreateRequest'];
+type CustomPolicyResponse = components['schemas']['CustomPolicyResponse'];
+type CustomPolicy = components['schemas']['CustomPolicy'];
+type FulfillmentPolicyRequest = components['schemas']['FulfillmentPolicyRequest'];
+type SetFulfillmentPolicyResponse = components['schemas']['SetFulfillmentPolicyResponse'];
+type FulfillmentPolicyResponse = components['schemas']['FulfillmentPolicyResponse'];
+type FulfillmentPolicy = components['schemas']['FulfillmentPolicy'];
+type KycResponse = components['schemas']['KycResponse'];
+type PaymentPolicyRequest = components['schemas']['PaymentPolicyRequest'];
+type SetPaymentPolicyResponse = components['schemas']['SetPaymentPolicyResponse'];
+type GetPaymentPoliciesResponse = components['schemas']['PaymentPolicyResponse'];
+type PaymentPolicy = components['schemas']['PaymentPolicy'];
+type PaymentsProgramResponse = components['schemas']['PaymentsProgramResponse'];
+type SellingPrivileges = components['schemas']['SellingPrivileges'];
+type Programs = components['schemas']['Programs'];
+type OptInToProgramRequest = components['schemas']['Program'];
+type RateTableResponse = components['schemas']['RateTableResponse'];
+type ReturnPolicyRequest = components['schemas']['ReturnPolicyRequest'];
+type SetReturnPolicyResponse = components['schemas']['SetReturnPolicyResponse'];
+type ReturnPolicyResponse = components['schemas']['ReturnPolicyResponse'];
+type ReturnPolicy = components['schemas']['ReturnPolicy'];
+type SalesTaxBase = components['schemas']['SalesTaxBase'];
+type SalesTax = components['schemas']['SalesTax'];
+type SalesTaxes = components['schemas']['SalesTaxes'];
+type SubscriptionResponse = components['schemas']['SubscriptionResponse'];
 
 /**
  * Account API - Seller account configuration, policies, programs
  * Based on: docs/sell-apps/account-management/sell_account_v1_oas3.json
  */
 export class AccountApi {
-  private readonly basePath = "/sell/account/v1";
+  private readonly basePath = '/sell/account/v1';
 
-  constructor(private client: EbayApiClient) { }
+  constructor(private client: EbayApiClient) {}
 
   /**
    * Get custom policies for the seller
    */
   async getCustomPolicies(policyTypes?: string): Promise<CustomPolicyResponse> {
     const params = policyTypes ? { policy_types: policyTypes } : undefined;
-    return await this.client.get<CustomPolicyResponse>(
-      `${this.basePath}/custom_policy`,
-      params,
-    );
+    return await this.client.get<CustomPolicyResponse>(`${this.basePath}/custom_policy`, params);
   }
 
   /**
    * Get a specific custom policy
    */
   async getCustomPolicy(customPolicyId: string): Promise<CustomPolicy> {
-    return await this.client.get<CustomPolicy>(
-      `${this.basePath}/custom_policy/${customPolicyId}`,
-    );
+    return await this.client.get<CustomPolicy>(`${this.basePath}/custom_policy/${customPolicyId}`);
   }
 
   /**
    * Get fulfillment policies
    */
-  async getFulfillmentPolicies(
-    marketplaceId?: string,
-  ): Promise<FulfillmentPolicyResponse> {
-    const params = marketplaceId
-      ? { marketplace_id: marketplaceId }
-      : undefined;
+  async getFulfillmentPolicies(marketplaceId?: string): Promise<FulfillmentPolicyResponse> {
+    const params = marketplaceId ? { marketplace_id: marketplaceId } : undefined;
     return await this.client.get<FulfillmentPolicyResponse>(
       `${this.basePath}/fulfillment_policy`,
-      params,
+      params
     );
   }
 
   /**
    * Get payment policies
    */
-  async getPaymentPolicies(
-    marketplaceId?: string,
-  ): Promise<GetPaymentPoliciesResponse> {
-    const params = marketplaceId
-      ? { marketplace_id: marketplaceId }
-      : undefined;
+  async getPaymentPolicies(marketplaceId?: string): Promise<GetPaymentPoliciesResponse> {
+    const params = marketplaceId ? { marketplace_id: marketplaceId } : undefined;
     return await this.client.get<GetPaymentPoliciesResponse>(
       `${this.basePath}/payment_policy`,
-      params,
+      params
     );
   }
 
   /**
    * Get return policies
    */
-  async getReturnPolicies(
-    marketplaceId?: string,
-  ): Promise<ReturnPolicyResponse> {
-    const params = marketplaceId
-      ? { marketplace_id: marketplaceId }
-      : undefined;
-    return await this.client.get<ReturnPolicyResponse>(
-      `${this.basePath}/return_policy`,
-      params,
-    );
+  async getReturnPolicies(marketplaceId?: string): Promise<ReturnPolicyResponse> {
+    const params = marketplaceId ? { marketplace_id: marketplaceId } : undefined;
+    return await this.client.get<ReturnPolicyResponse>(`${this.basePath}/return_policy`, params);
   }
 
   /**
@@ -116,22 +96,20 @@ export class AccountApi {
    * Create a new fulfillment policy
    */
   async createFulfillmentPolicy(
-    policy: FulfillmentPolicyRequest,
+    policy: FulfillmentPolicyRequest
   ): Promise<SetFulfillmentPolicyResponse> {
     return await this.client.post<SetFulfillmentPolicyResponse>(
       `${this.basePath}/fulfillment_policy`,
-      policy,
+      policy
     );
   }
 
   /**
    * Get a specific fulfillment policy by ID
    */
-  async getFulfillmentPolicy(
-    fulfillmentPolicyId: string,
-  ): Promise<FulfillmentPolicy> {
+  async getFulfillmentPolicy(fulfillmentPolicyId: string): Promise<FulfillmentPolicy> {
     return await this.client.get<FulfillmentPolicy>(
-      `${this.basePath}/fulfillment_policy/${fulfillmentPolicyId}`,
+      `${this.basePath}/fulfillment_policy/${fulfillmentPolicyId}`
     );
   }
 
@@ -140,12 +118,12 @@ export class AccountApi {
    */
   async getFulfillmentPolicyByName(
     marketplaceId: string,
-    name: string,
+    name: string
   ): Promise<FulfillmentPolicy> {
-    return await this.client.get<FulfillmentPolicy>(
-      `${this.basePath}/fulfillment_policy_by_name`,
-      { marketplace_id: marketplaceId, name },
-    );
+    return await this.client.get<FulfillmentPolicy>(`${this.basePath}/fulfillment_policy_by_name`, {
+      marketplace_id: marketplaceId,
+      name,
+    });
   }
 
   /**
@@ -153,11 +131,11 @@ export class AccountApi {
    */
   async updateFulfillmentPolicy(
     fulfillmentPolicyId: string,
-    policy: FulfillmentPolicyRequest,
+    policy: FulfillmentPolicyRequest
   ): Promise<SetFulfillmentPolicyResponse> {
     return await this.client.put<SetFulfillmentPolicyResponse>(
       `${this.basePath}/fulfillment_policy/${fulfillmentPolicyId}`,
-      policy,
+      policy
     );
   }
 
@@ -165,9 +143,7 @@ export class AccountApi {
    * Delete a fulfillment policy
    */
   async deleteFulfillmentPolicy(fulfillmentPolicyId: string): Promise<void> {
-    return await this.client.delete(
-      `${this.basePath}/fulfillment_policy/${fulfillmentPolicyId}`,
-    );
+    return await this.client.delete(`${this.basePath}/fulfillment_policy/${fulfillmentPolicyId}`);
   }
 
   // ============================================================
@@ -177,12 +153,10 @@ export class AccountApi {
   /**
    * Create a new payment policy
    */
-  async createPaymentPolicy(
-    policy: PaymentPolicyRequest,
-  ): Promise<SetPaymentPolicyResponse> {
+  async createPaymentPolicy(policy: PaymentPolicyRequest): Promise<SetPaymentPolicyResponse> {
     return await this.client.post<SetPaymentPolicyResponse>(
       `${this.basePath}/payment_policy`,
-      policy,
+      policy
     );
   }
 
@@ -191,21 +165,18 @@ export class AccountApi {
    */
   async getPaymentPolicy(paymentPolicyId: string): Promise<PaymentPolicy> {
     return await this.client.get<PaymentPolicy>(
-      `${this.basePath}/payment_policy/${paymentPolicyId}`,
+      `${this.basePath}/payment_policy/${paymentPolicyId}`
     );
   }
 
   /**
    * Get a payment policy by name
    */
-  async getPaymentPolicyByName(
-    marketplaceId: string,
-    name: string,
-  ): Promise<PaymentPolicy> {
-    return await this.client.get<PaymentPolicy>(
-      `${this.basePath}/payment_policy_by_name`,
-      { marketplace_id: marketplaceId, name },
-    );
+  async getPaymentPolicyByName(marketplaceId: string, name: string): Promise<PaymentPolicy> {
+    return await this.client.get<PaymentPolicy>(`${this.basePath}/payment_policy_by_name`, {
+      marketplace_id: marketplaceId,
+      name,
+    });
   }
 
   /**
@@ -213,11 +184,11 @@ export class AccountApi {
    */
   async updatePaymentPolicy(
     paymentPolicyId: string,
-    policy: PaymentPolicyRequest,
+    policy: PaymentPolicyRequest
   ): Promise<SetPaymentPolicyResponse> {
     return await this.client.put<SetPaymentPolicyResponse>(
       `${this.basePath}/payment_policy/${paymentPolicyId}`,
-      policy,
+      policy
     );
   }
 
@@ -225,9 +196,7 @@ export class AccountApi {
    * Delete a payment policy
    */
   async deletePaymentPolicy(paymentPolicyId: string): Promise<void> {
-    return await this.client.delete(
-      `${this.basePath}/payment_policy/${paymentPolicyId}`,
-    );
+    return await this.client.delete(`${this.basePath}/payment_policy/${paymentPolicyId}`);
   }
 
   // ============================================================
@@ -237,12 +206,10 @@ export class AccountApi {
   /**
    * Create a new return policy
    */
-  async createReturnPolicy(
-    policy: ReturnPolicyRequest,
-  ): Promise<SetReturnPolicyResponse> {
+  async createReturnPolicy(policy: ReturnPolicyRequest): Promise<SetReturnPolicyResponse> {
     return await this.client.post<SetReturnPolicyResponse>(
       `${this.basePath}/return_policy`,
-      policy,
+      policy
     );
   }
 
@@ -250,22 +217,17 @@ export class AccountApi {
    * Get a specific return policy by ID
    */
   async getReturnPolicy(returnPolicyId: string): Promise<ReturnPolicy> {
-    return await this.client.get<ReturnPolicy>(
-      `${this.basePath}/return_policy/${returnPolicyId}`,
-    );
+    return await this.client.get<ReturnPolicy>(`${this.basePath}/return_policy/${returnPolicyId}`);
   }
 
   /**
    * Get a return policy by name
    */
-  async getReturnPolicyByName(
-    marketplaceId: string,
-    name: string,
-  ): Promise<ReturnPolicy> {
-    return await this.client.get<ReturnPolicy>(
-      `${this.basePath}/return_policy_by_name`,
-      { marketplace_id: marketplaceId, name },
-    );
+  async getReturnPolicyByName(marketplaceId: string, name: string): Promise<ReturnPolicy> {
+    return await this.client.get<ReturnPolicy>(`${this.basePath}/return_policy_by_name`, {
+      marketplace_id: marketplaceId,
+      name,
+    });
   }
 
   /**
@@ -273,11 +235,11 @@ export class AccountApi {
    */
   async updateReturnPolicy(
     returnPolicyId: string,
-    policy: ReturnPolicyRequest,
+    policy: ReturnPolicyRequest
   ): Promise<SetReturnPolicyResponse> {
     return await this.client.put<SetReturnPolicyResponse>(
       `${this.basePath}/return_policy/${returnPolicyId}`,
-      policy,
+      policy
     );
   }
 
@@ -285,9 +247,7 @@ export class AccountApi {
    * Delete a return policy
    */
   async deleteReturnPolicy(returnPolicyId: string): Promise<void> {
-    return await this.client.delete(
-      `${this.basePath}/return_policy/${returnPolicyId}`,
-    );
+    return await this.client.delete(`${this.basePath}/return_policy/${returnPolicyId}`);
   }
 
   // ============================================================
@@ -297,13 +257,8 @@ export class AccountApi {
   /**
    * Create a new custom policy
    */
-  async createCustomPolicy(
-    policy: CustomPolicyCreateRequest,
-  ): Promise<CustomPolicy> {
-    return await this.client.post<CustomPolicy>(
-      `${this.basePath}/custom_policy`,
-      policy,
-    );
+  async createCustomPolicy(policy: CustomPolicyCreateRequest): Promise<CustomPolicy> {
+    return await this.client.post<CustomPolicy>(`${this.basePath}/custom_policy`, policy);
   }
 
   /**
@@ -311,21 +266,16 @@ export class AccountApi {
    */
   async updateCustomPolicy(
     customPolicyId: string,
-    policy: CustomPolicyCreateRequest,
+    policy: CustomPolicyCreateRequest
   ): Promise<void> {
-    return await this.client.put(
-      `${this.basePath}/custom_policy/${customPolicyId}`,
-      policy,
-    );
+    return await this.client.put(`${this.basePath}/custom_policy/${customPolicyId}`, policy);
   }
 
   /**
    * Delete a custom policy
    */
   async deleteCustomPolicy(customPolicyId: string): Promise<void> {
-    return await this.client.delete(
-      `${this.basePath}/custom_policy/${customPolicyId}`,
-    );
+    return await this.client.delete(`${this.basePath}/custom_policy/${customPolicyId}`);
   }
 
   // ============================================================
@@ -344,11 +294,11 @@ export class AccountApi {
    */
   async optInToPaymentsProgram(
     marketplaceId: string,
-    paymentsProgramType: string,
+    paymentsProgramType: string
   ): Promise<PaymentsProgramResponse> {
     return await this.client.post<PaymentsProgramResponse>(
       `${this.basePath}/payments_program/${marketplaceId}/${paymentsProgramType}`,
-      {},
+      {}
     );
   }
 
@@ -357,10 +307,10 @@ export class AccountApi {
    */
   async getPaymentsProgramStatus(
     marketplaceId: string,
-    paymentsProgramType: string,
+    paymentsProgramType: string
   ): Promise<PaymentsProgramResponse> {
     return await this.client.get<PaymentsProgramResponse>(
-      `${this.basePath}/payments_program/${marketplaceId}/${paymentsProgramType}`,
+      `${this.basePath}/payments_program/${marketplaceId}/${paymentsProgramType}`
     );
   }
 
@@ -377,11 +327,11 @@ export class AccountApi {
   async createOrReplaceSalesTax(
     countryCode: string,
     jurisdictionId: string,
-    salesTaxBase: SalesTaxBase,
+    salesTaxBase: SalesTaxBase
   ): Promise<void> {
     return await this.client.put(
       `${this.basePath}/sales_tax/${countryCode}/${jurisdictionId}`,
-      salesTaxBase,
+      salesTaxBase
     );
   }
 
@@ -393,35 +343,26 @@ export class AccountApi {
       countryCode: string;
       jurisdictionId: string;
       salesTaxBase: SalesTaxBase;
-    }[],
+    }[]
   ): Promise<void> {
-    return await this.client.post(
-      `${this.basePath}/sales_tax/bulk_create_or_replace`,
-      { requests },
-    );
+    return await this.client.post(`${this.basePath}/sales_tax/bulk_create_or_replace`, {
+      requests,
+    });
   }
 
   /**
    * Delete sales tax table
    */
-  async deleteSalesTax(
-    countryCode: string,
-    jurisdictionId: string,
-  ): Promise<void> {
-    return await this.client.delete(
-      `${this.basePath}/sales_tax/${countryCode}/${jurisdictionId}`,
-    );
+  async deleteSalesTax(countryCode: string, jurisdictionId: string): Promise<void> {
+    return await this.client.delete(`${this.basePath}/sales_tax/${countryCode}/${jurisdictionId}`);
   }
 
   /**
    * Get sales tax table
    */
-  async getSalesTax(
-    countryCode: string,
-    jurisdictionId: string,
-  ): Promise<SalesTax> {
+  async getSalesTax(countryCode: string, jurisdictionId: string): Promise<SalesTax> {
     return await this.client.get<SalesTax>(
-      `${this.basePath}/sales_tax/${countryCode}/${jurisdictionId}`,
+      `${this.basePath}/sales_tax/${countryCode}/${jurisdictionId}`
     );
   }
 
@@ -438,10 +379,7 @@ export class AccountApi {
    */
   async getSubscription(limitType?: string): Promise<SubscriptionResponse> {
     const params = limitType ? { limit: limitType } : undefined;
-    return await this.client.get<SubscriptionResponse>(
-      `${this.basePath}/subscription`,
-      params,
-    );
+    return await this.client.get<SubscriptionResponse>(`${this.basePath}/subscription`, params);
   }
 
   /**

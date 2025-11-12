@@ -1,5 +1,5 @@
-import { z } from "zod";
-import type { components } from "@/types/commerce_vero_v1_oas3.js";
+import { z } from 'zod';
+import type { components } from '@/types/commerce_vero_v1_oas3.js';
 
 /**
  * Zod schemas for VERO API input validation
@@ -11,26 +11,32 @@ import type { components } from "@/types/commerce_vero_v1_oas3.js";
  */
 
 // Extract operation parameter types for reference
-type VeroReportItemsRequest = components["schemas"]["VeroReportItemsRequest"];
+type VeroReportItemsRequest = components['schemas']['VeroReportItemsRequest'];
 
 // Reusable schema for filter parameter
-const filterSchema = z.string({
-  message: "Filter must be a string",
-  invalid_type_error: "filter must be a string",
-  description: "Filter criteria for the query (e.g., date range)"
-}).optional();
+const filterSchema = z
+  .string({
+    message: 'Filter must be a string',
+    invalid_type_error: 'filter must be a string',
+    description: 'Filter criteria for the query (e.g., date range)',
+  })
+  .optional();
 
 // Reusable schema for limit parameter (string in API)
-const limitSchema = z.string({
-  invalid_type_error: "limit must be a string",
-  description: "Maximum number of items to return"
-}).optional();
+const limitSchema = z
+  .string({
+    invalid_type_error: 'limit must be a string',
+    description: 'Maximum number of items to return',
+  })
+  .optional();
 
 // Reusable schema for offset parameter (string in API)
-const offsetSchema = z.string({
-  invalid_type_error: "offset must be a string",
-  description: "Number of items to skip"
-}).optional();
+const offsetSchema = z
+  .string({
+    invalid_type_error: 'offset must be a string',
+    description: 'Number of items to skip',
+  })
+  .optional();
 
 /**
  * Schema for reportInfringement method
@@ -42,11 +48,12 @@ const offsetSchema = z.string({
  */
 export const reportInfringementSchema = z.object({
   infringement_data: z.record(z.unknown(), {
-    message: "Infringement data is required",
-    required_error: "infringement_data is required",
-    invalid_type_error: "infringement_data must be an object",
-    description: "The VeRO infringement report data containing item details and violation information"
-  })
+    message: 'Infringement data is required',
+    required_error: 'infringement_data is required',
+    invalid_type_error: 'infringement_data must be an object',
+    description:
+      'The VeRO infringement report data containing item details and violation information',
+  }),
 });
 
 /**
@@ -57,5 +64,5 @@ export const reportInfringementSchema = z.object({
 export const getReportedItemsSchema = z.object({
   filter: filterSchema,
   limit: limitSchema,
-  offset: offsetSchema
+  offset: offsetSchema,
 });

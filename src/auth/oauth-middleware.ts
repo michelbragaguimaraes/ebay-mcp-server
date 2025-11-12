@@ -3,9 +3,9 @@
  * Implements RFC 6750 Bearer Token authentication
  */
 
-import type { Request, Response, NextFunction } from "express";
-import type { TokenVerifier } from "./token-verifier.js";
-import type { VerifiedToken } from "./oauth-types.js";
+import type { Request, Response, NextFunction } from 'express';
+import type { TokenVerifier } from './token-verifier.js';
+import type { VerifiedToken } from './oauth-types.js';
 
 /**
  * Extended Express Request with verified token
@@ -34,34 +34,28 @@ export interface BearerAuthMiddlewareConfig {
 /**
  * Create Bearer token authentication middleware
  */
-export function createBearerAuthMiddleware(
-  config: BearerAuthMiddlewareConfig
-) {
-  const realm = config.realm || "mcp";
+export function createBearerAuthMiddleware(config: BearerAuthMiddlewareConfig) {
+  const realm = config.realm || 'mcp';
 
-  return async (
-    req: AuthenticatedRequest,
-    res: Response,
-    next: NextFunction
-  ): Promise<void> => {
+  return async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
     try {
       // Extract token from Authorization header
       const authHeader = req.headers.authorization;
 
       if (!authHeader) {
         sendUnauthorized(res, realm, config.resourceMetadataUrl, {
-          error: "invalid_token",
-          error_description: "No authorization header provided",
+          error: 'invalid_token',
+          error_description: 'No authorization header provided',
         });
         return;
       }
 
       // Check Bearer scheme
-      const parts = authHeader.split(" ");
-      if (parts.length !== 2 || parts[0] !== "Bearer") {
+      const parts = authHeader.split(' ');
+      if (parts.length !== 2 || parts[0] !== 'Bearer') {
         sendUnauthorized(res, realm, config.resourceMetadataUrl, {
-          error: "invalid_token",
-          error_description: "Invalid authorization header format. Expected: Bearer <token>",
+          error: 'invalid_token',
+          error_description: 'Invalid authorization header format. Expected: Bearer <token>',
         });
         return;
       }
@@ -74,19 +68,18 @@ export function createBearerAuthMiddleware(
         req.auth = verifiedToken;
         next();
       } catch (error) {
-        const errorMessage =
-          error instanceof Error ? error.message : "Token verification failed";
+        const errorMessage = error instanceof Error ? error.message : 'Token verification failed';
 
         sendUnauthorized(res, realm, config.resourceMetadataUrl, {
-          error: "invalid_token",
+          error: 'invalid_token',
           error_description: errorMessage,
         });
       }
     } catch (error) {
-      console.error("OAuth middleware error:", error);
+      console.error('OAuth middleware error:', error);
       res.status(500).json({
-        error: "server_error",
-        error_description: "Internal server error during authentication",
+        error: 'server_error',
+        error_description: 'Internal server error during authentication',
       });
     }
   };
@@ -120,10 +113,10 @@ function sendUnauthorized(
     authenticateValue += `, scope="${challenge.scope}"`;
   }
 
-  res.setHeader("WWW-Authenticate", authenticateValue);
+  res.setHeader('WWW-Authenticate', authenticateValue);
   res.status(401).json({
-    error: challenge.error || "unauthorized",
-    error_description: challenge.error_description || "Authorization required",
+    error: challenge.error || 'unauthorized',
+    error_description: challenge.error_description || 'Authorization required',
   });
 }
 
@@ -131,27 +124,21 @@ function sendUnauthorized(
  * Optional middleware to check specific scopes
  */
 export function requireScopes(requiredScopes: string[]) {
-  return (
-    req: AuthenticatedRequest,
-    res: Response,
-    next: NextFunction
-  ): void => {
+  return (req: AuthenticatedRequest, res: Response, next: NextFunction): void => {
     if (!req.auth) {
       res.status(401).json({
-        error: "unauthorized",
-        error_description: "No authentication information found",
+        error: 'unauthorized',
+        error_description: 'No authentication information found',
       });
       return;
     }
 
-    const hasRequiredScopes = requiredScopes.every((scope) =>
-      req.auth!.scopes.includes(scope)
-    );
+    const hasRequiredScopes = requiredScopes.every((scope) => req.auth!.scopes.includes(scope));
 
     if (!hasRequiredScopes) {
       res.status(403).json({
-        error: "insufficient_scope",
-        error_description: `Missing required scopes: ${requiredScopes.join(", ")}`,
+        error: 'insufficient_scope',
+        error_description: `Missing required scopes: ${requiredScopes.join(', ')}`,
         required_scopes: requiredScopes,
         provided_scopes: req.auth.scopes,
       });

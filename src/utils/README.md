@@ -19,6 +19,7 @@ Find the API implementation file in the `src/api` directory that contains the to
 In the `src/types/` directory, find the corresponding OpenAPI type definition file. The file names follow the pattern `{api_name}_v{version}_oas3.ts`.
 
 **Full paths:**
+
 - Feedback API → `/Applications/Github/ebay-api-mcp-server/src/types/commerce_feedback_v1_beta_oas3.ts`
 - Message API → `/Applications/Github/ebay-api-mcp-server/src/types/commerce_message_v1_oas3.ts`
 - Negotiation API → `/Applications/Github/ebay-api-mcp-server/src/types/sell_negotiation_v1_oas3.ts`
@@ -29,8 +30,8 @@ In the `src/types/` directory, find the corresponding OpenAPI type definition fi
 In your Zod schema file, import the `operations` and `components` types from the corresponding OpenAPI type file:
 
 ```typescript
-import { z } from "zod";
-import type { operations, components } from "../../types/{api_spec_file}.js";
+import { z } from 'zod';
+import type { operations, components } from '../../types/{api_spec_file}.js';
 ```
 
 ### 4. Extract Relevant Type References
@@ -39,8 +40,8 @@ Create type aliases for the operation parameters and request/response bodies. Th
 
 ```typescript
 // Extract operation parameter types for reference
-type GetFeedbackParams = operations["getFeedback"]["parameters"]["query"];
-type LeaveFeedbackRequest = components["schemas"]["LeaveFeedbackRequest"];
+type GetFeedbackParams = operations['getFeedback']['parameters']['query'];
+type LeaveFeedbackRequest = components['schemas']['LeaveFeedbackRequest'];
 ```
 
 **Note:** These type aliases will show as "unused" in TypeScript but serve as important documentation for schema developers.
@@ -51,15 +52,19 @@ Identify common parameters across endpoints and create reusable schemas:
 
 ```typescript
 // Common pagination parameters
-const limitSchema = z.string({
-  invalid_type_error: "limit must be a string",
-  description: "Maximum number of items to return"
-}).optional();
+const limitSchema = z
+  .string({
+    invalid_type_error: 'limit must be a string',
+    description: 'Maximum number of items to return',
+  })
+  .optional();
 
-const offsetSchema = z.string({
-  invalid_type_error: "offset must be a string",
-  description: "Number of items to skip"
-}).optional();
+const offsetSchema = z
+  .string({
+    invalid_type_error: 'offset must be a string',
+    description: 'Number of items to skip',
+  })
+  .optional();
 
 // Dynamic schema generators for repeated patterns
 const idSchema = (name: string, description: string) =>
@@ -67,7 +72,7 @@ const idSchema = (name: string, description: string) =>
     message: `${name} is required`,
     required_error: `${name.toLowerCase().replace(/\s+/g, '_')} is required`,
     invalid_type_error: `${name.toLowerCase().replace(/\s+/g, '_')} must be a string`,
-    description
+    description,
   });
 ```
 
@@ -88,16 +93,16 @@ Create Zod schemas based on the OpenAPI operation types. For each schema:
  */
 export const getFeedbackSchema = z.object({
   user_id: z.string({
-    message: "User ID is required",
-    required_error: "user_id is required",
-    invalid_type_error: "user_id must be a string",
-    description: "The unique identifier (eBay username) of the user"
+    message: 'User ID is required',
+    required_error: 'user_id is required',
+    invalid_type_error: 'user_id must be a string',
+    description: 'The unique identifier (eBay username) of the user',
   }),
   feedback_type: z.string({
-    message: "Feedback type is required",
-    required_error: "feedback_type is required",
-    invalid_type_error: "feedback_type must be a string",
-    description: "Type of feedback (FEEDBACK_RECEIVED or FEEDBACK_SENT)"
+    message: 'Feedback type is required',
+    required_error: 'feedback_type is required',
+    invalid_type_error: 'feedback_type must be a string',
+    description: 'Type of feedback (FEEDBACK_RECEIVED or FEEDBACK_SENT)',
   }),
   // ... other fields
 });
@@ -115,6 +120,7 @@ For each field, provide comprehensive validation:
 - **Type Coercion**: Use `z.coerce.number()` for query parameters that need numeric conversion
 
 **Important Notes:**
+
 - eBay API query parameters are typically **strings**, not numbers
 - Do not use `z.coerce.number()` unless the API implementation explicitly requires it
 - Match field names to the API parameter names (use snake_case for consistency)
@@ -124,15 +130,17 @@ For each field, provide comprehensive validation:
 In `/Applications/Github/ebay-api-mcp-server/src/tools/index.ts`:
 
 1. Import your Zod schemas:
+
 ```typescript
 import {
   getFeedbackSchema,
   leaveFeedbackForBuyerSchema,
   // ... other schemas
-} from "../utils/communication/feedback.js";
+} from '../utils/communication/feedback.js';
 ```
 
 2. Add validation to tool cases in the `executeTool()` function:
+
 ```typescript
 case "ebay_get_feedback": {
   const validated = getFeedbackSchema.parse(args);
@@ -148,17 +156,20 @@ case "ebay_get_feedback": {
 ### 9. Verify Type Safety
 
 Run TypeScript compiler to verify:
+
 ```bash
 npx tsc --noEmit
 ```
 
 Expected warnings:
+
 - Type aliases declared but never used (these are documentation)
 - Unused reusable schemas (may be used in future schemas)
 
 ### Complete Example
 
 See `/Applications/Github/ebay-api-mcp-server/src/utils/communication/feedback.ts` for a complete reference implementation showing:
+
 - Proper OpenAPI type imports
 - Type reference documentation
 - Reusable schema components
@@ -171,33 +182,41 @@ See `/Applications/Github/ebay-api-mcp-server/src/utils/communication/feedback.t
 The following is a list of Zod schemas that need to be created. The list is based on the API implementation files in the `src/api` directory.
 
 ### Account Management
+
 - [x] `account.ts`
 
 ### Analytics and Report
+
 - [ ] `analytics.ts`
 
 ### Communication
+
 - [x] `feedback.ts`
 - [x] `message.ts`
 - [x] `negotiation.ts`
 - [x] `notification.ts`
 
 ### Listing Management
+
 - [ ] `inventory.ts`
 
 ### Listing Metadata
+
 - [ ] `metadata.ts`
 - [ ] `taxonomy.ts`
 
 ### Marketing and Promotions
+
 - [ ] `marketing.ts`
 - [ ] `recommendation.ts`
 
 ### Order Management
+
 - [x] `dispute.ts`
 - [x] `fulfillment.ts`
 
 ### Other
+
 - [x] `compliance.ts`
 - [x] `edelivery.ts`
 - [x] `identity.ts`

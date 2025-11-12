@@ -19,7 +19,7 @@ describe('Other APIs', () => {
       put: vi.fn(),
       delete: vi.fn(),
       getConfig: vi.fn(() => ({ environment: 'sandbox' })),
-      getWithFullUrl: vi.fn()
+      getWithFullUrl: vi.fn(),
     } as unknown as EbayApiClient;
   });
 
@@ -38,7 +38,7 @@ describe('Other APIs', () => {
 
       expect(client.get).toHaveBeenCalledWith('/sell/fulfillment/v1/payment_dispute_summary', {
         order_id: 'ORDER123',
-        limit: 10
+        limit: 10,
       });
     });
 
@@ -159,7 +159,7 @@ describe('Other APIs', () => {
         '/commerce/taxonomy/v1/category_tree/0/get_compatibility_property_values',
         {
           category_id: '123',
-          compatibility_property: 'Make'
+          compatibility_property: 'Make',
         }
       );
     });
@@ -190,11 +190,11 @@ describe('Other APIs', () => {
         {
           params: {
             filter: 'filter:test',
-            limit: 10
+            limit: 10,
           },
           headers: {
-            'X-EBAY-C-MARKETPLACE-ID': 'EBAY_US'
-          }
+            'X-EBAY-C-MARKETPLACE-ID': 'EBAY_US',
+          },
         }
       );
     });
@@ -213,13 +213,10 @@ describe('Other APIs', () => {
 
       await api.getListingViolations('PRODUCT_ADOPTION', undefined, 10);
 
-      expect(client.get).toHaveBeenCalledWith(
-        '/sell/compliance/v1/listing_violation',
-        {
-          compliance_type: 'PRODUCT_ADOPTION',
-          limit: 10
-        }
-      );
+      expect(client.get).toHaveBeenCalledWith('/sell/compliance/v1/listing_violation', {
+        compliance_type: 'PRODUCT_ADOPTION',
+        limit: 10,
+      });
     });
 
     it('should get listing violations summary', async () => {
@@ -228,10 +225,9 @@ describe('Other APIs', () => {
 
       await api.getListingViolationsSummary('PRODUCT_ADOPTION');
 
-      expect(client.get).toHaveBeenCalledWith(
-        '/sell/compliance/v1/listing_violation_summary',
-        { compliance_type: 'PRODUCT_ADOPTION' }
-      );
+      expect(client.get).toHaveBeenCalledWith('/sell/compliance/v1/listing_violation_summary', {
+        compliance_type: 'PRODUCT_ADOPTION',
+      });
     });
 
     it('should suppress violation', async () => {
@@ -239,10 +235,9 @@ describe('Other APIs', () => {
 
       await api.suppressViolation('VIOLATION123');
 
-      expect(client.post).toHaveBeenCalledWith(
-        '/sell/compliance/v1/suppress_violation',
-        { listing_violation_id: 'VIOLATION123' }
-      );
+      expect(client.post).toHaveBeenCalledWith('/sell/compliance/v1/suppress_violation', {
+        listing_violation_id: 'VIOLATION123',
+      });
     });
   });
 
@@ -257,7 +252,7 @@ describe('Other APIs', () => {
       const mockResponse = { reportId: 'REPORT123' };
       const infringementData = {
         itemId: 'ITEM123',
-        reportingReason: 'TRADEMARK'
+        reportingReason: 'TRADEMARK',
       };
       vi.mocked(client.post).mockResolvedValue(mockResponse);
 
@@ -277,7 +272,7 @@ describe('Other APIs', () => {
 
       expect(client.get).toHaveBeenCalledWith('/commerce/vero/v1/reported_item', {
         filter: 'filter:test',
-        limit: 10
+        limit: 10,
       });
     });
   });
@@ -299,7 +294,7 @@ describe('Other APIs', () => {
         from: 'en',
         to: 'es',
         translationContext: 'ITEM_TITLE',
-        text: ['Hello']
+        text: ['Hello'],
       });
     });
   });
@@ -316,7 +311,7 @@ describe('Other APIs', () => {
       const shippingQuoteRequest = {
         packageDetails: { weight: { value: 1, unit: 'kg' } },
         shipFrom: { country: 'US' },
-        shipTo: { country: 'CA' }
+        shipTo: { country: 'CA' },
       };
       vi.mocked(client.post).mockResolvedValue(mockResponse);
 
@@ -351,7 +346,9 @@ describe('Other APIs', () => {
 
       await api.getUser();
 
-      expect(client.getWithFullUrl).toHaveBeenCalledWith('https://apiz.sandbox.ebay.com/commerce/identity/v1/user');
+      expect(client.getWithFullUrl).toHaveBeenCalledWith(
+        'https://apiz.sandbox.ebay.com/commerce/identity/v1/user'
+      );
     });
 
     it('should handle errors when getting user', async () => {

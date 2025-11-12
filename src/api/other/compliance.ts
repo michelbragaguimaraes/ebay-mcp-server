@@ -7,16 +7,12 @@ import type { EbayApiClient } from '../client.js';
 export class ComplianceApi {
   private readonly basePath = '/sell/compliance/v1';
 
-  constructor(private client: EbayApiClient) { }
+  constructor(private client: EbayApiClient) {}
 
   /**
    * Get listing violations
    */
-  async getListingViolations(
-    complianceType?: string,
-    offset?: number,
-    limit?: number
-  ) {
+  async getListingViolations(complianceType?: string, offset?: number, limit?: number) {
     const params: Record<string, string | number> = {};
     if (complianceType) params.compliance_type = complianceType;
     if (offset) params.offset = offset;
@@ -37,9 +33,8 @@ export class ComplianceApi {
    * Suppress a violation
    */
   async suppressViolation(listingViolationId: string) {
-    return await this.client.post(
-      `${this.basePath}/suppress_violation`,
-      { listing_violation_id: listingViolationId }
-    );
+    return await this.client.post(`${this.basePath}/suppress_violation`, {
+      listing_violation_id: listingViolationId,
+    });
   }
 }

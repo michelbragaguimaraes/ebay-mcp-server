@@ -137,7 +137,7 @@ export enum MarketplaceId {
   EBAY_HALF_US = 'EBAY_HALF_US',
 
   /** eBay Motors US - Parent category for Auto Parts and Vehicles on EBAY_US */
-  EBAY_MOTORS_US = 'EBAY_MOTORS_US'
+  EBAY_MOTORS_US = 'EBAY_MOTORS_US',
 }
 
 /**
@@ -197,7 +197,7 @@ export enum Condition {
   PRE_OWNED_EXCELLENT = 'PRE_OWNED_EXCELLENT',
 
   /** Previously owned with significant visible flaws; apparel only */
-  PRE_OWNED_FAIR = 'PRE_OWNED_FAIR'
+  PRE_OWNED_FAIR = 'PRE_OWNED_FAIR',
 }
 
 /**
@@ -212,7 +212,7 @@ export enum FormatType {
   AUCTION = 'AUCTION',
 
   /** Fixed-price listing format */
-  FIXED_PRICE = 'FIXED_PRICE'
+  FIXED_PRICE = 'FIXED_PRICE',
 }
 
 /**
@@ -236,7 +236,7 @@ export enum OrderPaymentStatus {
   PARTIALLY_REFUNDED = 'PARTIALLY_REFUNDED',
 
   /** Buyer payment or seller refund is in pending state */
-  PENDING = 'PENDING'
+  PENDING = 'PENDING',
 }
 
 /**
@@ -272,7 +272,7 @@ export enum CampaignStatus {
   SCHEDULED = 'SCHEDULED',
 
   /** System-generated pause due to seller's Below Standard level */
-  SYSTEM_PAUSED = 'SYSTEM_PAUSED'
+  SYSTEM_PAUSED = 'SYSTEM_PAUSED',
 }
 
 /**
@@ -287,7 +287,7 @@ export enum RefundMethod {
   MONEY_BACK = 'MONEY_BACK',
 
   /** Refund as merchandise credit */
-  MERCHANDISE_CREDIT = 'MERCHANDISE_CREDIT'
+  MERCHANDISE_CREDIT = 'MERCHANDISE_CREDIT',
 }
 
 /**
@@ -302,7 +302,7 @@ export enum ReturnMethod {
   REPLACEMENT = 'REPLACEMENT',
 
   /** Item exchange */
-  EXCHANGE = 'EXCHANGE'
+  EXCHANGE = 'EXCHANGE',
 }
 
 /**
@@ -317,7 +317,7 @@ export enum ReturnShippingCostPayer {
   BUYER = 'BUYER',
 
   /** Seller pays for return shipping */
-  SELLER = 'SELLER'
+  SELLER = 'SELLER',
 }
 
 /**
@@ -353,7 +353,7 @@ export enum TimeDurationUnit {
   SECOND = 'SECOND',
 
   /** Millisecond */
-  MILLISECOND = 'MILLISECOND'
+  MILLISECOND = 'MILLISECOND',
 }
 
 /**
@@ -371,7 +371,7 @@ export enum ShippingCostType {
   CALCULATED = 'CALCULATED',
 
   /** Not specified */
-  NOT_SPECIFIED = 'NOT_SPECIFIED'
+  NOT_SPECIFIED = 'NOT_SPECIFIED',
 }
 
 /**
@@ -386,7 +386,7 @@ export enum ShippingOptionType {
   DOMESTIC = 'DOMESTIC',
 
   /** International shipping */
-  INTERNATIONAL = 'INTERNATIONAL'
+  INTERNATIONAL = 'INTERNATIONAL',
 }
 
 /**
@@ -401,7 +401,7 @@ export enum CategoryType {
   ALL_EXCLUDING_MOTORS_VEHICLES = 'ALL_EXCLUDING_MOTORS_VEHICLES',
 
   /** Motors vehicles category */
-  MOTORS_VEHICLES = 'MOTORS_VEHICLES'
+  MOTORS_VEHICLES = 'MOTORS_VEHICLES',
 }
 
 /**
@@ -428,7 +428,7 @@ export enum PaymentMethodType {
   CASH_ON_DELIVERY = 'CASH_ON_DELIVERY',
 
   /** Cash on pickup */
-  CASH_ON_PICKUP = 'CASH_ON_PICKUP'
+  CASH_ON_PICKUP = 'CASH_ON_PICKUP',
 }
 
 /**
@@ -446,7 +446,7 @@ export enum LineItemFulfillmentStatus {
   IN_PROGRESS = 'IN_PROGRESS',
 
   /** Not started */
-  NOT_STARTED = 'NOT_STARTED'
+  NOT_STARTED = 'NOT_STARTED',
 }
 
 /**
@@ -461,7 +461,7 @@ export enum OfferStatus {
   PUBLISHED = 'PUBLISHED',
 
   /** Offer is unpublished */
-  UNPUBLISHED = 'UNPUBLISHED'
+  UNPUBLISHED = 'UNPUBLISHED',
 }
 
 /**
@@ -482,7 +482,7 @@ export enum ListingStatus {
   ENDED = 'ENDED',
 
   /** Listing is inactive */
-  INACTIVE = 'INACTIVE'
+  INACTIVE = 'INACTIVE',
 }
 
 /**
@@ -506,7 +506,7 @@ export enum ComplianceType {
   REGULATORY = 'REGULATORY',
 
   /** Returns policy compliance */
-  RETURNS_POLICY = 'RETURNS_POLICY'
+  RETURNS_POLICY = 'RETURNS_POLICY',
 }
 
 /**
@@ -554,7 +554,7 @@ export enum LanguageCode {
   JA = 'ja',
 
   /** Korean */
-  KO = 'ko'
+  KO = 'ko',
 }
 
 /**
@@ -575,7 +575,7 @@ export enum WeightUnit {
   OUNCE = 'OUNCE',
 
   /** Gram */
-  GRAM = 'GRAM'
+  GRAM = 'GRAM',
 }
 
 /**
@@ -596,7 +596,7 @@ export enum LengthUnit {
   CENTIMETER = 'CENTIMETER',
 
   /** Meter */
-  METER = 'METER'
+  METER = 'METER',
 }
 
 /**
@@ -647,7 +647,7 @@ export enum CurrencyCode {
   THB = 'THB',
 
   /** Japanese Yen */
-  JPY = 'JPY'
+  JPY = 'JPY',
 }
 
 /**
@@ -671,7 +671,7 @@ export enum RegionType {
   WORLD_REGION = 'WORLD_REGION',
 
   /** Worldwide */
-  WORLDWIDE = 'WORLDWIDE'
+  WORLDWIDE = 'WORLDWIDE',
 }
 
 /**
@@ -686,7 +686,7 @@ export enum DepositType {
   PERCENTAGE = 'PERCENTAGE',
 
   /** Fixed amount */
-  FIXED_AMOUNT = 'FIXED_AMOUNT'
+  FIXED_AMOUNT = 'FIXED_AMOUNT',
 }
 
 /**
@@ -704,7 +704,7 @@ export enum PricingVisibility {
   PRE_CHECKOUT = 'PRE_CHECKOUT',
 
   /** Price visible during checkout */
-  DURING_CHECKOUT = 'DURING_CHECKOUT'
+  DURING_CHECKOUT = 'DURING_CHECKOUT',
 }
 
 /**
@@ -719,7 +719,7 @@ export enum LocationType {
   STORE = 'STORE',
 
   /** Warehouse or storage facility */
-  WAREHOUSE = 'WAREHOUSE'
+  WAREHOUSE = 'WAREHOUSE',
 }
 
 /**
@@ -734,7 +734,7 @@ export enum MerchantLocationStatus {
   ENABLED = 'ENABLED',
 
   /** Location is disabled */
-  DISABLED = 'DISABLED'
+  DISABLED = 'DISABLED',
 }
 
 /**
@@ -751,7 +751,7 @@ export enum DayOfWeek {
   THURSDAY = 'THURSDAY',
   FRIDAY = 'FRIDAY',
   SATURDAY = 'SATURDAY',
-  SUNDAY = 'SUNDAY'
+  SUNDAY = 'SUNDAY',
 }
 
 /**
@@ -787,7 +787,7 @@ export enum ReasonForRefund {
   MUTUALLY_AGREED = 'MUTUALLY_AGREED',
 
   /** Seller canceled the order */
-  SELLER_CANCEL = 'SELLER_CANCEL'
+  SELLER_CANCEL = 'SELLER_CANCEL',
 }
 
 /**
@@ -802,7 +802,7 @@ export enum FundingModel {
   COST_PER_SALE = 'COST_PER_SALE',
 
   /** Cost per click - pay when ad is clicked */
-  COST_PER_CLICK = 'COST_PER_CLICK'
+  COST_PER_CLICK = 'COST_PER_CLICK',
 }
 
 /**
@@ -817,7 +817,7 @@ export enum MessageReferenceType {
   LISTING = 'LISTING',
 
   /** Message references an order */
-  ORDER = 'ORDER'
+  ORDER = 'ORDER',
 }
 
 /**
@@ -835,7 +835,7 @@ export enum FeedbackRating {
   NEUTRAL = 'NEUTRAL',
 
   /** Negative feedback */
-  NEGATIVE = 'NEGATIVE'
+  NEGATIVE = 'NEGATIVE',
 }
 
 /**
@@ -850,7 +850,7 @@ export enum ReportedItemType {
   LISTING = 'LISTING',
 
   /** Image within a listing */
-  IMAGE = 'IMAGE'
+  IMAGE = 'IMAGE',
 }
 
 /**
@@ -904,7 +904,7 @@ export const EbayEnums = {
       MarketplaceId.EBAY_TW,
       MarketplaceId.EBAY_US,
       MarketplaceId.EBAY_VN,
-      MarketplaceId.EBAY_MOTORS_US
+      MarketplaceId.EBAY_MOTORS_US,
     ];
-  }
+  },
 };
