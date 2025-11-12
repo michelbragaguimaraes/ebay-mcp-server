@@ -12,11 +12,6 @@ dist/
 .env.local
 .env.*.local
 
-# OAuth tokens (sensitive)
-.ebay-tokens.json
-.ebay-mcp-tokens.json
-mcp-setup.json
-
 
 # Logs
 logs/

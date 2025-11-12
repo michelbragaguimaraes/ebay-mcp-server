@@ -57,7 +57,7 @@ A comprehensive [Model Context Protocol (MCP)](https://modelcontextprotocol.io) 
 - **140 eBay API Tools** - Comprehensive coverage of eBay Sell APIs across 8 categories
 - **Dual Transport Modes** - STDIO (local) and HTTP with OAuth 2.1 (remote multi-user)
 - **OAuth 2.0 Support** - Full user token management with automatic refresh
-- **Token Persistence** - Secure file-based storage across sessions with `.ebay-mcp-tokens.json`
+- **Simple Configuration** - All authentication managed through `.env` file only
 - **Type Safety** - Built with TypeScript, Zod validation, OpenAPI-generated types, and 33+ native enums
 - **Smart Authentication** - Automatic fallback from user tokens (10k-50k req/day) to client credentials (1k req/day)
 - **Centralized Configuration** - Single source of truth with `mcp-setup.json` and automated setup scripts
@@ -739,6 +739,16 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [eBay Developers Program](https://developer.ebay.com/) - API access and documentation
 - [Model Context Protocol](https://modelcontextprotocol.io/) - MCP specification and SDK
 - [Anthropic](https://anthropic.com/) - Claude and MCP support
+
+---
+
+## 👥 Contributors
+
+Thanks to all the amazing people who have contributed to this project!
+
+<a href="https://github.com/YosefHayim/ebay-api-mcp-server/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=YosefHayim/ebay-api-mcp-server" alt="Contributors" />
+</a>
 
 ---
 
