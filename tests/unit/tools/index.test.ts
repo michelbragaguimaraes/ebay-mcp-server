@@ -210,7 +210,7 @@ describe('Tools Layer', () => {
       setUserTokens: vi.fn(),
       getTokenInfo: vi.fn().mockReturnValue({
         hasUserToken: false,
-        hasClientToken: true,
+        hasAppAccessToken: true,
         accessTokenExpired: false,
         refreshTokenExpired: false
       }),
@@ -340,7 +340,7 @@ describe('Tools Layer', () => {
       vi.mocked(mockApi.setUserTokens).mockResolvedValue();
       vi.mocked(mockApi.getTokenInfo).mockReturnValue({
         hasUserToken: true,
-        hasClientToken: false,
+        hasAppAccessToken: false,
         accessTokenExpired: false,
         refreshTokenExpired: false
       });
@@ -368,7 +368,7 @@ describe('Tools Layer', () => {
       const result = await executeTool(mockApi, 'ebay_get_token_status', {});
 
       expect(result).toHaveProperty('hasUserToken');
-      expect(result).toHaveProperty('hasClientToken');
+      expect(result).toHaveProperty('hasAppAccessToken');
       expect(result).toHaveProperty('authenticated');
       expect(result).toHaveProperty('currentTokenType');
     });

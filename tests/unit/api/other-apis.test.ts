@@ -17,7 +17,9 @@ describe('Other APIs', () => {
       get: vi.fn(),
       post: vi.fn(),
       put: vi.fn(),
-      delete: vi.fn()
+      delete: vi.fn(),
+      getConfig: vi.fn(() => ({ environment: 'sandbox' })),
+      getWithFullUrl: vi.fn()
     } as unknown as EbayApiClient;
   });
 
@@ -306,15 +308,15 @@ describe('Other APIs', () => {
 
     it('should get user identity', async () => {
       const mockResponse = { userId: 'USER123' };
-      vi.mocked(client.get).mockResolvedValue(mockResponse);
+      vi.mocked(client.getWithFullUrl).mockResolvedValue(mockResponse);
 
       await api.getUser();
 
-      expect(client.get).toHaveBeenCalledWith('/commerce/identity/v1/user');
+      expect(client.getWithFullUrl).toHaveBeenCalledWith('https://apiz.sandbox.ebay.com/commerce/identity/v1/user');
     });
 
     it('should handle errors when getting user', async () => {
-      vi.mocked(client.get).mockRejectedValue(new Error('Unauthorized'));
+      vi.mocked(client.getWithFullUrl).mockRejectedValue(new Error('Unauthorized'));
 
       await expect(api.getUser()).rejects.toThrow('Unauthorized');
     });

@@ -53,8 +53,8 @@ describe("TokenStorage", () => {
       const result = await TokenStorage.loadTokens();
 
       expect(result).toEqual(mockTokens);
-      expect(result?.accessToken).toBe(mockTokens.accessToken);
-      expect(result?.refreshToken).toBe(mockTokens.refreshToken);
+      expect(result?.userAccessToken).toBe(mockTokens.userAccessToken);
+      expect(result?.userRefreshToken).toBe(mockTokens.userRefreshToken);
     });
 
     it("should return null when token file does not exist", async () => {
@@ -72,12 +72,12 @@ describe("TokenStorage", () => {
       expect(result).toBeNull();
     });
 
-    it("should return null when tokens are missing accessToken", async () => {
+    it("should return null when tokens are missing userAccessToken", async () => {
       const invalidTokens = {
-        refreshToken: "refresh_token",
+        userRefreshToken: "refresh_token",
         tokenType: "Bearer",
-        accessTokenExpiry: Date.now() + 7200000,
-        refreshTokenExpiry: Date.now() + 47304000000,
+        userAccessTokenExpiry: Date.now() + 7200000,
+        userRefreshTokenExpiry: Date.now() + 47304000000,
       };
       const tokenPath = TokenStorage.getTokenFilePath();
       await fs.writeFile(tokenPath, JSON.stringify(invalidTokens), "utf-8");
@@ -87,12 +87,12 @@ describe("TokenStorage", () => {
       expect(result).toBeNull();
     });
 
-    it("should return null when tokens are missing refreshToken", async () => {
+    it("should return null when tokens are missing userRefreshToken", async () => {
       const invalidTokens = {
-        accessToken: "access_token",
+        userAccessToken: "access_token",
         tokenType: "Bearer",
-        accessTokenExpiry: Date.now() + 7200000,
-        refreshTokenExpiry: Date.now() + 47304000000,
+        userAccessTokenExpiry: Date.now() + 7200000,
+        userRefreshTokenExpiry: Date.now() + 47304000000,
       };
       const tokenPath = TokenStorage.getTokenFilePath();
       await fs.writeFile(tokenPath, JSON.stringify(invalidTokens), "utf-8");
@@ -120,8 +120,8 @@ describe("TokenStorage", () => {
     });
 
     it("should overwrite existing token file", async () => {
-      const firstTokens = createMockTokens({ accessToken: "first_token" });
-      const secondTokens = createMockTokens({ accessToken: "second_token" });
+      const firstTokens = createMockTokens({ userAccessToken: "first_token" });
+      const secondTokens = createMockTokens({ userAccessToken: "second_token" });
 
       await TokenStorage.saveTokens(firstTokens);
       await TokenStorage.saveTokens(secondTokens);
@@ -130,7 +130,7 @@ describe("TokenStorage", () => {
       const savedData = await fs.readFile(tokenPath, "utf-8");
       const savedTokens = JSON.parse(savedData) as StoredTokenData;
 
-      expect(savedTokens.accessToken).toBe("second_token");
+      expect(savedTokens.userAccessToken).toBe("second_token");
     });
 
     it("should throw error when unable to write file", async () => {
@@ -160,23 +160,23 @@ describe("TokenStorage", () => {
     });
   });
 
-  describe("isAccessTokenExpired", () => {
+  describe("isUserAccessTokenExpired", () => {
     it("should return false when access token is not expired", () => {
       const mockTokens = createMockTokens({
-        accessTokenExpiry: Date.now() + 3600000, // 1 hour from now
+        userAccessTokenExpiry: Date.now() + 3600000, // 1 hour from now
       });
 
-      const result = TokenStorage.isAccessTokenExpired(mockTokens);
+      const result = TokenStorage.isUserAccessTokenExpired(mockTokens);
 
       expect(result).toBe(false);
     });
 
     it("should return true when access token is expired", () => {
       const mockTokens = createMockTokens({
-        accessTokenExpiry: Date.now() - 1000, // 1 second ago
+        userAccessTokenExpiry: Date.now() - 1000, // 1 second ago
       });
 
-      const result = TokenStorage.isAccessTokenExpired(mockTokens);
+      const result = TokenStorage.isUserAccessTokenExpired(mockTokens);
 
       expect(result).toBe(true);
     });
@@ -184,32 +184,32 @@ describe("TokenStorage", () => {
     it("should return true when access token expires at current time", () => {
       const now = Date.now();
       const mockTokens = createMockTokens({
-        accessTokenExpiry: now,
+        userAccessTokenExpiry: now,
       });
 
-      const result = TokenStorage.isAccessTokenExpired(mockTokens);
+      const result = TokenStorage.isUserAccessTokenExpired(mockTokens);
 
       expect(result).toBe(true);
     });
   });
 
-  describe("isRefreshTokenExpired", () => {
+  describe("isUserRefreshTokenExpired", () => {
     it("should return false when refresh token is not expired", () => {
       const mockTokens = createMockTokens({
-        refreshTokenExpiry: Date.now() + 86400000, // 1 day from now
+        userRefreshTokenExpiry: Date.now() + 86400000, // 1 day from now
       });
 
-      const result = TokenStorage.isRefreshTokenExpired(mockTokens);
+      const result = TokenStorage.isUserRefreshTokenExpired(mockTokens);
 
       expect(result).toBe(false);
     });
 
     it("should return true when refresh token is expired", () => {
       const mockTokens = createMockTokens({
-        refreshTokenExpiry: Date.now() - 1000, // 1 second ago
+        userRefreshTokenExpiry: Date.now() - 1000, // 1 second ago
       });
 
-      const result = TokenStorage.isRefreshTokenExpired(mockTokens);
+      const result = TokenStorage.isUserRefreshTokenExpired(mockTokens);
 
       expect(result).toBe(true);
     });
@@ -217,10 +217,10 @@ describe("TokenStorage", () => {
     it("should return true when refresh token expires at current time", () => {
       const now = Date.now();
       const mockTokens = createMockTokens({
-        refreshTokenExpiry: now,
+        userRefreshTokenExpiry: now,
       });
 
-      const result = TokenStorage.isRefreshTokenExpired(mockTokens);
+      const result = TokenStorage.isUserRefreshTokenExpired(mockTokens);
 
       expect(result).toBe(true);
     });
@@ -262,28 +262,28 @@ describe("TokenStorage", () => {
 
     it("should handle token expiry checks correctly", () => {
       const validTokens = createMockTokens({
-        accessTokenExpiry: Date.now() + 3600000,
-        refreshTokenExpiry: Date.now() + 86400000,
+        userAccessTokenExpiry: Date.now() + 3600000,
+        userRefreshTokenExpiry: Date.now() + 86400000,
       });
 
-      expect(TokenStorage.isAccessTokenExpired(validTokens)).toBe(false);
-      expect(TokenStorage.isRefreshTokenExpired(validTokens)).toBe(false);
+      expect(TokenStorage.isUserAccessTokenExpired(validTokens)).toBe(false);
+      expect(TokenStorage.isUserRefreshTokenExpired(validTokens)).toBe(false);
 
       const expiredAccessToken = createMockTokens({
-        accessTokenExpiry: Date.now() - 1000,
-        refreshTokenExpiry: Date.now() + 86400000,
+        userAccessTokenExpiry: Date.now() - 1000,
+        userRefreshTokenExpiry: Date.now() + 86400000,
       });
 
-      expect(TokenStorage.isAccessTokenExpired(expiredAccessToken)).toBe(true);
-      expect(TokenStorage.isRefreshTokenExpired(expiredAccessToken)).toBe(false);
+      expect(TokenStorage.isUserAccessTokenExpired(expiredAccessToken)).toBe(true);
+      expect(TokenStorage.isUserRefreshTokenExpired(expiredAccessToken)).toBe(false);
 
       const fullyExpired = createMockTokens({
-        accessTokenExpiry: Date.now() - 1000,
-        refreshTokenExpiry: Date.now() - 1000,
+        userAccessTokenExpiry: Date.now() - 1000,
+        userRefreshTokenExpiry: Date.now() - 1000,
       });
 
-      expect(TokenStorage.isAccessTokenExpired(fullyExpired)).toBe(true);
-      expect(TokenStorage.isRefreshTokenExpired(fullyExpired)).toBe(true);
+      expect(TokenStorage.isUserAccessTokenExpired(fullyExpired)).toBe(true);
+      expect(TokenStorage.isUserRefreshTokenExpired(fullyExpired)).toBe(true);
     });
   });
 });

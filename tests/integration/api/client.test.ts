@@ -16,8 +16,8 @@ const mockTokenStorage = vi.hoisted(() => ({
   loadTokens: vi.fn(),
   saveTokens: vi.fn(),
   clearTokens: vi.fn(),
-  isAccessTokenExpired: vi.fn(),
-  isRefreshTokenExpired: vi.fn(),
+  isUserAccessTokenExpired: vi.fn(),
+  isUserRefreshTokenExpired: vi.fn(),
 }));
 
 vi.mock("../../../src/auth/token-storage.js", () => ({
@@ -43,7 +43,7 @@ describe("EbayApiClient Integration Tests", () => {
     const mockTokens = createMockTokens();
     mockTokenStorage.hasTokens.mockResolvedValue(true);
     mockTokenStorage.loadTokens.mockResolvedValue(mockTokens);
-    mockTokenStorage.isAccessTokenExpired.mockReturnValue(false);
+    mockTokenStorage.isUserAccessTokenExpired.mockReturnValue(false);
 
     apiClient = new EbayApiClient(config);
     await apiClient.initialize();
@@ -258,15 +258,15 @@ describe("EbayApiClient Integration Tests", () => {
     it("should refresh token when expired", async () => {
       const expiredTokens = createMockTokens();
       mockTokenStorage.loadTokens.mockResolvedValue(expiredTokens);
-      mockTokenStorage.isAccessTokenExpired.mockReturnValue(true);
-      mockTokenStorage.isRefreshTokenExpired.mockReturnValue(false);
+      mockTokenStorage.isUserAccessTokenExpired.mockReturnValue(true);
+      mockTokenStorage.isUserRefreshTokenExpired.mockReturnValue(false);
 
       // Mock refresh token call
       mockOAuthTokenEndpoint("sandbox", {
         access_token: "new_access_token",
         token_type: "Bearer",
         expires_in: 7200,
-        refresh_token: expiredTokens.refreshToken,
+        refresh_token: expiredTokens.userRefreshToken,
         refresh_token_expires_in: 47304000,
       });
 
@@ -377,7 +377,7 @@ describe("EbayApiClient Integration Tests", () => {
       const mockTokens = createMockTokens();
       mockTokenStorage.hasTokens.mockResolvedValue(true);
       mockTokenStorage.loadTokens.mockResolvedValue(mockTokens);
-      mockTokenStorage.isAccessTokenExpired.mockReturnValue(false);
+      mockTokenStorage.isUserAccessTokenExpired.mockReturnValue(false);
 
       await sandboxClient.initialize();
 
@@ -400,7 +400,7 @@ describe("EbayApiClient Integration Tests", () => {
       const mockTokens = createMockTokens();
       mockTokenStorage.hasTokens.mockResolvedValue(true);
       mockTokenStorage.loadTokens.mockResolvedValue(mockTokens);
-      mockTokenStorage.isAccessTokenExpired.mockReturnValue(false);
+      mockTokenStorage.isUserAccessTokenExpired.mockReturnValue(false);
 
       await prodClient.initialize();
 
