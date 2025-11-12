@@ -14,10 +14,15 @@
 - [✨ Features](#-features)
 - [📋 Prerequisites](#-prerequisites)
 - [📦 Installation](#-installation)
+  - [⚡ Quick Install (Automated)](#-quick-install-recommended)
+  - [Alternative Methods](#alternative-installation-methods)
 - [🚀 Quick Start](#-quick-start)
+  - [Automated Setup](#automated-setup-recommended)
+  - [Manual Setup](#manual-setup)
 - [⚙️ Configuration](#️-configuration)
 - [📖 Usage](#-usage)
   - [STDIO Mode (Local)](#stdio-mode-local)
+  - [Manual Configuration](#manual-configuration)
   - [HTTP Mode with OAuth](#http-mode-with-oauth)
   - [Authentication](#authentication)
 - [🛠️ Available Tools](#️-available-tools)
@@ -74,9 +79,39 @@
 
 ## 📦 Installation
 
-This project supports both **npm** and **pnpm** package managers. Choose the one you prefer.
+### ⚡ Quick Install (Recommended)
 
-### Option 1: Global Installation
+**The fastest way to get started is using our automated setup script:**
+
+```bash
+# Clone the repository
+git clone https://github.com/YosefHayim/ebay-api-mcp-server.git
+cd ebay-api-mcp-server
+
+# Install and build
+npm install && npm run build
+
+# Run automated setup (configures Claude, Gemini, ChatGPT)
+./scripts/setup-mcp-clients.sh
+```
+
+**What the script does:**
+- 📦 Verifies your build is ready
+- 🔑 Prompts for eBay API credentials
+- 🤖 Auto-detects and configures all installed AI clients
+- ✅ Creates proper config files with absolute paths
+- 🎯 Works on macOS, Linux, and Windows (WSL)
+
+**Skip to [Automated Setup](#automated-setup-recommended) for detailed instructions.**
+
+---
+
+### Alternative Installation Methods
+
+<details>
+<summary><b>Global Installation via npm/pnpm</b></summary>
+
+This project supports both **npm** and **pnpm** package managers.
 
 #### Using npm (Recommended for most users)
 
@@ -90,7 +125,12 @@ npm install -g ebay-api-mcp-server
 pnpm add -g ebay-api-mcp-server
 ```
 
-### Option 2: From Source
+**Note:** After global installation, you'll still need to configure your AI client manually. See [Manual Configuration](#manual-configuration).
+
+</details>
+
+<details>
+<summary><b>From Source (Manual Build)</b></summary>
 
 #### Using npm
 
@@ -120,16 +160,59 @@ pnpm install
 pnpm run build
 ```
 
-**Note:** All npm commands in this documentation can be replaced with pnpm commands:
+**Package Manager Equivalents:**
 - `npm install` → `pnpm install`
 - `npm run <script>` → `pnpm run <script>` or `pnpm <script>`
 - `npm test` → `pnpm test`
+
+</details>
 
 ---
 
 ## 🚀 Quick Start
 
-### 1. Get eBay API Credentials
+### Automated Setup (Recommended)
+
+**We provide an automated setup script that configures the MCP server for all supported clients:**
+
+```bash
+# Clone or install the package
+git clone https://github.com/YosefHayim/ebay-api-mcp-server.git
+cd ebay-api-mcp-server
+
+# Install dependencies and build
+npm install
+npm run build
+
+# Run the automated setup script
+./scripts/setup-mcp-clients.sh
+```
+
+The script will:
+- ✅ Prompt for your eBay API credentials
+- ✅ Auto-detect and configure **Claude Desktop** (if installed)
+- ✅ Auto-detect and configure **Gemini CLI** (if installed)
+- ✅ Auto-detect and configure **ChatGPT Desktop** (if installed)
+- ✅ Create proper configuration files with correct paths
+- ✅ Validate your build and environment
+
+**Supported Platforms:**
+- **macOS** - Full support for all clients
+- **Linux** - Full support for all clients
+- **Windows** - Support via WSL or manual configuration
+
+**After running the script:**
+1. Restart your AI client (Claude Desktop, Gemini CLI, or ChatGPT Desktop)
+2. The eBay MCP server will be available automatically
+3. Use `ebay_get_token_status` to verify authentication
+
+---
+
+### Manual Setup
+
+If you prefer manual configuration or the automated script doesn't work for your setup:
+
+#### 1. Get eBay API Credentials
 
 1. Visit [eBay Developer Portal](https://developer.ebay.com/)
 2. Create an application to obtain:
@@ -137,17 +220,21 @@ pnpm run build
    - Client Secret
 3. Choose environment: **Sandbox** (testing) or **Production**
 
-### 2. Configure Environment
+#### 2. Build the Project
 
-Create a `.env` file in the project root:
+```bash
+# Install dependencies
+npm install
 
-```env
-EBAY_CLIENT_ID=your_client_id_here
-EBAY_CLIENT_SECRET=your_client_secret_here
-EBAY_ENVIRONMENT=sandbox  # or 'production'
+# Build TypeScript to JavaScript
+npm run build
 ```
 
-### 3. Run the Server
+#### 3. Configure Your MCP Client
+
+See the [Manual Configuration](#manual-configuration) section below for client-specific instructions.
+
+#### 4. Run the Server (Development/Testing)
 
 #### STDIO Mode (Local Desktop)
 
@@ -235,11 +322,19 @@ For development, you can manually configure tokens without using the `ebay_set_u
 
 ### STDIO Mode (Local)
 
+**🎯 Recommended: Use the [automated setup script](#automated-setup-recommended) instead of manual configuration.**
+
+If you need to manually configure your MCP client, follow the instructions below:
+
+<details>
+<summary><b>Manual Configuration</b></summary>
+
 #### With Claude Desktop
 
 1. Locate your Claude Desktop config file:
    - **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
    - **Windows**: `%APPDATA%/Claude/claude_desktop_config.json`
+   - **Linux**: `~/.config/Claude/claude_desktop_config.json`
 
 2. Add server configuration:
 
@@ -248,7 +343,7 @@ For development, you can manually configure tokens without using the `ebay_set_u
   "mcpServers": {
     "ebay": {
       "command": "node",
-      "args": ["/path/to/ebay-api-mcp-server/build/index.js"],
+      "args": ["/absolute/path/to/ebay-api-mcp-server/build/index.js"],
       "env": {
         "EBAY_CLIENT_ID": "your_client_id",
         "EBAY_CLIENT_SECRET": "your_client_secret",
@@ -258,6 +353,8 @@ For development, you can manually configure tokens without using the `ebay_set_u
   }
 }
 ```
+
+**Important:** Use the absolute path to `build/index.js`, not a relative path.
 
 3. Restart Claude Desktop
 
@@ -270,7 +367,7 @@ For development, you can manually configure tokens without using the `ebay_set_u
   "mcpServers": {
     "ebay": {
       "command": "node",
-      "args": ["/path/to/ebay-api-mcp-server/build/index.js"],
+      "args": ["/absolute/path/to/ebay-api-mcp-server/build/index.js"],
       "env": {
         "EBAY_CLIENT_ID": "your_client_id",
         "EBAY_CLIENT_SECRET": "your_client_secret",
@@ -281,7 +378,42 @@ For development, you can manually configure tokens without using the `ebay_set_u
 }
 ```
 
-2. Restart Gemini CLI or run `/mcp refresh`
+**Important:** Use the absolute path to `build/index.js`, not a relative path.
+
+2. Restart Gemini CLI or run `gemini mcp refresh`
+
+#### With ChatGPT Desktop
+
+1. Locate your ChatGPT Desktop config file:
+   - **macOS**: `~/Library/Application Support/ChatGPT/mcp_config.json`
+   - **Windows**: `%APPDATA%/ChatGPT/mcp_config.json`
+   - **Linux**: `~/.config/ChatGPT/mcp_config.json`
+
+2. Add server configuration:
+
+```json
+{
+  "mcpServers": {
+    "ebay": {
+      "command": "node",
+      "args": ["/absolute/path/to/ebay-api-mcp-server/build/index.js"],
+      "env": {
+        "EBAY_CLIENT_ID": "your_client_id",
+        "EBAY_CLIENT_SECRET": "your_client_secret",
+        "EBAY_ENVIRONMENT": "sandbox"
+      }
+    }
+  }
+}
+```
+
+**Important:** Use the absolute path to `build/index.js`, not a relative path.
+
+**Note:** ChatGPT Desktop MCP support may vary. Check ChatGPT documentation for current MCP compatibility.
+
+3. Restart ChatGPT Desktop
+
+</details>
 
 ### HTTP Mode with OAuth
 
