@@ -455,7 +455,7 @@ nano mcp-setup.json
 **Step 2** (Edit `mcp-setup.json`):
 - 🔑 Add your eBay credentials (clientId, clientSecret, environment)
 - 🎟️ Optionally add user tokens (accessToken, refreshToken)
-- ✅ Enable/disable MCP clients (Claude, Cline, Continue, Zed)
+- ✅ Enable/disable MCP clients (Claude, Gemini, ChatGPT)
 
 **Step 3** (`setup-mcp-clients.sh`):
 - ✅ Reads configuration from `mcp-setup.json`
@@ -469,7 +469,7 @@ nano mcp-setup.json
 - ✅ Automatic token file generation with expiry times
 - ✅ Centralized credential management
 - ✅ Easy to update and maintain
-- ✅ Supports Claude Desktop, Cline, Continue, and Zed
+- ✅ Supports Claude Desktop, Gemini, and ChatGPT
 
 **Example mcp-setup.json:**
 ```json

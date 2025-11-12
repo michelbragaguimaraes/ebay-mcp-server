@@ -6,7 +6,7 @@
       "clientId": "YOUR_EBAY_CLIENT_ID",
       "clientSecret": "YOUR_EBAY_CLIENT_SECRET",
       "environment": "sandbox",
-      "redirectUri": "https://your-app.com/callback"
+      "redirectUri": "RuName (eBay Redirect URL name)"
     },
     "tokens": {
       "accessToken": "YOUR_USER_ACCESS_TOKEN_OPTIONAL",
@@ -23,17 +23,13 @@
         "enabled": true,
         "configPath": "~/Library/Application Support/Claude/claude_desktop_config.json"
       },
-      "cline": {
+      "gemini": {
         "enabled": false,
-        "configPath": "~/.config/cline/mcp_settings.json"
+        "configPath": "~/.config/gemini/config.json"
       },
-      "continue": {
+      "chatgpt": {
         "enabled": false,
-        "configPath": "~/.continue/config.json"
-      },
-      "zed": {
-        "enabled": false,
-        "configPath": "~/.config/zed/settings.json"
+        "configPath": "~/.config/chatgpt/config.json"
       }
     }
   },

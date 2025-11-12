@@ -6,9 +6,8 @@
 # This script reads the centralized mcp-setup.json configuration file and
 # automatically generates MCP client configurations for:
 #   - Claude Desktop (macOS/Windows/Linux)
-#   - Cline (VS Code extension)
-#   - Continue (VS Code extension)
-#   - Zed (text editor)
+#   - Gemini
+#   - ChatGPT
 #
 # Usage:
 #   ./scripts/setup-mcp-clients.sh
@@ -281,18 +280,18 @@ configure_claude() {
     return 0
 }
 
-# Configure Cline
-configure_cline() {
-    local enabled=$(jq -r '.mcpServer.clients.cline.enabled' "$SETUP_FILE")
+# Configure Gemini
+configure_gemini() {
+    local enabled=$(jq -r '.mcpServer.clients.gemini.enabled' "$SETUP_FILE")
 
     if [ "$enabled" != "true" ]; then
-        print_info "Cline: Disabled in configuration (skipping)"
+        print_info "Gemini: Disabled in configuration (skipping)"
         return 0
     fi
 
-    print_header "Configuring Cline"
+    print_header "Configuring Gemini"
 
-    local config_path=$(jq -r '.mcpServer.clients.cline.configPath' "$SETUP_FILE")
+    local config_path=$(jq -r '.mcpServer.clients.gemini.configPath' "$SETUP_FILE")
     config_path=$(expand_path "$config_path")
 
     local config_dir=$(dirname "$config_path")
@@ -318,25 +317,25 @@ configure_cline() {
     jq --argjson server "$server_config" '.mcpServers.ebay = $server' "$config_path" > "$temp_file"
     mv "$temp_file" "$config_path"
 
-    print_success "Cline configured successfully"
+    print_success "Gemini configured successfully"
     print_info "Config file: $config_path"
-    print_warning "Restart VS Code to apply changes"
+    print_warning "Restart Gemini to apply changes"
 
     return 0
 }
 
-# Configure Continue
-configure_continue() {
-    local enabled=$(jq -r '.mcpServer.clients.continue.enabled' "$SETUP_FILE")
+# Configure ChatGPT
+configure_chatgpt() {
+    local enabled=$(jq -r '.mcpServer.clients.chatgpt.enabled' "$SETUP_FILE")
 
     if [ "$enabled" != "true" ]; then
-        print_info "Continue: Disabled in configuration (skipping)"
+        print_info "ChatGPT: Disabled in configuration (skipping)"
         return 0
     fi
 
-    print_header "Configuring Continue"
+    print_header "Configuring ChatGPT"
 
-    local config_path=$(jq -r '.mcpServer.clients.continue.configPath' "$SETUP_FILE")
+    local config_path=$(jq -r '.mcpServer.clients.chatgpt.configPath' "$SETUP_FILE")
     config_path=$(expand_path "$config_path")
 
     local config_dir=$(dirname "$config_path")
@@ -362,73 +361,9 @@ configure_continue() {
     jq --argjson server "$server_config" '.mcpServers.ebay = $server' "$config_path" > "$temp_file"
     mv "$temp_file" "$config_path"
 
-    print_success "Continue configured successfully"
+    print_success "ChatGPT configured successfully"
     print_info "Config file: $config_path"
-    print_warning "Restart VS Code to apply changes"
-
-    return 0
-}
-
-# Configure Zed
-configure_zed() {
-    local enabled=$(jq -r '.mcpServer.clients.zed.enabled' "$SETUP_FILE")
-
-    if [ "$enabled" != "true" ]; then
-        print_info "Zed: Disabled in configuration (skipping)"
-        return 0
-    fi
-
-    print_header "Configuring Zed"
-
-    local config_path=$(jq -r '.mcpServer.clients.zed.configPath' "$SETUP_FILE")
-    config_path=$(expand_path "$config_path")
-
-    local config_dir=$(dirname "$config_path")
-
-    # Create config directory if it doesn't exist
-    if [ ! -d "$config_dir" ]; then
-        mkdir -p "$config_dir"
-        print_success "Created directory: $config_dir"
-    fi
-
-    # Zed uses different config structure (context_servers instead of mcpServers)
-    if [ ! -f "$config_path" ]; then
-        echo '{"context_servers":{}}' > "$config_path"
-    else
-        backup_config "$config_path"
-    fi
-
-    # Build server config (Zed format)
-    local server_config=$(jq -n \
-        --arg buildPath "$BUILD_PATH" \
-        --arg clientId "$EBAY_CLIENT_ID" \
-        --arg clientSecret "$EBAY_CLIENT_SECRET" \
-        --arg environment "$EBAY_ENVIRONMENT" \
-        '{
-            command: {
-                path: "node",
-                args: [$buildPath],
-                env: {
-                    EBAY_CLIENT_ID: $clientId,
-                    EBAY_CLIENT_SECRET: $clientSecret,
-                    EBAY_ENVIRONMENT: $environment
-                }
-            }
-        }')
-
-    # Add optional redirect URI
-    if [ -n "$EBAY_REDIRECT_URI" ] && [ "$EBAY_REDIRECT_URI" != "null" ] && [ "$EBAY_REDIRECT_URI" != "https://your-app.com/callback" ]; then
-        server_config=$(echo "$server_config" | jq --arg uri "$EBAY_REDIRECT_URI" '.command.env.EBAY_REDIRECT_URI = $uri')
-    fi
-
-    # Update config file
-    local temp_file=$(mktemp)
-    jq --argjson server "$server_config" '.context_servers.ebay = $server' "$config_path" > "$temp_file"
-    mv "$temp_file" "$config_path"
-
-    print_success "Zed configured successfully"
-    print_info "Config file: $config_path"
-    print_warning "Restart Zed to apply changes"
+    print_warning "Restart ChatGPT to apply changes"
 
     return 0
 }
@@ -459,17 +394,12 @@ main() {
     fi
     echo ""
 
-    if configure_cline; then
+    if configure_gemini; then
         ((CONFIGURED_COUNT++))
     fi
     echo ""
 
-    if configure_continue; then
-        ((CONFIGURED_COUNT++))
-    fi
-    echo ""
-
-    if configure_zed; then
+    if configure_chatgpt; then
         ((CONFIGURED_COUNT++))
     fi
 

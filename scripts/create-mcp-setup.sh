@@ -19,7 +19,7 @@
 #
 # Benefits:
 #   - Single source of truth for all eBay credentials
-#   - Auto-generates MCP client configs for Claude, Cline, Continue, Zed
+#   - Auto-generates MCP client configs for Claude, Gemini, ChatGPT
 #   - Supports both manual token file and MCP client configuration workflows
 #   - Automatic token refresh when access token expires
 ###############################################################################
