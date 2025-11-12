@@ -1,22 +1,63 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # generate-types.sh
 # Automatically generates TypeScript types from OpenAPI specifications
 # Maps docs folder structure to src/types output structure
+# Cross-platform compatible: Windows (Git Bash/WSL), macOS, Linux
 
 set -e  # Exit on error
+set -u  # Exit on undefined variable
+set -o pipefail  # Exit on pipe failure
 
-# Colors for output
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-BLUE='\033[0;34m'
-NC='\033[0m' # No Color
+# Detect platform
+detect_platform() {
+    case "$(uname -s)" in
+        Linux*)     echo "linux" ;;
+        Darwin*)    echo "macos" ;;
+        CYGWIN*|MINGW*|MSYS*) echo "windows" ;;
+        *)          echo "unknown" ;;
+    esac
+}
 
-# Base directories
-DOCS_DIR="docs"
-TYPES_DIR="src/types"
+PLATFORM=$(detect_platform)
+
+# Colors for output (with fallback for Windows)
+if [ "$PLATFORM" = "windows" ] || [ -z "${TERM:-}" ] || [ "$TERM" = "dumb" ]; then
+    # No colors on Windows CMD or unsupported terminals
+    RED=''
+    GREEN=''
+    YELLOW=''
+    BLUE=''
+    NC=''
+else
+    RED='\033[0;31m'
+    GREEN='\033[0;32m'
+    YELLOW='\033[1;33m'
+    BLUE='\033[0;34m'
+    NC='\033[0m'
+fi
+
+# Get script directory (cross-platform)
+get_script_dir() {
+    local source="${BASH_SOURCE[0]:-$0}"
+    while [ -L "$source" ]; do
+        local dir="$(cd -P "$(dirname "$source")" && pwd)"
+        source="$(readlink "$source")"
+        [[ $source != /* ]] && source="$dir/$source"
+    done
+    echo "$(cd -P "$(dirname "$source")" && pwd)"
+}
+
+SCRIPT_DIR="$(get_script_dir)"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+
+# Base directories (use absolute paths)
+DOCS_DIR="$PROJECT_ROOT/docs"
+TYPES_DIR="$PROJECT_ROOT/src/types"
 OPENAPI_SCHEMAS_DIR="${TYPES_DIR}"
+
+# Change to project root
+cd "$PROJECT_ROOT"
 
 # Ensure we're in the project root
 if [ ! -f "package.json" ]; then

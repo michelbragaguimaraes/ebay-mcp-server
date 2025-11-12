@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 ###############################################################################
 # eBay MCP Client Auto-Configuration Script
@@ -8,6 +8,8 @@
 #   - Claude Desktop (macOS/Windows/Linux)
 #   - Gemini
 #   - ChatGPT
+#
+# Cross-platform compatible: Windows (Git Bash/WSL), macOS, Linux
 #
 # Usage:
 #   ./scripts/setup-mcp-clients.sh
@@ -27,18 +29,52 @@
 ###############################################################################
 
 set -e
+set -u
+set -o pipefail
 
-# Colors for output
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-BLUE='\033[0;34m'
-MAGENTA='\033[0;35m'
-CYAN='\033[0;36m'
-NC='\033[0m' # No Color
+# Detect platform
+detect_platform() {
+    case "$(uname -s)" in
+        Linux*)     echo "linux" ;;
+        Darwin*)    echo "macos" ;;
+        CYGWIN*|MINGW*|MSYS*) echo "windows" ;;
+        *)          echo "unknown" ;;
+    esac
+}
 
-# Get script directory and project root
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PLATFORM=$(detect_platform)
+
+# Colors for output (with fallback for Windows)
+if [ "$PLATFORM" = "windows" ] || [ -z "${TERM:-}" ] || [ "$TERM" = "dumb" ]; then
+    RED=''
+    GREEN=''
+    YELLOW=''
+    BLUE=''
+    MAGENTA=''
+    CYAN=''
+    NC=''
+else
+    RED='\033[0;31m'
+    GREEN='\033[0;32m'
+    YELLOW='\033[1;33m'
+    BLUE='\033[0;34m'
+    MAGENTA='\033[0;35m'
+    CYAN='\033[0;36m'
+    NC='\033[0m'
+fi
+
+# Get script directory (cross-platform)
+get_script_dir() {
+    local source="${BASH_SOURCE[0]:-$0}"
+    while [ -L "$source" ]; do
+        local dir="$(cd -P "$(dirname "$source")" && pwd)"
+        source="$(readlink "$source")"
+        [[ $source != /* ]] && source="$dir/$source"
+    done
+    echo "$(cd -P "$(dirname "$source")" && pwd)"
+}
+
+SCRIPT_DIR="$(get_script_dir)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 SETUP_FILE="$PROJECT_ROOT/mcp-setup.json"
 TOKEN_FILE="$PROJECT_ROOT/.ebay-mcp-tokens.json"
@@ -164,6 +200,20 @@ read_config() {
     print_info "Build path: $BUILD_PATH"
 }
 
+# Get current timestamp in milliseconds (cross-platform)
+get_timestamp_ms() {
+    if command -v python3 >/dev/null 2>&1; then
+        python3 -c 'import time; print(int(time.time() * 1000))'
+    elif command -v python >/dev/null 2>&1; then
+        python -c 'import time; print(int(time.time() * 1000))'
+    elif command -v node >/dev/null 2>&1; then
+        node -e 'console.log(Date.now())'
+    else
+        # Fallback to bash (may have precision issues)
+        echo $(($(date +%s) * 1000))
+    fi
+}
+
 # Create .ebay-mcp-tokens.json if tokens are provided
 create_token_file() {
     if [ -n "$ACCESS_TOKEN" ] && [ "$ACCESS_TOKEN" != "YOUR_USER_ACCESS_TOKEN_OPTIONAL" ] && [ "$ACCESS_TOKEN" != "null" ]; then
@@ -175,9 +225,9 @@ create_token_file() {
         fi
 
         # Calculate expiry times (access: 2 hours, refresh: 18 months)
-        local now=$(date +%s)
-        local access_expiry=$((now * 1000 + 7200000))  # 2 hours in milliseconds
-        local refresh_expiry=$((now * 1000 + 47304000000))  # 18 months in milliseconds
+        local now=$(get_timestamp_ms)
+        local access_expiry=$((now + 7200000))  # 2 hours in milliseconds
+        local refresh_expiry=$((now + 47304000000))  # 18 months in milliseconds
 
         # Create token file
         cat > "$TOKEN_FILE" <<EOF
@@ -245,11 +295,23 @@ configure_claude() {
 
     local config_dir=$(dirname "$config_path")
 
+    # Cross-platform read function
+    read_user_input() {
+        local prompt="$1"
+        if [ "$PLATFORM" = "windows" ]; then
+            echo -n "$prompt"
+            read REPLY
+            REPLY="${REPLY:0:1}"
+        else
+            read -p "$prompt" -n 1 -r
+            echo ""
+        fi
+    }
+
     # Create config directory if it doesn't exist
     if [ ! -d "$config_dir" ]; then
         print_warning "Claude Desktop config directory not found: $config_dir"
-        read -p "Create directory? (y/N): " -n 1 -r
-        echo ""
+        read_user_input "Create directory? (y/N): "
         if [[ ! $REPLY =~ ^[Yy]$ ]]; then
             print_info "Skipping Claude Desktop configuration"
             return 1

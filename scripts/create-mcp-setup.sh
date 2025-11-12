@@ -1,10 +1,12 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 ###############################################################################
 # eBay MCP Setup Configuration Generator
 #
 # This script creates a centralized mcp-setup.json configuration file that
 # contains all your eBay credentials and MCP client settings in one place.
+#
+# Cross-platform compatible: Windows (Git Bash/WSL), macOS, Linux
 #
 # Usage:
 #   ./scripts/create-mcp-setup.sh
@@ -25,18 +27,52 @@
 ###############################################################################
 
 set -e
+set -u
+set -o pipefail
 
-# Colors for output
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-BLUE='\033[0;34m'
-MAGENTA='\033[0;35m'
-CYAN='\033[0;36m'
-NC='\033[0m' # No Color
+# Detect platform
+detect_platform() {
+    case "$(uname -s)" in
+        Linux*)     echo "linux" ;;
+        Darwin*)    echo "macos" ;;
+        CYGWIN*|MINGW*|MSYS*) echo "windows" ;;
+        *)          echo "unknown" ;;
+    esac
+}
 
-# Get script directory and project root
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PLATFORM=$(detect_platform)
+
+# Colors for output (with fallback for Windows)
+if [ "$PLATFORM" = "windows" ] || [ -z "${TERM:-}" ] || [ "$TERM" = "dumb" ]; then
+    RED=''
+    GREEN=''
+    YELLOW=''
+    BLUE=''
+    MAGENTA=''
+    CYAN=''
+    NC=''
+else
+    RED='\033[0;31m'
+    GREEN='\033[0;32m'
+    YELLOW='\033[1;33m'
+    BLUE='\033[0;34m'
+    MAGENTA='\033[0;35m'
+    CYAN='\033[0;36m'
+    NC='\033[0m'
+fi
+
+# Get script directory (cross-platform)
+get_script_dir() {
+    local source="${BASH_SOURCE[0]:-$0}"
+    while [ -L "$source" ]; do
+        local dir="$(cd -P "$(dirname "$source")" && pwd)"
+        source="$(readlink "$source")"
+        [[ $source != /* ]] && source="$dir/$source"
+    done
+    echo "$(cd -P "$(dirname "$source")" && pwd)"
+}
+
+SCRIPT_DIR="$(get_script_dir)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 SETUP_FILE="$PROJECT_ROOT/mcp-setup.json"
 TEMPLATE_FILE="$PROJECT_ROOT/mcp-setup.json.template"
@@ -47,13 +83,27 @@ echo -e "${CYAN}    eBay MCP Server - Centralized Setup Generator${NC}"
 echo -e "${BLUE}═══════════════════════════════════════════════════════════════${NC}"
 echo ""
 
+# Cross-platform read function
+read_user_input() {
+    local prompt="$1"
+    if [ "$PLATFORM" = "windows" ]; then
+        # Windows Git Bash may have issues with read -n 1
+        echo -n "$prompt"
+        read REPLY
+        # Take only first character
+        REPLY="${REPLY:0:1}"
+    else
+        read -p "$prompt" -n 1 -r
+        echo ""
+    fi
+}
+
 # Check if setup file already exists
 if [ -f "$SETUP_FILE" ]; then
     echo -e "${YELLOW}⚠ Warning: Setup configuration file already exists!${NC}"
     echo -e "   Location: ${SETUP_FILE}"
     echo ""
-    read -p "Do you want to overwrite it? (y/N): " -n 1 -r
-    echo ""
+    read_user_input "Do you want to overwrite it? (y/N): "
     if [[ ! $REPLY =~ ^[Yy]$ ]]; then
         echo -e "${BLUE}ℹ Cancelled. Existing setup file preserved.${NC}"
         exit 0
@@ -76,13 +126,25 @@ cp "$TEMPLATE_FILE" "$SETUP_FILE"
 # Get absolute build path
 BUILD_PATH="$PROJECT_ROOT/build/index.js"
 
-# Update buildPath in the setup file with actual project path
-if [[ "$OSTYPE" == "darwin"* ]]; then
-    # macOS
-    sed -i '' "s|/absolute/path/to/ebay-api-mcp-server/build/index.js|$BUILD_PATH|g" "$SETUP_FILE"
+# Normalize path for Windows (convert to forward slashes for JSON)
+if [ "$PLATFORM" = "windows" ]; then
+    BUILD_PATH=$(echo "$BUILD_PATH" | sed 's|\\|/|g')
+fi
+
+# Update buildPath in the setup file with actual project path (cross-platform sed)
+# Use perl for consistent cross-platform behavior
+if command -v perl >/dev/null 2>&1; then
+    perl -i -pe "s|/absolute/path/to/ebay-api-mcp-server/build/index.js|$BUILD_PATH|g" "$SETUP_FILE"
 else
-    # Linux
-    sed -i "s|/absolute/path/to/ebay-api-mcp-server/build/index.js|$BUILD_PATH|g" "$SETUP_FILE"
+    # Fallback to platform-specific sed
+    case "$PLATFORM" in
+        macos)
+            sed -i '' "s|/absolute/path/to/ebay-api-mcp-server/build/index.js|$BUILD_PATH|g" "$SETUP_FILE"
+            ;;
+        *)
+            sed -i "s|/absolute/path/to/ebay-api-mcp-server/build/index.js|$BUILD_PATH|g" "$SETUP_FILE"
+            ;;
+    esac
 fi
 
 if [ $? -eq 0 ]; then
