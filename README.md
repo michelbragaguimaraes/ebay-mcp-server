@@ -1038,7 +1038,50 @@ pnpm test:ui
 
 ## 🐛 Troubleshooting
 
-### Common Issues
+### Automated Setup Script Issues
+
+#### Script Permission Denied
+
+**Error:** `Permission denied: ./scripts/setup-mcp-clients.sh`
+
+**Solution:**
+```bash
+chmod +x ./scripts/setup-mcp-clients.sh
+./scripts/setup-mcp-clients.sh
+```
+
+#### jq Not Installed
+
+**Error:** `jq: command not found`
+
+**Solution:**
+- **macOS**: `brew install jq`
+- **Ubuntu/Debian**: `sudo apt-get install jq`
+- **CentOS/RHEL**: `sudo yum install jq`
+- **Windows**: Use WSL or download from https://stedolan.github.io/jq/
+
+#### Build Not Found
+
+**Error:** `Build not found at /path/to/build/index.js`
+
+**Solution:**
+```bash
+npm install
+npm run build
+./scripts/setup-mcp-clients.sh
+```
+
+#### Client Not Detected
+
+If your AI client isn't automatically detected:
+
+1. **Verify installation**: Make sure Claude Desktop, Gemini CLI, or ChatGPT Desktop is installed
+2. **Check config directory**: The script looks for config directories in standard locations
+3. **Manual configuration**: Use the [Manual Configuration](#manual-configuration) section instead
+
+---
+
+### Common Runtime Issues
 
 #### "Access token is missing" Error
 

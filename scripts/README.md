@@ -1,14 +1,142 @@
-# Type Generation Scripts
+# eBay API MCP Server - Utility Scripts
 
-This directory contains scripts for automatically generating TypeScript types from OpenAPI specifications.
+This directory contains automated setup and utility scripts for the eBay API MCP Server.
 
-## Quick Start
+## Available Scripts
 
+### 1. MCP Client Auto-Configuration (`setup-mcp-clients.sh`)
+
+**Automated MCP client configuration for Claude Desktop, Gemini CLI, and ChatGPT Desktop**
+
+#### Quick Start
+```bash
+# From project root
+./scripts/setup-mcp-clients.sh
+```
+
+[Jump to detailed documentation →](#script-setup-mcp-clientssh)
+
+---
+
+### 2. Type Generation (`generate-types.sh`)
+
+**Generate TypeScript types from OpenAPI specifications**
+
+#### Quick Start
 ```bash
 npm run generate:types
 ```
 
 This command generates TypeScript types for all eBay APIs from the OpenAPI specs in the `docs/` folder.
+
+[Jump to detailed documentation →](#script-generate-typessh)
+
+---
+
+## Script: setup-mcp-clients.sh
+
+### Overview
+
+Automatically detects and configures the eBay API MCP server for all supported AI clients.
+
+### Supported Clients
+
+- ✅ **Claude Desktop** (macOS, Windows, Linux)
+- ✅ **Gemini CLI** (macOS, Linux, Windows via WSL)
+- ✅ **ChatGPT Desktop** (macOS, Windows, Linux - if MCP support is available)
+
+### What It Does
+
+1. **Detects Operating System**: Automatically detects macOS, Linux, or Windows
+2. **Verifies Prerequisites**:
+   - Checks for Node.js installation
+   - Verifies project is built (`build/index.js` exists)
+   - Installs `jq` if needed (for JSON manipulation)
+3. **Prompts for Configuration**:
+   - eBay Client ID
+   - eBay Client Secret
+   - Environment (Sandbox or Production)
+   - Optional: OAuth Redirect URI
+4. **Auto-Configures Clients**:
+   - Searches for Claude Desktop config directory
+   - Searches for Gemini CLI config directory
+   - Searches for ChatGPT Desktop config directory
+   - Creates or updates MCP configuration files
+   - Uses absolute paths for reliability
+5. **Provides Summary**: Lists all successfully configured clients
+
+### Requirements
+
+- **Node.js** 18+ installed
+- **Built project**: Run `npm run build` first
+- **jq** (installed automatically if missing via package manager)
+
+### Platform-Specific Config Paths
+
+**macOS:**
+- Claude Desktop: `~/Library/Application Support/Claude/claude_desktop_config.json`
+- Gemini CLI: `~/.gemini/settings.json`
+- ChatGPT Desktop: `~/Library/Application Support/ChatGPT/mcp_config.json`
+
+**Linux:**
+- Claude Desktop: `~/.config/Claude/claude_desktop_config.json`
+- Gemini CLI: `~/.gemini/settings.json`
+- ChatGPT Desktop: `~/.config/ChatGPT/mcp_config.json`
+
+**Windows:**
+- Claude Desktop: `%APPDATA%/Claude/claude_desktop_config.json`
+- Gemini CLI: `~/.gemini/settings.json` (WSL)
+- ChatGPT Desktop: `%APPDATA%/ChatGPT/mcp_config.json`
+
+### Usage
+
+```bash
+# Make sure the project is built
+npm install && npm run build
+
+# Run the setup script
+./scripts/setup-mcp-clients.sh
+
+# Follow the interactive prompts
+```
+
+### Troubleshooting
+
+**Permission Denied:**
+```bash
+chmod +x ./scripts/setup-mcp-clients.sh
+./scripts/setup-mcp-clients.sh
+```
+
+**jq Not Found:**
+The script will attempt to install `jq` automatically. If it fails:
+- macOS: `brew install jq`
+- Ubuntu/Debian: `sudo apt-get install jq`
+- CentOS/RHEL: `sudo yum install jq`
+- Windows: Use WSL or install manually from https://stedolan.github.io/jq/
+
+**Build Not Found:**
+```bash
+npm install
+npm run build
+./scripts/setup-mcp-clients.sh
+```
+
+**Client Not Detected:**
+- Ensure the client is installed in the default location
+- Check that config directories exist
+- Fall back to [manual configuration](../README.md#manual-configuration)
+
+### Security Notes
+
+- **Credentials in Config**: The script stores eBay credentials in client config files
+- **File Permissions**: Config files are created with user-only read/write permissions
+- **No Network Calls**: The script only modifies local configuration files
+- **Credentials Display**: Credentials are not echoed to the terminal during input
+
+---
+
+## Script: generate-types.sh
 
 ## Overview
 
