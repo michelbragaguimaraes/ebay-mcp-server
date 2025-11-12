@@ -453,7 +453,6 @@ This server has been tested and verified with the following MCP clients:
 - [Authentication Guide](docs/auth/README.md) - OAuth scopes and token management
 
 ### Development
-- [Architecture Guide](CLAUDE.md) - Project structure and design patterns
 - [Contributing Guide](CONTRIBUTING.md) - How to contribute to this project
 - [Security Policy](SECURITY.md) - Vulnerability reporting and security best practices
 - [API Documentation](docs/) - OpenAPI specifications for all eBay APIs
