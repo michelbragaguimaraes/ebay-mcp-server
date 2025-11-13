@@ -83,7 +83,15 @@ export class InventoryApi {
     }
 
     try {
-      return await this.client.put<void>(`${this.basePath}/inventory_item/${sku}`, inventoryItem);
+      return await this.client.put<void>(
+        `${this.basePath}/inventory_item/${sku}`,
+        inventoryItem,
+        {
+          headers: {
+            'Content-Language': 'en_US',
+          },
+        }
+      );
     } catch (error) {
       throw new Error(
         `Failed to create or replace inventory item: ${error instanceof Error ? error.message : 'Unknown error'}`
@@ -122,7 +130,12 @@ export class InventoryApi {
     try {
       return await this.client.post(
         `${this.basePath}/bulk_create_or_replace_inventory_item`,
-        requests
+        requests,
+        {
+          headers: {
+            'Content-Language': 'en_US',
+          },
+        }
       );
     } catch (error) {
       throw new Error(
@@ -207,7 +220,12 @@ export class InventoryApi {
     try {
       return await this.client.put(
         `${this.basePath}/inventory_item/${sku}/product_compatibility`,
-        compatibility
+        compatibility,
+        {
+          headers: {
+            'Content-Language': 'en_US',
+          },
+        }
       );
     } catch (error) {
       throw new Error(
@@ -277,7 +295,12 @@ export class InventoryApi {
     try {
       return await this.client.put(
         `${this.basePath}/inventory_item_group/${inventoryItemGroupKey}`,
-        inventoryItemGroup
+        inventoryItemGroup,
+        {
+          headers: {
+            'Content-Language': 'en_US',
+          },
+        }
       );
     } catch (error) {
       throw new Error(
@@ -534,7 +557,11 @@ export class InventoryApi {
     }
 
     try {
-      return await this.client.post<CreateOfferResponse>(`${this.basePath}/offer`, offer);
+      return await this.client.post<CreateOfferResponse>(`${this.basePath}/offer`, offer, {
+        headers: {
+          'Content-Language': 'en_US',
+        },
+      });
     } catch (error) {
       throw new Error(
         `Failed to create offer: ${error instanceof Error ? error.message : 'Unknown error'}`
@@ -556,7 +583,11 @@ export class InventoryApi {
     }
 
     try {
-      return await this.client.put(`${this.basePath}/offer/${offerId}`, offer);
+      return await this.client.put(`${this.basePath}/offer/${offerId}`, offer, {
+        headers: {
+          'Content-Language': 'en_US',
+        },
+      });
     } catch (error) {
       throw new Error(
         `Failed to update offer: ${error instanceof Error ? error.message : 'Unknown error'}`
@@ -631,7 +662,11 @@ export class InventoryApi {
     }
 
     try {
-      return await this.client.post(`${this.basePath}/bulk_create_offer`, requests);
+      return await this.client.post(`${this.basePath}/bulk_create_offer`, requests, {
+        headers: {
+          'Content-Language': 'en_US',
+        },
+      });
     } catch (error) {
       throw new Error(
         `Failed to bulk create offers: ${error instanceof Error ? error.message : 'Unknown error'}`
@@ -692,6 +727,72 @@ export class InventoryApi {
     } catch (error) {
       throw new Error(
         `Failed to bulk migrate listings: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
+    }
+  }
+
+  /**
+   * Get listing's inventory locations
+   * Endpoint: GET /listing/{listingId}/sku/{sku}/locations
+   * @throws Error if required parameters are missing or invalid
+   */
+  async getListingLocations(listingId: string, sku: string): Promise<unknown> {
+    if (!listingId || typeof listingId !== 'string') {
+      throw new Error('listingId is required and must be a string');
+    }
+    if (!sku || typeof sku !== 'string') {
+      throw new Error('sku is required and must be a string');
+    }
+
+    try {
+      return await this.client.get(`${this.basePath}/listing/${listingId}/sku/${sku}/locations`);
+    } catch (error) {
+      throw new Error(
+        `Failed to get listing locations: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
+    }
+  }
+
+  /**
+   * Publish offer by inventory item group
+   * Endpoint: POST /offer/publish_by_inventory_item_group
+   * @throws Error if required parameters are missing or invalid
+   */
+  async publishOfferByInventoryItemGroup(request: Record<string, unknown>): Promise<unknown> {
+    if (!request || typeof request !== 'object') {
+      throw new Error('request is required and must be an object');
+    }
+
+    try {
+      return await this.client.post(
+        `${this.basePath}/offer/publish_by_inventory_item_group`,
+        request
+      );
+    } catch (error) {
+      throw new Error(
+        `Failed to publish offer by inventory item group: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
+    }
+  }
+
+  /**
+   * Withdraw offer by inventory item group
+   * Endpoint: POST /offer/withdraw_by_inventory_item_group
+   * @throws Error if required parameters are missing or invalid
+   */
+  async withdrawOfferByInventoryItemGroup(request: Record<string, unknown>): Promise<unknown> {
+    if (!request || typeof request !== 'object') {
+      throw new Error('request is required and must be an object');
+    }
+
+    try {
+      return await this.client.post(
+        `${this.basePath}/offer/withdraw_by_inventory_item_group`,
+        request
+      );
+    } catch (error) {
+      throw new Error(
+        `Failed to withdraw offer by inventory item group: ${error instanceof Error ? error.message : 'Unknown error'}`
       );
     }
   }

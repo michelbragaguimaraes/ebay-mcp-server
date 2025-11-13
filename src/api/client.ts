@@ -216,9 +216,13 @@ export class EbayApiClient {
   /**
    * Make a GET request to eBay API
    */
-  async get<T = unknown>(endpoint: string, params?: Record<string, unknown>): Promise<T> {
+  async get<T = unknown>(
+    endpoint: string,
+    params?: Record<string, unknown>,
+    config?: AxiosRequestConfig
+  ): Promise<T> {
     this.validateAccessToken();
-    const response = await this.httpClient.get<T>(endpoint, { params });
+    const response = await this.httpClient.get<T>(endpoint, { params, ...config });
     return response.data;
   }
 
@@ -238,18 +242,22 @@ export class EbayApiClient {
   /**
    * Make a PUT request to eBay API
    */
-  async put<T = unknown>(endpoint: string, data?: unknown): Promise<T> {
+  async put<T = unknown>(
+    endpoint: string,
+    data?: unknown,
+    config?: AxiosRequestConfig
+  ): Promise<T> {
     this.validateAccessToken();
-    const response = await this.httpClient.put<T>(endpoint, data);
+    const response = await this.httpClient.put<T>(endpoint, data, config);
     return response.data;
   }
 
   /**
    * Make a DELETE request to eBay API
    */
-  async delete<T = unknown>(endpoint: string): Promise<T> {
+  async delete<T = unknown>(endpoint: string, config?: AxiosRequestConfig): Promise<T> {
     this.validateAccessToken();
-    const response = await this.httpClient.delete<T>(endpoint);
+    const response = await this.httpClient.delete<T>(endpoint, config);
     return response.data;
   }
 

@@ -589,6 +589,23 @@ export async function executeTool(
       return await api.account.optOutOfProgram(args.request as Record<string, unknown>);
     case 'ebay_get_opted_in_programs':
       return await api.account.getOptedInPrograms();
+    case 'ebay_get_privileges':
+      return await api.account.getPrivileges();
+    case 'ebay_get_advertising_eligibility':
+      return await api.account.getAdvertisingEligibility(
+        args.marketplaceId as string,
+        args.programTypes as string | undefined
+      );
+    case 'ebay_get_payments_program':
+      return await api.account.getPaymentsProgram(
+        args.marketplaceId as string,
+        args.paymentsProgramType as string
+      );
+    case 'ebay_get_payments_program_onboarding':
+      return await api.account.getPaymentsProgramOnboarding(
+        args.marketplaceId as string,
+        args.paymentsProgramType as string
+      );
 
     // Inventory Management
     case 'ebay_get_inventory_items':
@@ -600,6 +617,8 @@ export async function executeTool(
         args.sku as string,
         args.inventoryItem as Record<string, unknown>
       );
+    case 'ebay_delete_inventory_item':
+      return await api.inventory.deleteInventoryItem(args.sku as string);
 
     // Bulk Operations
     case 'ebay_bulk_create_or_replace_inventory_item':
@@ -682,6 +701,16 @@ export async function executeTool(
     // Listing Migration
     case 'ebay_bulk_migrate_listing':
       return await api.inventory.bulkMigrateListing(args.requests as Record<string, unknown>);
+
+    // Listing Locations
+    case 'ebay_get_listing_locations':
+      return await api.inventory.getListingLocations(args.listingId as string, args.sku as string);
+
+    // Inventory Item Group Publishing
+    case 'ebay_publish_offer_by_inventory_item_group':
+      return await api.inventory.publishOfferByInventoryItemGroup(args.request as Record<string, unknown>);
+    case 'ebay_withdraw_offer_by_inventory_item_group':
+      return await api.inventory.withdrawOfferByInventoryItemGroup(args.request as Record<string, unknown>);
 
     // Order Management
     case 'ebay_get_orders':

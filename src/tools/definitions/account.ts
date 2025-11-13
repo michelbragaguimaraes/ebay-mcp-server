@@ -285,4 +285,46 @@ export const accountTools: ToolDefinition[] = [
     description: 'Get seller programs the account is opted into',
     inputSchema: {},
   },
+  {
+    name: 'ebay_get_privileges',
+    description:
+      "Get seller's current set of privileges, including whether or not the seller's eBay registration has been completed, as well as the details of their site-wide sellingLimit (the maximum dollar value and quantity of items a seller can sell per day).\n\nRequired OAuth Scope: sell.account.readonly or sell.account",
+    inputSchema: {},
+  },
+  {
+    name: 'ebay_get_advertising_eligibility',
+    description:
+      'Check the seller eligibility status for eBay advertising programs. This allows developers to determine if a seller is eligible for various advertising programs on eBay.\n\nRequired OAuth Scope: sell.account.readonly or sell.account',
+    inputSchema: {
+      marketplaceId: z
+        .nativeEnum(MarketplaceId)
+        .describe('eBay marketplace ID to check eligibility for'),
+      programTypes: z
+        .string()
+        .optional()
+        .describe('Optional comma-separated list of program types to check eligibility for'),
+    },
+  },
+  {
+    name: 'ebay_get_payments_program',
+    description:
+      'Get payments program status for a marketplace. Note: This method is deprecated as all seller accounts globally have been enabled for the new eBay payment and checkout flow.\n\nRequired OAuth Scope: sell.account.readonly or sell.account',
+    inputSchema: {
+      marketplaceId: z.nativeEnum(MarketplaceId).describe('The eBay marketplace ID'),
+      paymentsProgramType: z
+        .string()
+        .describe('The type of payments program (e.g., EBAY_PAYMENTS)'),
+    },
+  },
+  {
+    name: 'ebay_get_payments_program_onboarding',
+    description:
+      'Get payments program onboarding information. Note: This method is deprecated as all seller accounts globally have been enabled for the new eBay payment and checkout flow.\n\nRequired OAuth Scope: sell.account.readonly or sell.account',
+    inputSchema: {
+      marketplaceId: z.nativeEnum(MarketplaceId).describe('The eBay marketplace ID'),
+      paymentsProgramType: z
+        .string()
+        .describe('The type of payments program (e.g., EBAY_PAYMENTS)'),
+    },
+  },
 ];

@@ -47,6 +47,14 @@ export const inventoryTools: ToolDefinition[] = [
     },
   },
   {
+    name: 'ebay_delete_inventory_item',
+    description:
+      'Delete an inventory item by SKU.\n\nRequired OAuth Scope: sell.inventory\nMinimum Scope: https://api.ebay.com/oauth/api_scope/sell.inventory',
+    inputSchema: {
+      sku: z.string().describe('The seller-defined SKU to delete'),
+    },
+  },
+  {
     name: 'ebay_get_offers',
     description: 'Get all offers for the seller',
     inputSchema: {
@@ -260,6 +268,45 @@ export const inventoryTools: ToolDefinition[] = [
     description: 'Bulk migrate listings to the inventory model',
     inputSchema: {
       requests: bulkMigrateRequestSchema.describe('Bulk listing migration requests'),
+    },
+  },
+  // Listing Locations
+  {
+    name: 'ebay_get_listing_locations',
+    description:
+      'Get inventory locations for a specific listing.\n\nRequired OAuth Scope: sell.inventory.readonly or sell.inventory\nMinimum Scope: https://api.ebay.com/oauth/api_scope/sell.inventory.readonly',
+    inputSchema: {
+      listingId: z.string().describe('The listing ID'),
+      sku: z.string().describe('The seller-defined SKU'),
+    },
+  },
+  // Inventory Item Group Publishing
+  {
+    name: 'ebay_publish_offer_by_inventory_item_group',
+    description:
+      'Publish an offer for an inventory item group (variation listing).\n\nRequired OAuth Scope: sell.inventory\nMinimum Scope: https://api.ebay.com/oauth/api_scope/sell.inventory',
+    inputSchema: {
+      request: z
+        .object({
+          inventoryItemGroupKey: z.string(),
+          marketplaceId: z.nativeEnum(MarketplaceId),
+        })
+        .passthrough()
+        .describe('Publish request with inventory item group key and marketplace ID'),
+    },
+  },
+  {
+    name: 'ebay_withdraw_offer_by_inventory_item_group',
+    description:
+      'Withdraw an offer for an inventory item group (variation listing).\n\nRequired OAuth Scope: sell.inventory\nMinimum Scope: https://api.ebay.com/oauth/api_scope/sell.inventory',
+    inputSchema: {
+      request: z
+        .object({
+          inventoryItemGroupKey: z.string(),
+          marketplaceId: z.nativeEnum(MarketplaceId),
+        })
+        .passthrough()
+        .describe('Withdraw request with inventory item group key and marketplace ID'),
     },
   },
 ];

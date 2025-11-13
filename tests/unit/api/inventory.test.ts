@@ -84,7 +84,12 @@ describe('InventoryApi', () => {
 
       expect(client.put).toHaveBeenCalledWith(
         '/sell/inventory/v1/inventory_item/TEST-SKU',
-        inventoryItem
+        inventoryItem,
+        {
+          headers: {
+            'Content-Language': 'en_US',
+          },
+        }
       );
     });
 
@@ -160,7 +165,11 @@ describe('InventoryApi', () => {
 
       await api.createOffer(offer);
 
-      expect(client.post).toHaveBeenCalledWith('/sell/inventory/v1/offer', offer);
+      expect(client.post).toHaveBeenCalledWith('/sell/inventory/v1/offer', offer, {
+        headers: {
+          'Content-Language': 'en_US',
+        },
+      });
     });
 
     it('should throw error when offer data is missing', async () => {
@@ -309,7 +318,12 @@ describe('InventoryApi', () => {
 
       expect(client.post).toHaveBeenCalledWith(
         '/sell/inventory/v1/bulk_create_or_replace_inventory_item',
-        requests
+        requests,
+        {
+          headers: {
+            'Content-Language': 'en_US',
+          },
+        }
       );
     });
 
@@ -374,7 +388,11 @@ describe('InventoryApi', () => {
 
       await api.updateOffer('OFFER-123', mockOffer);
 
-      expect(client.put).toHaveBeenCalledWith('/sell/inventory/v1/offer/OFFER-123', mockOffer);
+      expect(client.put).toHaveBeenCalledWith('/sell/inventory/v1/offer/OFFER-123', mockOffer, {
+        headers: {
+          'Content-Language': 'en_US',
+        },
+      });
     });
 
     it('should throw error when offerId is missing', async () => {
@@ -395,7 +413,11 @@ describe('InventoryApi', () => {
 
       await api.bulkCreateOffer(requests);
 
-      expect(client.post).toHaveBeenCalledWith('/sell/inventory/v1/bulk_create_offer', requests);
+      expect(client.post).toHaveBeenCalledWith('/sell/inventory/v1/bulk_create_offer', requests, {
+        headers: {
+          'Content-Language': 'en_US',
+        },
+      });
     });
 
     it('should throw error when requests are missing', async () => {
@@ -477,7 +499,12 @@ describe('InventoryApi', () => {
 
       expect(client.put).toHaveBeenCalledWith(
         '/sell/inventory/v1/inventory_item/TEST-SKU/product_compatibility',
-        compatibility
+        compatibility,
+        {
+          headers: {
+            'Content-Language': 'en_US',
+          },
+        }
       );
     });
 
@@ -537,7 +564,12 @@ describe('InventoryApi', () => {
 
       expect(client.put).toHaveBeenCalledWith(
         '/sell/inventory/v1/inventory_item_group/GROUP-123',
-        group
+        group,
+        {
+          headers: {
+            'Content-Language': 'en_US',
+          },
+        }
       );
     });
 
@@ -655,7 +687,12 @@ describe('InventoryApi', () => {
 
       expect(client.post).toHaveBeenCalledWith(
         '/sell/inventory/v1/bulk_create_or_replace_inventory_item',
-        requests
+        requests,
+        {
+          headers: {
+            'Content-Language': 'en_US',
+          },
+        }
       );
     });
 
@@ -683,6 +720,125 @@ describe('InventoryApi', () => {
       await expect(api.bulkGetInventoryItem(undefined as any)).rejects.toThrow(
         'requests is required'
       );
+    });
+  });
+
+  describe('deleteInventoryItem', () => {
+    it('should delete inventory item by SKU', async () => {
+      vi.mocked(client.delete).mockResolvedValue(undefined);
+
+      await api.deleteInventoryItem('TEST-SKU');
+
+      expect(client.delete).toHaveBeenCalledWith('/sell/inventory/v1/inventory_item/TEST-SKU');
+    });
+
+    it('should throw error when SKU is missing', async () => {
+      await expect(api.deleteInventoryItem('')).rejects.toThrow('sku is required');
+    });
+
+    it('should handle errors when deleting item', async () => {
+      vi.mocked(client.delete).mockRejectedValue(new Error('Delete failed'));
+
+      await expect(api.deleteInventoryItem('TEST-SKU')).rejects.toThrow(
+        'Failed to delete inventory item: Delete failed'
+      );
+    });
+  });
+
+  describe('getListingLocations', () => {
+    it('should get listing locations', async () => {
+      const mockResponse = { locations: [] };
+      vi.mocked(client.get).mockResolvedValue(mockResponse);
+
+      await api.getListingLocations('LISTING-123', 'TEST-SKU');
+
+      expect(client.get).toHaveBeenCalledWith(
+        '/sell/inventory/v1/listing/LISTING-123/sku/TEST-SKU/locations'
+      );
+    });
+
+    it('should throw error when listingId is missing', async () => {
+      await expect(api.getListingLocations('', 'TEST-SKU')).rejects.toThrow(
+        'listingId is required'
+      );
+    });
+
+    it('should throw error when sku is missing', async () => {
+      await expect(api.getListingLocations('LISTING-123', '')).rejects.toThrow(
+        'sku is required'
+      );
+    });
+
+    it('should handle errors when getting listing locations', async () => {
+      vi.mocked(client.get).mockRejectedValue(new Error('Not Found'));
+
+      await expect(api.getListingLocations('LISTING-123', 'TEST-SKU')).rejects.toThrow(
+        'Failed to get listing locations: Not Found'
+      );
+    });
+  });
+
+  describe('publishOfferByInventoryItemGroup', () => {
+    it('should publish offer by inventory item group', async () => {
+      const request = {
+        inventoryItemGroupKey: 'GROUP-123',
+        marketplaceId: 'EBAY_US',
+      };
+      const mockResponse = { listingId: 'LISTING-123' };
+      vi.mocked(client.post).mockResolvedValue(mockResponse);
+
+      await api.publishOfferByInventoryItemGroup(request);
+
+      expect(client.post).toHaveBeenCalledWith(
+        '/sell/inventory/v1/offer/publish_by_inventory_item_group',
+        request
+      );
+    });
+
+    it('should throw error when request is missing', async () => {
+      await expect(api.publishOfferByInventoryItemGroup(undefined as any)).rejects.toThrow(
+        'request is required'
+      );
+    });
+
+    it('should handle errors when publishing offer by group', async () => {
+      vi.mocked(client.post).mockRejectedValue(new Error('Publish failed'));
+
+      await expect(
+        api.publishOfferByInventoryItemGroup({ inventoryItemGroupKey: 'GROUP-123' })
+      ).rejects.toThrow('Failed to publish offer by inventory item group: Publish failed');
+    });
+  });
+
+  describe('withdrawOfferByInventoryItemGroup', () => {
+    it('should withdraw offer by inventory item group', async () => {
+      const request = {
+        inventoryItemGroupKey: 'GROUP-123',
+        marketplaceId: 'EBAY_US',
+      };
+      const mockResponse = { success: true };
+      vi.mocked(client.post).mockResolvedValue(mockResponse);
+
+      await api.withdrawOfferByInventoryItemGroup(request);
+
+      expect(client.post).toHaveBeenCalledWith(
+        '/sell/inventory/v1/offer/withdraw_by_inventory_item_group',
+        request
+      );
+    });
+
+    it('should throw error when request is missing', async () => {
+      await expect(api.withdrawOfferByInventoryItemGroup(undefined as any)).rejects.toThrow(
+        'request is required'
+      );
+    });
+
+    it('should handle errors when withdrawing offer by group', async () => {
+      vi.mocked(client.post).mockRejectedValue(new Error('Withdraw failed'));
+
+      await expect(
+        api.withdrawOfferByInventoryItemGroup({ inventoryItemGroupKey: 'GROUP-123' })
+      ).rejects.toThrow('Failed to withdraw offer by inventory item group: Withdraw failed');
     });
   });
 });

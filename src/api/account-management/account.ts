@@ -14,6 +14,8 @@ type SetPaymentPolicyResponse = components['schemas']['SetPaymentPolicyResponse'
 type GetPaymentPoliciesResponse = components['schemas']['PaymentPolicyResponse'];
 type PaymentPolicy = components['schemas']['PaymentPolicy'];
 type PaymentsProgramResponse = components['schemas']['PaymentsProgramResponse'];
+type PaymentsProgramOnboardingResponse = components['schemas']['PaymentsProgramOnboardingResponse'];
+type SellerEligibilityMultiProgramResponse = components['schemas']['SellerEligibilityMultiProgramResponse'];
 type SellingPrivileges = components['schemas']['SellingPrivileges'];
 type Programs = components['schemas']['Programs'];
 type OptInToProgramRequest = components['schemas']['Program'];
@@ -401,5 +403,57 @@ export class AccountApi {
    */
   async getOptedInPrograms(): Promise<Programs> {
     return await this.client.get<Programs>(`${this.basePath}/program`);
+  }
+
+  /**
+   * Get seller eligibility for advertising programs
+   * This method allows developers to check the seller eligibility status for eBay advertising programs.
+   * @param programTypes - Optional comma-separated list of program types to check
+   * @param marketplaceId - Required eBay marketplace ID (passed in X-EBAY-C-MARKETPLACE-ID header)
+   */
+  async getAdvertisingEligibility(
+    marketplaceId: string,
+    programTypes?: string
+  ): Promise<SellerEligibilityMultiProgramResponse> {
+    const params = programTypes ? { program_types: programTypes } : undefined;
+    return await this.client.get<SellerEligibilityMultiProgramResponse>(
+      `${this.basePath}/advertising_eligibility`,
+      params,
+      {
+        headers: {
+          'X-EBAY-C-MARKETPLACE-ID': marketplaceId,
+        },
+      }
+    );
+  }
+
+  /**
+   * Get payments program status for a marketplace
+   * Note: This method is deprecated as all seller accounts globally have been enabled for the new eBay payment and checkout flow.
+   * @param marketplaceId - The eBay marketplace ID
+   * @param paymentsProgramType - The type of payments program
+   */
+  async getPaymentsProgram(
+    marketplaceId: string,
+    paymentsProgramType: string
+  ): Promise<PaymentsProgramResponse> {
+    return await this.client.get<PaymentsProgramResponse>(
+      `${this.basePath}/payments_program/${marketplaceId}/${paymentsProgramType}`
+    );
+  }
+
+  /**
+   * Get payments program onboarding information
+   * Note: This method is deprecated as all seller accounts globally have been enabled for the new eBay payment and checkout flow.
+   * @param marketplaceId - The eBay marketplace ID
+   * @param paymentsProgramType - The type of payments program
+   */
+  async getPaymentsProgramOnboarding(
+    marketplaceId: string,
+    paymentsProgramType: string
+  ): Promise<PaymentsProgramOnboardingResponse> {
+    return await this.client.get<PaymentsProgramOnboardingResponse>(
+      `${this.basePath}/payments_program/${marketplaceId}/${paymentsProgramType}/onboarding`
+    );
   }
 }
