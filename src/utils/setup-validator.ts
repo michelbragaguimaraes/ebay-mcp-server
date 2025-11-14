@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /**
  * Setup Validation Module
  *
@@ -47,9 +48,10 @@ function parseEnvFile(filePath: string): Record<string, string> {
     }
 
     // Parse KEY=VALUE
-    const match = trimmed.match(/^([^=]+)=(.*)$/);
+    const match = /^([^=]+)=(.*)$/.exec(trimmed);
     if (match) {
       const key = match[1].trim();
+
       let value = match[2].trim();
 
       // Remove quotes if present
@@ -195,7 +197,7 @@ async function validateOAuthInitialization(config: EbayConfig): Promise<Validati
 /**
  * Test OAuth URL generation
  */
-async function validateOAuthURL(config: EbayConfig): Promise<ValidationResult> {
+function validateOAuthURL(config: EbayConfig): ValidationResult {
   try {
     if (!config.redirectUri) {
       return {
@@ -212,7 +214,7 @@ async function validateOAuthURL(config: EbayConfig): Promise<ValidationResult> {
       config.environment
     );
 
-    if (!url || !url.startsWith('http')) {
+    if (!url.startsWith('http')) {
       return {
         test: 'OAuth URL Generation',
         passed: false,
@@ -293,7 +295,7 @@ export async function validateSetup(projectRoot: string): Promise<ValidationSumm
 
     // Test 6: OAuth URL generation
     if (oauthInitResult.passed) {
-      const oauthURLResult = await validateOAuthURL(config);
+      const oauthURLResult = validateOAuthURL(config);
       results.push(oauthURLResult);
       printResult(oauthURLResult);
     }
