@@ -91,7 +91,7 @@ type BulkUpdateKeywordRequest = BulkUpdateKeywordBidsRequest;
 export class MarketingApi {
   private readonly basePath = '/sell/marketing/v1';
 
-  constructor(private client: EbayApiClient) { }
+  constructor(private client: EbayApiClient) {}
 
   /**
    * Get campaigns

@@ -17,7 +17,7 @@ type ShippingFulfillmentPagedCollection =
 export class FulfillmentApi {
   private readonly basePath = '/sell/fulfillment/v1';
 
-  constructor(private client: EbayApiClient) { }
+  constructor(private client: EbayApiClient) {}
 
   /**
    * Get orders for the seller

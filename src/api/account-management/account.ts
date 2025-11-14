@@ -37,7 +37,7 @@ type SubscriptionResponse = components['schemas']['SubscriptionResponse'];
 export class AccountApi {
   private readonly basePath = '/sell/account/v1';
 
-  constructor(private client: EbayApiClient) { }
+  constructor(private client: EbayApiClient) {}
 
   /**
    * Get custom policies for the seller

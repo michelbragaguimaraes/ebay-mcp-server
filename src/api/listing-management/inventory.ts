@@ -16,7 +16,7 @@ type PublishResponse = components['schemas']['PublishResponse'];
 export class InventoryApi {
   private readonly basePath = '/sell/inventory/v1';
 
-  constructor(private client: EbayApiClient) { }
+  constructor(private client: EbayApiClient) {}
 
   /**
    * Get all inventory items

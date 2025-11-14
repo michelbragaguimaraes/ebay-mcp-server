@@ -17,7 +17,7 @@ export class EbayOAuthClient {
   private appAccessTokenExpiry = 0;
   private userTokens: StoredTokenData | null = null;
 
-  constructor(private config: EbayConfig) { }
+  constructor(private config: EbayConfig) {}
 
   /**
    * Initialize user tokens from environment variables only

@@ -19,7 +19,7 @@ type UpdateEvidencePaymentDisputeRequest =
 export class DisputeApi {
   private readonly basePath = '/sell/fulfillment/v1';
 
-  constructor(private client: EbayApiClient) { }
+  constructor(private client: EbayApiClient) {}
 
   /**
    * Get payment dispute details
