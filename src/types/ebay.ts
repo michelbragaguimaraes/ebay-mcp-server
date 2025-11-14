@@ -7,6 +7,9 @@ export interface EbayConfig {
   clientSecret: string;
   redirectUri?: string;
   environment: 'production' | 'sandbox';
+  accessToken?: string;
+  refreshToken?: string;
+  appAccessToken?: string;
 }
 
 /**
@@ -14,11 +17,11 @@ export interface EbayConfig {
  * Supports both client credentials and authorization code grants
  */
 export interface EbayAuthToken {
-  access_token: string;
-  token_type: string;
-  expires_in: number;
-  refresh_token?: string;
-  refresh_token_expires_in?: number;
+  accessToken: string;
+  tokenType: string;
+  expiresIn: number;
+  refreshToken: string;
+  refreshTokenExpiresIn?: number;
 }
 
 /**
@@ -27,9 +30,9 @@ export interface EbayAuthToken {
  * No refresh token - app tokens are short-lived and re-generated
  */
 export interface EbayAppAccessTokenResponse {
-  access_token: string;
-  expires_in: number;
-  token_type: string;
+  accessToken: string;
+  expiresIn: number;
+  tokenType: string;
 }
 
 /**
@@ -37,11 +40,11 @@ export interface EbayAppAccessTokenResponse {
  * Used for user-specific operations (10,000-50,000 requests/day)
  */
 export interface EbayUserToken {
-  access_token: string;
-  refresh_token: string;
-  token_type: string;
-  expires_in: number;
-  refresh_token_expires_in: number;
+  accessToken: string;
+  refreshToken: string;
+  tokenType: string;
+  expiresIn: number;
+  refreshTokenExpiresIn: number;
   scope?: string;
 }
 

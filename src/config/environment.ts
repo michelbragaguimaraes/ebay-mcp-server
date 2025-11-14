@@ -3,6 +3,9 @@ import { readFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import type { EbayConfig } from '@/types/ebay.js';
+import { version } from 'os';
+import { title } from 'process';
+import { Implementation } from '@modelcontextprotocol/sdk/types.js';
 
 config();
 
@@ -176,20 +179,19 @@ export function validateEnvironmentConfig(): {
 }
 
 export function getEbayConfig(): EbayConfig {
-  const clientId = process.env.EBAY_CLIENT_ID;
-  const clientSecret = process.env.EBAY_CLIENT_SECRET;
-  const environment = (process.env.EBAY_ENVIRONMENT || 'sandbox') as 'production' | 'sandbox'
+  const clientId = process.env.EBAY_CLIENT_ID ?? '';
+  const clientSecret = process.env.EBAY_CLIENT_SECRET ?? '';
+  const environment = (process.env.EBAY_ENVIRONMENT ?? 'sandbox') as 'production' | 'sandbox'
+  const accessToken = process.env.EBAY_USER_ACCESS_TOKEN ?? ''
+  const refreshToken = process.env.EBAY_USER_REFRESH_TOKEN ?? ''
+  const appAccessToken = process.env.EBAY_APP_ACCESS_TOKEN ?? ''
 
-  if (!clientId || !clientSecret) {
+
+
+  if (clientId === '' || clientSecret === '' || accessToken === '' || refreshToken === '' || appAccessToken === '') {
     console.error(
-      'Missing required eBay credentials. Please set EBAY_CLIENT_ID and EBAY_CLIENT_SECRET environment variables.'
+      'Missing required eBay credentials. Please set the follow:\n1) EBAY_CLIENT_ID\n2) EBAY_CLIENT_SECRET\n3) EBAY_USER_ACCESS_TOKEN\n4) EBAY_USER_REFRESH_TOKEN\n5) EBAY_APP_ACCESS_TOKEN in your .env file at project root'
     );
-    return {
-      clientId: '',
-      clientSecret: '',
-      redirectUri: '',
-      environment: 'sandbox',
-    };
   }
 
   return {
@@ -197,6 +199,9 @@ export function getEbayConfig(): EbayConfig {
     clientSecret,
     redirectUri: process.env.EBAY_REDIRECT_URI,
     environment,
+    accessToken,
+    refreshToken,
+    appAccessToken,
   };
 }
 
@@ -228,6 +233,7 @@ export function getOAuthAuthorizationUrl(
   redirectUri: string,
   environment: 'production' | 'sandbox',
   scopes?: string[],
+  locale?: string,
   state?: string,
 ): string {
   // Use environment-specific scopes if no custom scopes provided
@@ -260,3 +266,38 @@ export function getOAuthAuthorizationUrl(
 
   return `${signinDomain}/signin?ru=${ruParam}&sgfl=oauth2_login&AppName=${clientId}`;
 }
+
+export const mcpConfig: Implementation = {
+  name: 'eBay API Model Context Protocol Server',
+  version: '1.4.0',
+  title: 'eBay API Model Context Protocol Server',
+  description: 'Access eBay APIs to manage listings, orders, and inventory.',
+  websiteUrl: 'https://github.com/ebay/ebay-mcp-server',
+  icons: [
+    {
+      src: './48x48.png',
+      mimeType: 'image/png',
+      sizes: ['48x48'],
+    },
+    {
+      src: './128x128.png',
+      mimeType: 'image/png',
+      sizes: ['128x128'],
+    },
+    {
+      src: './256x256.png',
+      mimeType: 'image/png',
+      sizes: ['256x256'],
+    },
+    {
+      src: './512x512.png',
+      mimeType: 'image/png',
+      sizes: ['512x512'],
+    },
+    {
+      src: './1024x1024.png',
+      mimeType: 'image/png',
+      sizes: ['1024x1024'],
+    },
+  ],
+};
